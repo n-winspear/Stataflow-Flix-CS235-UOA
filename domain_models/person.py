@@ -35,7 +35,7 @@ class Person:
         return f"Person <{self.__last_name}, {self.__first_name}>"
 
     def __eq__(self, other):
-        return self.__unique_ID == other.unique_ID
+        return self.full_name == other.full_name
 
     def __hash__(self):
         return hash(self.__unique_ID)
@@ -43,6 +43,10 @@ class Person:
     @property
     def unique_ID(self):
         return self.__unique_ID
+
+    @property
+    def full_name(self):
+        return f"{self.__first_name} {self.__last_name}"
 
     @property
     def first_name(self):

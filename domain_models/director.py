@@ -4,21 +4,43 @@ import requests
 
 
 class Director(Person):
-    def __init__(self, first_name: str = None, last_name: str = None, gender: int = None,  date_of_birth: datetime = None, IMDB_page: str = None, directed_movies: list = []):
+    def __init__(self, first_name: str = None, last_name: str = None, gender: int = None,  date_of_birth: datetime = None, imdb_page: str = None, directed_movies: list = []):
 
         # Parent Class Call
         super(first_name, last_name, gender, date_of_birth)
 
         # IMDB Page
-        self.__IMDB_page = IMDB_page.strip() if self.__valid_URL(IMDB_page) else None
+        self.__imdb_page = imdb_page.strip() if self.__valid_URL(imdb_page) else None
 
         # Directed Movies
         self.__directed_movies = directed_movies if self.__valid_directed_movies(
             directed_movies) else self.__cleaned_directed_movies
 
+    def __str__(self):
+        return f"First Name: {self.__first_name}\nLast Name: {self.__last_name}"
+
+    def __repr__(self):
+        return f"Director <{self.__last_name}, {self.__first_name}>"
+
+    @property
+    def imdb_page(self):
+        return self.__imdb_page
+
+    @imdb_page.setter
+    def imdb_page(self, imdb_page: str) -> str:
+        self.__imdb_page = imdb_page.strip() if self.__valid_URL(imdb_page) else None
+
+    @property
+    def directed_movies(self):
+        return self.__directed_movies
+
+    @directed_movies.setter
+    def directed_movies(self, directed_movies: list) -> list:
+        self.__directed_movies = directed_movies if self.__valid_directed_movies(
+            directed_movies) else self.__cleaned_directed_movies
+
     # Validators
     # Valid URL Check
-
     def __valid_URL(self, URL: str) -> str:
         try:
             response = requests.get(URL)

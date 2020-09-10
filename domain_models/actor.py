@@ -4,15 +4,38 @@ import requests
 
 
 class Actor(Person):
-    def __init__(self, first_name: str = None, last_name: str = None, gender: int = None,  date_of_birth: datetime = None, IMDB_page: str = None, movies_acted_in: list = []):
+    def __init__(self, first_name: str = None, last_name: str = None, gender: int = None,  date_of_birth: datetime = None, imdb_page: str = None, movies_acted_in: list = []):
 
         # Parent Class Call
         super(first_name, last_name, gender, date_of_birth)
 
         # IMDB Page
-        self.__IMDB_page = IMDB_page.strip() if self.__valid_URL(IMDB_page) else None
+        self.__imdb_page = imdb_page.strip() if self.__valid_URL(imdb_page) else None
 
-        # Directed Movies
+        # Movies Acted In
+        self.__movies_acted_in = movies_acted_in if self.__valid_movies_acted_in(
+            movies_acted_in) else self.__cleaned_movies_acted_in
+
+    def __str__(self):
+        return f"First Name: {self.__first_name}\nLast Name: {self.__last_name}"
+
+    def __repr__(self):
+        return f"Actor <{self.__last_name}, {self.__first_name}>"
+
+    @property
+    def imdb_page(self):
+        return self.__imdb_page
+
+    @imdb_page.setter
+    def imdb_page(self, imdb_page: str) -> str:
+        self.__imdb_page = imdb_page.strip() if self.__valid_URL(imdb_page) else None
+
+    @property
+    def movies_acted_in(self):
+        return self.__movies_acted_in
+
+    @movies_acted_in.setter
+    def movies_acted_in(self, movies_acted_in: list) -> list:
         self.__movies_acted_in = movies_acted_in if self.__valid_movies_acted_in(
             movies_acted_in) else self.__cleaned_movies_acted_in
 

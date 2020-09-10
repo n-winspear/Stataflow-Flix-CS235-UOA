@@ -44,12 +44,6 @@ class User(Person):
     def __repr__(self):
         return f"User <{self.__last_name}, {self.__first_name}>"
 
-    def __eq__(self, other):
-        return self.__unique_ID == other.unique_ID
-
-    def __hash__(self):
-        return hash(self.__unique_ID)
-
     # Properties
     @property
     def first_name(self):
