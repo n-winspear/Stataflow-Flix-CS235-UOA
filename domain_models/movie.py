@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class Movie:
-    def __init__(self, title: str, release_year: int = None, genre: Genre = None, description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0):
+    def __init__(self, title: str, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0):
 
         # Title
         self.__title = title.strip() if type(title) == str else None
@@ -15,7 +15,7 @@ class Movie:
             release_year) else None
 
         # Genre
-        self.__genre = genre if isinstance(genre, Genre) else None
+        self.__genre = genre if self.__valid_genres else self.__cleaned_genres
 
         # Description
         self.__description = description.strip() if type(description) == str else None
@@ -58,8 +58,8 @@ class Movie:
         return self.__genre
 
     @genre.setter
-    def genre(self, genre: Genre) -> Genre:
-        self.__genre = genre if isinstance(genre, Genre) else None
+    def genre(self, genres: list) -> list:
+        self.__genre = genre if self.__valid_genres else self.__cleaned_genres
 
     @property
     def description(self):
@@ -130,6 +130,28 @@ class Movie:
         for director in directors:
             if isinstance(director, Director):
                 cleaned_list.append(director)
+
+        return cleaned_list
+
+    # Release Year Check
+    def __valid_release_year(self, release_year: int) -> int:
+        return release_year in range(1890, datetime.now().year)
+
+    # Genres Check
+    def __valid_genres(self, genres: list) -> list:
+        for genre in genres:
+            if isinstance(genre, Genre):
+                return False
+        return True
+
+    # Genres Cleaner
+    def __cleaned_genres(self, genres: list) -> list:
+
+        cleaned_list = []
+
+        for genre in genres:
+            if isinstance(genre, Genre):
+                cleaned_list.append(genre)
 
         return cleaned_list
 
