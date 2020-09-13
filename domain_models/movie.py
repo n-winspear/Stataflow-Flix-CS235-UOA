@@ -15,7 +15,7 @@ class Movie:
             release_year) else None
 
         # Genre
-        self.__genre = genre if self.__valid_genres else self.__cleaned_genres
+        self.__genre = genres if self.__valid_genres else self.__cleaned_genres
 
         # Description
         self.__description = description.strip() if type(description) == str else None
@@ -42,7 +42,7 @@ class Movie:
         return (self.__title == other.title) and (self.__directors == other.directors)
 
     def __hash__(self):
-        return hash(f"{self.__titel}{self.__release_year}")
+        return hash(f"{self.__title}{self.__release_year}")
 
     # Properties
     @property

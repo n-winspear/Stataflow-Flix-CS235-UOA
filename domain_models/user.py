@@ -1,6 +1,4 @@
 from domain_models.person import Person
-from domain_models.movie import Movie
-from domain_models.review import Review
 import re
 import phonenumbers
 from password_validator import PasswordValidator
@@ -9,10 +7,10 @@ import datetime as datetime
 
 class User(Person):
 
-    def __init__(self, first_name: str = None, last_name: str = None, email_address: str = None, password: str = None, phone_number: str = None, gender: int = None, date_of_birth: datetime = None, watchlist: list = [], watched_movies: list = [], reviews: list = []):
+    def __init__(self, first_name: str = None, last_name: str = None, email_address: str = None, password: str = None, phone_number: str = None, gender: int = None, date_of_birth: str = None, watchlist: list = [], watched_movies: list = [], reviews: list = []):
 
         # Parent Class Call
-        super(first_name, last_name, gender, date_of_birth)
+        super().__init__(first_name, last_name, gender, date_of_birth)
 
         # Email Address
         self.__email_address = email_address.strip() if self.__valid_email_address(
@@ -199,6 +197,8 @@ class User(Person):
 
     # Watched Movies Check
     def __valid_watched_movies(self, watched_movies: list) -> list:
+        from domain_models.movie import Movie
+
         for movie in watched_movies:
             if isinstance(movie, Movie):
                 return False
@@ -206,6 +206,7 @@ class User(Person):
 
     # Watched Movies Cleaner
     def __cleaned_watched_movies(self, watched_movies: list) -> list:
+        from domain_models.movie import Movie
 
         cleaned_list = []
 
@@ -217,6 +218,8 @@ class User(Person):
 
     # Reviews Check
     def __valid_reviews(self, reviews: list) -> list:
+        from domain_models.review import Review
+
         for review in reviews:
             if isinstance(review, Review):
                 return False
@@ -224,6 +227,7 @@ class User(Person):
 
     # Reviews Cleaner
     def __cleaned_reviews(self, reviews: list) -> list:
+        from domain_models.review import Review
 
         cleaned_list = []
 

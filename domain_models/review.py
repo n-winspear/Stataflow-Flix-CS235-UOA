@@ -18,7 +18,7 @@ class Review:
         return f"Movie: {self.__movie}\nRating: {self.__rating}\n Text: {self.__review_text}"
 
     def __repr__(self):
-        return f"Review <{self.__moive}, {self.__rating} | {self.__review_text}>"
+        return f"Review <{self.__movie}, {self.__rating} | {self.__review_text}>"
 
     def __eq__(self, other):
         return (self.__movie == other.movie and self.__rating == other.rating and self.__review_text == other.review_text)

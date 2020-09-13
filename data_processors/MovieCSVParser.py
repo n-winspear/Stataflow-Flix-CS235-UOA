@@ -27,20 +27,22 @@ class MovieCSVParser:
                 genres = [Genre(genre.strip())
                           for genre in (row['Genre'].split(','))]
                 description = row['Description']
-                directors = Director(
+                directors = [Director(
                     first_name=row['Director'][:row['Director'].find(" ")],
                     last_name=row['Director'][row['Director'].find(" ") + 1:]
-                )
+                ) for director in (row['Director'].split(','))]
                 actors = [Actor(
                     first_name=actor.strip()[:actor.strip().find(" ")],
                     last_name=actor.strip()[actor.strip().find(" ")+1:])
                     for actor in (row['Actors'].split(','))]
                 release_year = int(row['Year'])
                 runtime_minutes = int(row['Runtime (Minutes)'])
-                average_rating = int(row['Rating'])
+                average_rating = float(row['Rating'])
                 vote_count = int(row['Votes'])
-                revenue = float(row['Revenue (Millions)'])
-                metascore = int(row['Metascore'])
+                revenue = float(row['Revenue (Millions)']
+                                ) if row['Revenue (Millions)'] != 'N/A' else 0.0
+                metascore = int(
+                    row['Metascore']) if row['Metascore'] != 'N/A' else 0.0
 
                 # Creating Movie
                 movie = Movie(
@@ -48,7 +50,7 @@ class MovieCSVParser:
                     release_year=release_year,
                     genres=genres,
                     description=description,
-                    directors=list(directors),
+                    directors=directors,
                     actors=actors,
                     runtime_minutes=runtime_minutes
                 )
@@ -95,9 +97,3 @@ class MovieCSVParser:
     @property
     def dataset_of_actors(self):
         return self.__dataset_of_actors
-
-
-fp = MovieCSVParser('Data1000Movies.csv')
-fp.read_csv_file()
-
-print(f"{fp.dataset_of_movies}\n{fp.dataset_of_reviews}\n{fp.dataset_of_genres}\n{fp.dataset_of_directors}\n{fp.dataset_of_actors}")

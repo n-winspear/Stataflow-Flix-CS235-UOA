@@ -5,16 +5,16 @@ class Genre:
         self.__genre_name = genre_name.strip() if type(genre_name) == str else None
 
     def __str__(self):
-        return f"Movie Title: {self.__title}\nRelease Year: {self.__release_year}\nRuntime: {self.__runtime_minutes} mins"
+        return f"Genre: {self.__genre_name}"
 
     def __repr__(self):
-        return f"Movie <{self.__title}, {self.__release_year}>"
+        return f"Genre <{self.genre_name}>"
 
     def __eq__(self, other):
-        return (self.__title == other.title) and (self.__directors == other.directors)
+        return (self.__genre_name == other.genre_name)
 
     def __hash__(self):
-        return hash(f"{self.__titel}{self.__release_year}")
+        return hash(f"{self.__genre_name}")
 
     # Properties
     @property

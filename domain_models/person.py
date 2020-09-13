@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Person:
-    def __init__(self, first_name: str = None, last_name: str = None, gender: int = None,  date_of_birth: datetime = None):
+    def __init__(self, first_name: str = "", last_name: str = "", gender: int = 0,  date_of_birth: str = None):
 
         # Unique ID
         self.__unique_ID = uuid4()
