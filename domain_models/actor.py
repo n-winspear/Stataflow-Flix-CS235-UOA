@@ -4,10 +4,10 @@ import requests
 
 
 class Actor(Person):
-    def __init__(self, first_name: str = None, last_name: str = None, gender: int = None,  date_of_birth: str = None, imdb_page: str = None, movies_acted_in: list = []):
+    def __init__(self, full_name: str = "", gender: int = None,  date_of_birth: str = None, imdb_page: str = None, movies_acted_in: list = []):
 
         # Parent Class Call
-        super().__init__(first_name, last_name, gender, date_of_birth)
+        super(Actor, self).__init__(full_name, gender, date_of_birth)
 
         # IMDB Page
         self.__imdb_page = imdb_page.strip() if self.__valid_URL(imdb_page) else None
@@ -17,10 +17,10 @@ class Actor(Person):
             movies_acted_in) else self.__cleaned_movies_acted_in
 
     def __str__(self):
-        return f"First Name: {self.__first_name}\nLast Name: {self.__last_name}"
+        return f"Full Name: {self._full_name}"
 
     def __repr__(self):
-        return f"Actor <{self.__last_name}, {self.__first_name}>"
+        return f"Actor <{self._full_name}>"
 
     @property
     def imdb_page(self):

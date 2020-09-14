@@ -7,10 +7,17 @@ import datetime as datetime
 
 class User(Person):
 
-    def __init__(self, first_name: str = None, last_name: str = None, email_address: str = None, password: str = None, phone_number: str = None, gender: int = None, date_of_birth: str = None, watchlist: list = [], watched_movies: list = [], reviews: list = []):
+    def __init__(self, first_name: str = "", last_name: str = "", email_address: str = None, password: str = None, phone_number: str = None, gender: int = None, date_of_birth: str = None, watchlist: list = [], watched_movies: list = [], reviews: list = []):
+
+        # First Name
+        self.__first_name = first_name.strip() if type(first_name) == str else ""
+
+        # Last Name
+        self.__last_name = last_name.strip() if type(last_name) == str else ""
 
         # Parent Class Call
-        super().__init__(first_name, last_name, gender, date_of_birth)
+        super(User, self).__init__(
+            f"{self.__first_name} {self.__last_name}", gender, date_of_birth)
 
         # Email Address
         self.__email_address = email_address.strip() if self.__valid_email_address(

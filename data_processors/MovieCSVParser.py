@@ -28,13 +28,9 @@ class MovieCSVParser:
                           for genre in (row['Genre'].split(','))]
                 description = row['Description']
                 directors = [Director(
-                    first_name=row['Director'][:row['Director'].find(" ")],
-                    last_name=row['Director'][row['Director'].find(" ") + 1:]
-                ) for director in (row['Director'].split(','))]
+                    full_name=director.strip()) for director in (row['Director'].split(','))]
                 actors = [Actor(
-                    first_name=actor.strip()[:actor.strip().find(" ")],
-                    last_name=actor.strip()[actor.strip().find(" ")+1:])
-                    for actor in (row['Actors'].split(','))]
+                    full_name=actor.strip()) for actor in (row['Actors'].split(','))]
                 release_year = int(row['Year'])
                 runtime_minutes = int(row['Runtime (Minutes)'])
                 average_rating = float(row['Rating'])
