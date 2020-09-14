@@ -10,11 +10,11 @@ class MovieCSVParser:
 
     def __init__(self, file_name: str):
         self.__file_name = file_name
+        self.__dataset_of_actors = []
+        self.__dataset_of_directors = []
+        self.__dataset_of_genres = []
         self.__dataset_of_movies = []
         self.__dataset_of_reviews = []
-        self.__dataset_of_genres = []
-        self.__dataset_of_directors = []
-        self.__dataset_of_actors = []
 
     def read_csv_file(self):
         with open(self.__file_name, mode='r', encoding='utf-8-sig') as csvfile:
@@ -43,12 +43,16 @@ class MovieCSVParser:
                 # Creating Movie
                 movie = Movie(
                     title=title,
-                    release_year=release_year,
                     genres=genres,
                     description=description,
                     directors=directors,
                     actors=actors,
-                    runtime_minutes=runtime_minutes
+                    release_year=release_year,
+                    runtime_minutes=runtime_minutes,
+                    average_rating=average_rating,
+                    vote_count=vote_count,
+                    revenue=revenue,
+                    metascore=metascore
                 )
                 self.__dataset_of_movies.append(movie)
 

@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class Movie:
-    def __init__(self, title: str, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0):
+    def __init__(self, title: str, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: int = 0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
 
         # Title
         self.__title = title.strip() if type(title) == str else None
@@ -31,6 +31,22 @@ class Movie:
         # Runtime Minutes
         self.__runtime_minutes = runtime_minutes if (
             type(runtime_minutes) == int and runtime_minutes > 0) else 0
+
+        # Average Rating
+        self.__average_rating = average_rating if (
+            type(average_rating) == int and average_rating in range(1, 11)) else 0
+
+        # Vote Count
+        self.__vote_count = vote_count if (
+            type(vote_count) == int and vote_count > 0) else 0
+
+        # Revenue
+        self.__revenue = revenue if (
+            type(revenue) == float and revenue > 0.0) else 0.0
+
+        # Metascore
+        self.__metascore = metascore if (
+            type(metascore) == int and metascore in range(1, 101)) else 0
 
     def __str__(self):
         return f"Movie Title: {self.__title}\nRelease Year: {self.__release_year}\nRuntime: {self.__runtime_minutes} mins"
@@ -96,8 +112,45 @@ class Movie:
         self.__runtime_minutes = runtime_minutes if (
             type(runtime_minutes) == int and runtime_minutes > 0) else 0
 
+    @property
+    def average_rating(self):
+        return self.__average_rating
+
+    @average_rating.setter
+    def average_rating(self, average_rating: int) -> int:
+        self.__average_rating = average_rating if (
+            type(average_rating) == int and average_rating in range(1, 11)) else 0
+
+    @property
+    def vote_count(self):
+        return self.__vote_count
+
+    @vote_count.setter
+    def vote_count(self, vote_count: int) -> int:
+        self.__vote_count = vote_count if (
+            type(vote_count) == int and vote_count > 0) else 0
+
+    @property
+    def revenue(self):
+        return self.__revenue
+
+    @revenue.setter
+    def revenue(self, revenue: float) -> float:
+        self.__revenue = revenue if (
+            type(revenue) == float and revenue > 0.0) else 0.0
+
+    @property
+    def metascore(self):
+        return self.__metascore
+
+    @metascore.setter
+    def metascore(self, metascore: int) -> int:
+        self.__metascore = metascore if (
+            type(metascore) == int and metascore in range(1, 101)) else 0
+
     # Validators
     # Actors Check
+
     def __valid_actors(self, actors: list) -> list:
         for actor in actors:
             if isinstance(actor, Actor):
