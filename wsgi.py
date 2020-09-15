@@ -7,8 +7,8 @@ app = Flask(__name__)
 api = Api(app)
 
 with app.app_context():
-    from home import home
-    app.register_blueprint(home.bp)
+    from home import routes
+    app.register_blueprint(routes.bp)
 
 
 @app.errorhandler(404)

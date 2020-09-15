@@ -15,7 +15,7 @@ class Movie:
             release_year) else None
 
         # Genre
-        self.__genre = genres if self.__valid_genres else self.__cleaned_genres
+        self.__genres = genres if self.__valid_genres else self.__cleaned_genres
 
         # Description
         self.__description = description.strip() if type(description) == str else None
@@ -70,12 +70,21 @@ class Movie:
         self.__title = title.strip() if type(title) == str else None
 
     @property
-    def genre(self):
-        return self.__genre
+    def release_year(self):
+        return self.__release_year
 
-    @genre.setter
-    def genre(self, genres: list) -> list:
-        self.__genre = genre if self.__valid_genres else self.__cleaned_genres
+    @release_year.setter
+    def release_year(self, release_year: int) -> int:
+        self.__release_year = release_year if self.__valid_release_year(
+            release_year) else None
+
+    @property
+    def genres(self):
+        return self.__genres
+
+    @genres.setter
+    def genres(self, genres: list) -> list:
+        self.__genres = genres if self.__valid_genres else self.__cleaned_genres
 
     @property
     def description(self):

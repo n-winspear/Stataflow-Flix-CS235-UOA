@@ -2,7 +2,7 @@ import abc
 from domain_models.actor import Actor
 from domain_models.director import Director
 from domain_models.genre import Genre
-from domain_models.movie import Movies
+from domain_models.movie import Movie
 from domain_models.review import Review
 
 
@@ -116,22 +116,22 @@ class AbstractRepository(abc.ABC):
 
     # GET
     @abc.abstractmethod
-    def get_movie(self, movie: Moive):
+    def get_movie(self, movie: Movie):
         raise NotImplementedError
 
     # INSERT
     @abc.abstractmethod
-    def add_movie(self, movie: Moive):
+    def add_movie(self, movie: Movie):
         raise NotImplementedError
 
     # UPDATE
     @abc.abstractmethod
-    def update_movie(self, movie: Moive):
+    def update_movie(self, movie: Movie):
         raise NotImplementedError
 
     # DELETE
     @abc.abstractmethod
-    def delete_movie(self, movie: Moive):
+    def delete_movie(self, movie: Movie):
         raise NotImplementedError
 
     # GET ALL

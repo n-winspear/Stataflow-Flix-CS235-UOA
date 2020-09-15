@@ -1,14 +1,11 @@
 from flask import Blueprint, make_response
-from adapters.memoryrepository import MemoryRepository
+import home.services as s
+from flask import jsonify
 
 bp = Blueprint('home_blueprint', __name__)
-
-repo = MemoryRepository()
 
 
 @bp.route('/', methods=['GET'])
 def index():
-    movies = repo.get_all_movies()
-    reviews = repo.get_all_reviews()
-
-    return make_response()
+    response = s.get_home_data()
+    return make_response(jsonify(response))
