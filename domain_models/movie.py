@@ -60,6 +60,22 @@ class Movie:
     def __hash__(self):
         return hash(f"{self.__title}{self.__release_year}")
 
+    def toJSON(self):
+        json_dump = {
+            'title': self.__title,
+            'releaseYear': self.__release_year,
+            'genres': [genre.toJSON() for genre in self.__genres],
+            'description': self.__description,
+            'directors': [director.toJSON() for director in self.__directors],
+            'actors': [actor.toJSON() for actor in self.__actors],
+            'runtimeMinutes': self.__runtime_minutes,
+            'averageRating': self.__average_rating,
+            'voteCount': self.__vote_count,
+            'revenue': self.__revenue,
+            'metascore': self.__metascore
+        }
+        return json_dump
+
     # Properties
     @property
     def title(self):

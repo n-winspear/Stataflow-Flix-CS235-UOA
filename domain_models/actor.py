@@ -22,6 +22,18 @@ class Actor(Person):
     def __repr__(self):
         return f"Actor <{self._full_name}>"
 
+    def toJSON(self):
+        json_dump = {
+            'uniqueID': f"{self._unique_ID}",
+            'fullName': self._full_name,
+            'gender': self._gender,
+            'dateOfBirth': self._date_of_birth,
+            'imdbPage': self.__imdb_page,
+            'moviesActedIn': [movie.toJSON() for movie in self.__movies_acted_in]
+
+        }
+        return json_dump
+
     @property
     def imdb_page(self):
         return self.__imdb_page

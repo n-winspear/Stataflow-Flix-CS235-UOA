@@ -49,6 +49,21 @@ class User(Person):
     def __repr__(self):
         return f"User <{self.__last_name}, {self.__first_name}>"
 
+    def toJSON(self):
+        json_dump = {
+            'uniqueID': f"{self._unique_ID}",
+            'firstName': self.__first_name,
+            'lastName': self.__last_name,
+            'gender': self._gender,
+            'emailAddress': self.__email_address,
+            'password': self.__password,
+            'phoneNumber': self.__phone_number,
+            'watchlist': [movie.toJSON() for movie in self.__watchlist],
+            'watchedMovies': [movie.toJSON() for movie in self.__watched_movies],
+            'reviews': [review.toJSON() for review in self.__reviews]
+        }
+        return json_dump
+
     # Properties
     @property
     def first_name(self):

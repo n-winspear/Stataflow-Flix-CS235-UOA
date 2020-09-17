@@ -16,6 +16,9 @@ class Genre:
     def __hash__(self):
         return hash(f"{self.__genre_name}")
 
+    def toJSON(self):
+        return self.__genre_name
+
     # Properties
     @property
     def genre_name(self):

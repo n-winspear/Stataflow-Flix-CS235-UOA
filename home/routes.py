@@ -8,4 +8,4 @@ bp = Blueprint('home_blueprint', __name__)
 @bp.route('/', methods=['GET'])
 def index():
     response = s.get_home_data()
-    return make_response(jsonify(response))
+    return make_response(jsonify(response)), 200

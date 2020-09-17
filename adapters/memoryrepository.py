@@ -30,7 +30,7 @@ class MemoryRepository(AbstractRepository):
             matches = []
             for stored_actor in self._dataset_of_actors:
                 if actor == stored_actor:
-                    matches.append(stored_actor)
+                    matches.append(stored_actor.toJSON())
             if len(matches) > 0:
                 return matches
             else:
@@ -76,7 +76,10 @@ class MemoryRepository(AbstractRepository):
 
     # GET ALL
     def get_all_actors(self):
-        return self._dataset_of_actors
+        json_actors = []
+        for actor in self._dataset_of_actors:
+            json_actors.append(actor.toJSON())
+        return json_actors
 
     # INSERT MULTIPLE
     def insert_multiple_actors(self, actors: list):
@@ -94,7 +97,7 @@ class MemoryRepository(AbstractRepository):
             matches = []
             for stored_director in self._dataset_of_directors:
                 if director == stored_director:
-                    matches.append(stored_director)
+                    matches.append(stored_director.toJSON())
             if len(matches) > 0:
                 return matches
             else:
@@ -140,7 +143,10 @@ class MemoryRepository(AbstractRepository):
 
     # GET ALL
     def get_all_directors(self):
-        return self._dataset_of_directors
+        json_directors = []
+        for director in self._dataset_of_directors:
+            json_directors.append(director.toJSON())
+        return json_directors
 
     # INSERT MULTIPLE
     def insert_multiple_directors(self, directors: list):
@@ -158,7 +164,7 @@ class MemoryRepository(AbstractRepository):
             matches = []
             for stored_genre in self._dataset_of_genres:
                 if genre == stored_genre:
-                    matches.append(stored_genre)
+                    matches.append(stored_genre.toJSON())
             if len(matches) > 0:
                 return matches
             else:
@@ -188,6 +194,9 @@ class MemoryRepository(AbstractRepository):
 
     # GET ALL
     def get_all_genres(self):
+        json_genres = []
+        for genre in self._dataset_of_genres:
+            json_genres.append(genre.toJSON())
         return self._dataset_of_genres
 
     # INSERT MULTIPLE
@@ -206,7 +215,7 @@ class MemoryRepository(AbstractRepository):
             matches = []
             for stored_movie in self._dataset_of_movies:
                 if movie == stored_movie:
-                    matches.append(stored_movie)
+                    matches.append(stored_movie.toJSON())
             if len(matches) > 0:
                 return matches
             else:
@@ -273,7 +282,10 @@ class MemoryRepository(AbstractRepository):
 
     # GET ALL
     def get_all_movies(self):
-        return self._dataset_of_movies
+        json_movies = []
+        for movie in self._dataset_of_movies:
+            json_movies.append(movie.toJSON())
+        return json_movies
 
     # INSERT MULTIPLE
     def insert_multiple_movies(self, movies: list):
@@ -291,7 +303,7 @@ class MemoryRepository(AbstractRepository):
             matches = []
             for stored_review in self._dataset_of_reviews:
                 if review == stored_review:
-                    matches.append(stored_review)
+                    matches.append(stored_review.toJSON())
             if len(matches) > 0:
                 return matches
             else:
@@ -329,7 +341,10 @@ class MemoryRepository(AbstractRepository):
 
     # GET ALL
     def get_all_reviews(self):
-        return self._dataset_of_reviews
+        json_reviews = []
+        for review in self._dataset_of_reviews:
+            json_reviews.append(review.toJSON())
+        return json_reviews
 
     # INSERT MULTIPLE
     def insert_multiple_reviews(self, reviews: list):

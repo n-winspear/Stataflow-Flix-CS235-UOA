@@ -2,14 +2,13 @@ from domain_models.movie import Movie
 
 
 class Review:
-    def __init__(self, movie: Movie, rating: int = None, review_text: str = None):
+    def __init__(self, movie: Movie, rating: float = None, review_text: str = None):
 
         # Movie
         self.__movie = movie if isinstance(movie, Movie) else None
 
         # Rating
-        self.__rating = rating if (
-            type(rating) == int and rating in range(1, 11)) else None
+        self.__rating = rating if 0 <= rating <= 10 else None
 
         # Review Text
         self.__review_text = review_text.strip() if type(review_text) == str else None
@@ -26,6 +25,14 @@ class Review:
     def __hash__(self):
         return self.hash(f"{self.__movie}{self.__review_text}")
 
+    def toJSON(self):
+        json_dump = {
+            'movieTitle': self.__movie.title,
+            'rating': self.__rating,
+            'reviewText': self.__review_text,
+        }
+        return json_dump
+
     @property
     def movie(self):
         return self.__movie
@@ -40,8 +47,7 @@ class Review:
 
     @rating.setter
     def rating(self, rating):
-        self.__rating = rating if (
-            type(rating) == int and rating in range(1, 11)) else None
+        self.__rating = rating if 0 <= rating <= 10 else None
 
     @property
     def review_text(self):

@@ -2,7 +2,7 @@ from uuid import uuid4
 from datetime import datetime
 
 
-class Person:
+class Person(object):
     def __init__(self, full_name: str = "", gender: int = 0,  date_of_birth: str = None):
 
         # Unique ID
@@ -33,6 +33,15 @@ class Person:
 
     def __hash__(self):
         return hash(self._unique_ID)
+
+    def toJSON(self):
+        json_dump = {
+            'uniqueID': f"{self._unique_ID}",
+            'fullName': self._full_name,
+            'gender': self._gender,
+            'dateOfBirth': self._date_of_birth,
+        }
+        return json_dump
 
     @property
     def unique_ID(self):
