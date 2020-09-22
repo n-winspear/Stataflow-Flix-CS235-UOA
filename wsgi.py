@@ -2,9 +2,12 @@
 from flask import Flask, jsonify, make_response
 from flask_restful import Resource, Api
 from data_processors.moviecsvparser import MovieCSVParser
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app)
+
 
 with app.app_context():
     from home import routes
@@ -18,3 +21,6 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
+
+
+app.config['CORS_HEADERS'] = 'Content-Type'
