@@ -7,10 +7,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 api = Api(app)
 cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 with app.app_context():
-    from home import routes
+    from ROUTE_movies import routes
     app.register_blueprint(routes.bp)
 
 
@@ -21,6 +22,3 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
-
-
-app.config['CORS_HEADERS'] = 'Content-Type'

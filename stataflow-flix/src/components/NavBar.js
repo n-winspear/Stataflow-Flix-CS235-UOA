@@ -11,7 +11,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  head: {
     flexGrow: 1,
   },
   appBar: {
@@ -74,7 +74,7 @@ export default function SearchAppBar() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.head}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton

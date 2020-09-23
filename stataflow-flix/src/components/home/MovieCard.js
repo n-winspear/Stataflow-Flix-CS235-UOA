@@ -12,6 +12,7 @@ import TempMovieImage from "components/home/images/TempMovieImage.jpg";
 const useStyles = makeStyles({
   root: {
     maxWidth: 336,
+    maxHeight: 400,
   },
   media: {
     height: 189,
