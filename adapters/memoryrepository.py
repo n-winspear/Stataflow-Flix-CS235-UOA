@@ -40,6 +40,8 @@ class MemoryRepository(AbstractRepository):
     def add_actor(self, actor: Actor):
         if isinstance(actor, Actor):
             self._dataset_of_actors.append(actor)
+            return True
+        return False
 
     # UPDATE
     def update_actor(self, actor: Actor, new_actor_details: Actor):
@@ -107,6 +109,8 @@ class MemoryRepository(AbstractRepository):
     def add_director(self, director: Director):
         if isinstance(director, Director):
             self._dataset_of_directors.append(director)
+            return True
+        return False
 
     # UPDATE
     def update_director(self, director: Director, new_director_details: Director):
@@ -174,6 +178,8 @@ class MemoryRepository(AbstractRepository):
     def add_genre(self, genre: Genre):
         if isinstance(genre, Genre):
             self._dataset_of_genres.append(genre)
+            return True
+        return False
 
     # UPDATE
     def update_genre(self, genre: Genre, new_genre_details: Genre):
@@ -225,6 +231,8 @@ class MemoryRepository(AbstractRepository):
     def add_movie(self, movie: Movie):
         if isinstance(movie, Movie):
             self._dataset_of_movies.append(movie)
+            return True
+        return False
 
     # UPDATE
     def update_movie(self, movie: Movie, new_movie_details: Movie):
@@ -313,6 +321,8 @@ class MemoryRepository(AbstractRepository):
     def add_review(self, review: Review):
         if isinstance(review, Review):
             self._dataset_of_reviews.append(review)
+            return True
+        return False
 
     # UPDATE
     def update_review(self, review: Review, new_review_details: Review):

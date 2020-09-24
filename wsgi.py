@@ -11,8 +11,10 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 with app.app_context():
-    from ROUTE_movies import routes
-    app.register_blueprint(routes.bp)
+    from ROUTE_movies import routes as movie_routes
+    from ROUTE_reviews import routes as review_routes
+    app.register_blueprint(movie_routes.bp)
+    app.register_blueprint(review_routes.bp)
 
 
 @app.errorhandler(404)

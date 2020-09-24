@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, make_response, jsonify, request
 from flask_cors import cross_origin
 from adapters.memoryrepository import MemoryRepository
 
@@ -11,7 +11,7 @@ api_URL = f"/api/v{api_version}/movies"
 
 @bp.route(f'{api_URL}/all', methods=['GET'])
 @cross_origin()
-def index():
+def get_all_movies():
     response = {
         "movies": repo.get_all_movies(),
     }
