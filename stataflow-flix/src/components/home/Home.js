@@ -51,26 +51,38 @@ export default function Home(props) {
     }
   });
 
+  function viewMovie(movieData) {
+    const URL = movieData.title.toLowerCase().replace(/\s/g, "-");
+
+    //THIS IS WHERE THE CODE GOES TO GET THE MOVIES DATA BASED ON ID
+
+    props.history.push(`/movie/${URL}`);
+  }
+
   return isLoading ? (
     <Box className={classes.loading}>
       <CircularProgress className={classes.circularProgress} />
     </Box>
   ) : (
     <Grid className={classes.grid} container spacing={3}>
-      {movies.map((movieData, index) => {
+      {movies.map((movieData) => {
         return (
           <Grid
             container
             item
             justify="center"
-            key={index}
+            key={movieData.id}
             xs={12}
             sm={6}
             md={4}
             lg={3}
             xl={2}
           >
-            <MovieCard movieData={movieData} apiURL={apiURL} />
+            <MovieCard
+              movieData={movieData}
+              apiURL={apiURL}
+              viewMovie={viewMovie}
+            />
           </Grid>
         );
       })}

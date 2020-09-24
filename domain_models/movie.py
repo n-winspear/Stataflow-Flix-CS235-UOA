@@ -2,10 +2,14 @@ from domain_models.actor import Actor
 from domain_models.director import Director
 from domain_models.genre import Genre
 from datetime import datetime
+from uuid import uuid4
 
 
 class Movie:
     def __init__(self, title: str, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: int = 0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
+
+        # Unique ID
+        self.__unique_ID = uuid4()
 
         # Title
         self.__title = title.strip() if type(title) == str else None
@@ -62,6 +66,7 @@ class Movie:
 
     def toJSON(self):
         json_dump = {
+            "id": self.__unique_ID,
             'title': self.__title,
             'releaseYear': self.__release_year,
             'genres': [genre.toJSON() for genre in self.__genres],
@@ -77,6 +82,10 @@ class Movie:
         return json_dump
 
     # Properties
+    @property
+    def unique_ID(self):
+        return self.__unique_ID
+
     @property
     def title(self):
         return self.__title

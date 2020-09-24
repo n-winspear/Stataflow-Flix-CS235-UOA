@@ -57,7 +57,7 @@ export default function MediaCard(props) {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea onClick={() => props.viewMovie(movieData)}>
         <CardMedia
           className={classes.media}
           title={movieData.title}
