@@ -66,7 +66,7 @@ export default function MediaCard(props) {
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {movieData.title.length > 26
-              ? `${movieData.title.slice(0, 23)}...`
+              ? `${movieData.title.slice(0, 21)}...`
               : movieData.title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
