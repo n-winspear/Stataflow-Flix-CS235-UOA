@@ -56,7 +56,12 @@ export default function Home(props) {
 
     //THIS IS WHERE THE CODE GOES TO GET THE MOVIES DATA BASED ON ID
 
-    props.history.push(`/movie/${URL}`);
+    props.history.push({
+      pathname: `/movie/${URL}`,
+      state: {
+        movieData: movieData,
+      },
+    });
   }
 
   return isLoading ? (
