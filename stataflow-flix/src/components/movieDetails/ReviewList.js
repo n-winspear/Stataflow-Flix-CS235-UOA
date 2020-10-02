@@ -9,7 +9,6 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PersonIcon from "@material-ui/icons/Person";
-import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   root: {
