@@ -26,12 +26,13 @@ def add_review():
     content = request.get_json()
     response = {
         "successful": False,
+        "userID": content['userID'],
         "movie": content['movie'],
         "rating": content['rating'],
         "reviewText": content['reviewText']
     }
     response['successful'] = True if repo.add_review(
-        Review(Movie(content['movie']), content['rating'], content['reviewText'])) else False,
+        Review(movie=Movie(content['movie']), rating=content['rating'], review_text=content['reviewText'], userID=content['userID'])) else False,
     if response['successful']:
         return make_response(jsonify(response)), 201
     else:

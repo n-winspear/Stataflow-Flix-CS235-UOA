@@ -15,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ActorList(props) {
-  const { actorsList } = props;
+export default function DirectorList(props) {
+  const { directorsList } = props;
   const classes = useStyles();
 
   return (
     <List className={classes.root}>
-      {actorsList.map((actor, index) => {
+      {directorsList.map((director, index) => {
         return (
           <ListItem key={index} style={{ paddingLeft: "2px" }}>
             <ListItemAvatar>
@@ -29,10 +29,7 @@ export default function ActorList(props) {
                 <PersonIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText
-              primary={actor.fullName}
-              secondary={actor.role ? actor.role : "Character Unknown"}
-            />
+            <ListItemText primary={director.fullName} />
           </ListItem>
         );
       })}

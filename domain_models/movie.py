@@ -6,7 +6,7 @@ from uuid import uuid4
 
 
 class Movie:
-    def __init__(self, title: str, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: int = 0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
+    def __init__(self, title: str, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: float = 0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
 
         # Unique ID
         self.__unique_ID = uuid4()
@@ -38,7 +38,7 @@ class Movie:
 
         # Average Rating
         self.__average_rating = average_rating if (
-            type(average_rating) == int and average_rating in range(1, 11)) else 0
+            type(average_rating) == float and average_rating in range(1, 11)) else 0
 
         # Vote Count
         self.__vote_count = vote_count if (
@@ -151,9 +151,9 @@ class Movie:
         return self.__average_rating
 
     @average_rating.setter
-    def average_rating(self, average_rating: int) -> int:
+    def average_rating(self, average_rating: float) -> float:
         self.__average_rating = average_rating if (
-            type(average_rating) == int and average_rating in range(1, 11)) else 0
+            type(average_rating) == float and average_rating in range(1, 11)) else 0
 
     @property
     def vote_count(self):

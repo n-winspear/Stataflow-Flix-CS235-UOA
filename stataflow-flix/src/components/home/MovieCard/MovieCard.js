@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MediaCard(props) {
+export default function MovieCard(props) {
   const classes = useStyles();
   const { movieData, apiURL } = props;
   const [ratingState, setRatingState] = useState(false);

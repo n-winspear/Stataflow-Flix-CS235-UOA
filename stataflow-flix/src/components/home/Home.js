@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 
 export default function Home(props) {
   const classes = useStyles();
-  const { apiURL } = props;
+  const { apiURL, userID } = props;
   const [isLoading, setLoading] = useState(true);
   const [movies, setMovies] = useState([]);
 
@@ -59,6 +59,7 @@ export default function Home(props) {
     props.history.push({
       pathname: `/movie/${URL}`,
       state: {
+        userID: userID,
         movieData: movieData,
       },
     });

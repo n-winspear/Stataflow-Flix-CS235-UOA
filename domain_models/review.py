@@ -2,7 +2,10 @@ from domain_models.movie import Movie
 
 
 class Review:
-    def __init__(self, movie: Movie, rating: float = None, review_text: str = None):
+    def __init__(self, movie: Movie, rating: float = None, review_text: str = None, userID: str = None):
+
+        # User ID
+        self._userID = userID.strip() if type(userID) == str else None
 
         # Movie
         self.__movie = movie if isinstance(movie, Movie) else None
@@ -27,11 +30,20 @@ class Review:
 
     def toJSON(self):
         json_dump = {
+            'userID': self._userID,
             'movieTitle': self.__movie.title,
             'rating': self.__rating,
             'reviewText': self.__review_text,
         }
         return json_dump
+
+    @property
+    def userID(self):
+        return self._userID
+
+    @userID.setter
+    def userID(self, userID):
+        self._userID = userID.strip() if type(userID) == str else None
 
     @property
     def movie(self):

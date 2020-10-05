@@ -9,6 +9,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   head: {
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
+    },
+    "&:hover": {
+      cursor: "pointer",
     },
   },
   search: {
@@ -70,8 +74,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <div className={classes.head}>
@@ -85,7 +90,12 @@ export default function SearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography
+            className={classes.title}
+            variant="h5"
+            noWrap
+            onClick={() => history.push("/")}
+          >
             Stataflow Flix
           </Typography>
           <div className={classes.search}>

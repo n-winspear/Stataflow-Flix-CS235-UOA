@@ -5,6 +5,7 @@ import PageRouter from "components/PageRouter";
 
 const apiVersion = 1;
 const apiURL = `http://127.0.0.1:5000/api/v${apiVersion}`;
+const userID = "1";
 
 function App() {
   return (
@@ -13,7 +14,9 @@ function App() {
       <Switch>
         <Route
           path="/"
-          render={(props) => <PageRouter {...props} apiURL={apiURL} />}
+          render={(props) => (
+            <PageRouter {...props} apiURL={apiURL} userID={userID} />
+          )}
         />
       </Switch>
     </Router>
