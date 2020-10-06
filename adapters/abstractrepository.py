@@ -4,6 +4,7 @@ from domain_models.director import Director
 from domain_models.genre import Genre
 from domain_models.movie import Movie
 from domain_models.review import Review
+from domain_models.rating import Rating
 
 
 class AbstractRepository(abc.ABC):
@@ -14,7 +15,7 @@ class AbstractRepository(abc.ABC):
 
     # GET
     @abc.abstractmethod
-    def get_actor(self, actor: Actor):
+    def get_actor(self, personID: str):
         raise NotImplementedError
 
     # INSERT
@@ -29,7 +30,7 @@ class AbstractRepository(abc.ABC):
 
     # DELETE
     @abc.abstractmethod
-    def delete_actor(self, actor: Actor):
+    def delete_actor(self, personID: str):
         raise NotImplementedError
 
     # GET ALL
@@ -48,7 +49,7 @@ class AbstractRepository(abc.ABC):
 
     # GET
     @abc.abstractmethod
-    def get_director(self, director: Director):
+    def get_director(self, personID: str):
         raise NotImplementedError
 
     # INSERT
@@ -63,7 +64,7 @@ class AbstractRepository(abc.ABC):
 
     # DELETE
     @abc.abstractmethod
-    def delete_director(self, director: Director):
+    def delete_director(self, personID: str):
         raise NotImplementedError
 
     # GET ALL
@@ -82,7 +83,7 @@ class AbstractRepository(abc.ABC):
 
     # GET
     @abc.abstractmethod
-    def get_genre(self, genre: Genre):
+    def get_genre(self, genreID: str):
         raise NotImplementedError
 
     # INSERT
@@ -97,7 +98,7 @@ class AbstractRepository(abc.ABC):
 
     # DELETE
     @abc.abstractmethod
-    def delete_genre(self, genre: Genre):
+    def delete_genre(self, genreID: str):
         raise NotImplementedError
 
     # GET ALL
@@ -116,7 +117,7 @@ class AbstractRepository(abc.ABC):
 
     # GET
     @abc.abstractmethod
-    def get_movie(self, movie: Movie):
+    def get_movie(self, movieID: str):
         raise NotImplementedError
 
     # INSERT
@@ -131,7 +132,7 @@ class AbstractRepository(abc.ABC):
 
     # DELETE
     @abc.abstractmethod
-    def delete_movie(self, movie: Movie):
+    def delete_movie(self, movieID: str):
         raise NotImplementedError
 
     # GET ALL
@@ -150,7 +151,7 @@ class AbstractRepository(abc.ABC):
 
     # GET
     @abc.abstractmethod
-    def get_review(self, review: Review):
+    def get_review(self, reviewID: str):
         raise NotImplementedError
 
     # INSERT
@@ -165,7 +166,7 @@ class AbstractRepository(abc.ABC):
 
     # DELETE
     @abc.abstractmethod
-    def delete_review(self, review: Review):
+    def delete_review(self, reviewID: str):
         raise NotImplementedError
 
     # GET ALL
@@ -176,6 +177,40 @@ class AbstractRepository(abc.ABC):
     # INSERT MULTIPLE
     @abc.abstractmethod
     def insert_multiple_reviews(self, reviews: list):
+        raise NotImplementedError
+
+    ###############################################
+    # Rating Methods
+    ###############################################
+
+    # GET
+    @abc.abstractmethod
+    def get_rating(self, ratingID: str):
+        raise NotImplementedError
+
+    # INSERT
+    @abc.abstractmethod
+    def add_rating(self, rating: Rating):
+        raise NotImplementedError
+
+    # UPDATE
+    @abc.abstractmethod
+    def update_rating(self, rating: Rating):
+        raise NotImplementedError
+
+    # DELETE
+    @abc.abstractmethod
+    def delete_rating(self, ratingID: str):
+        raise NotImplementedError
+
+    # GET ALL
+    @abc.abstractmethod
+    def get_all_ratings(self):
+        raise NotImplementedError
+
+    # INSERT MULTIPLE
+    @abc.abstractmethod
+    def insert_multiple_ratings(self, ratings: list):
         raise NotImplementedError
 
     ###############################################

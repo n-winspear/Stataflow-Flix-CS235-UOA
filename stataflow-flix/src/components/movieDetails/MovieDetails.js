@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"import {
+import React, { useState, useEffect } from "react";
+import {
   Grid,
   Box,
   Typography,
@@ -61,13 +62,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 function MovieDetails(props) {
-  const { location, userID, apiURL } = props;
-  const movieData = location.state.movieData;
+  const { location } = props;
+  const { apiURL, userID, movieData, userRating, postRating } = location.state;
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
-  const [rating, setRating] = useState(null);
   const moviePoster = MovieCoverPoster;
 
   useEffect(() => {
@@ -99,15 +99,8 @@ function MovieDetails(props) {
     console.log(res);
   }
 
-  function postRating(rating) {
-    setRating(rating);
-    setTimeout(() => {
-      postReview();
-    }, 5000);
-  }
-
-  function handleRemoveReview(id) {
-    setReviews(reviews.filter((review) => review.reviewID !== id));
+  function handleRemoveReview(reviewID) {
+    setReviews(reviews.filter((review) => review.reviewID !== reviewID));
   }
 
   return isLoading ? (
@@ -220,7 +213,11 @@ function MovieDetails(props) {
           <Typography gutterBottom variant="h4">
             Reviews
           </Typography>
-          <RatingStars postRating={postRating} />
+          <RatingStars
+            postRating={postRating}
+            userRating={userRating}
+            movieTitle={moiveData.title}
+          />
           <Box style={{ display: "flex", marginTop: "0.5em" }}>
             <TextField
               id="add-review"

@@ -3,10 +3,10 @@ from datetime import datetime
 
 
 class Person(object):
-    def __init__(self, full_name: str = "", gender: int = 0,  date_of_birth: str = None):
+    def __init__(self, full_name: str, personID: str = uuid4(), gender: int = 0,  date_of_birth: str = None):
 
         # Unique ID
-        self._unique_ID = uuid4()
+        self._personID = personID
 
         # Full Name
         self._full_name = full_name.strip() if type(full_name) == str else ""
@@ -29,14 +29,14 @@ class Person(object):
         return f"Person <{self.full_name}>"
 
     def __eq__(self, other):
-        return self._full_name == other.full_name
+        return self._personID == other.personID
 
     def __hash__(self):
-        return hash(self._unique_ID)
+        return hash(self._personID)
 
     def toJSON(self):
         json_dump = {
-            'uniqueID': f"{self._unique_ID}",
+            'personID': f"{self._personID}",
             'fullName': self._full_name,
             'gender': self._gender,
             'dateOfBirth': self._date_of_birth,
@@ -44,8 +44,8 @@ class Person(object):
         return json_dump
 
     @property
-    def unique_ID(self):
-        return self._unique_ID
+    def personID(self):
+        return self._personID
 
     @property
     def full_name(self):

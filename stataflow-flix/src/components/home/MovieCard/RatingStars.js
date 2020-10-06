@@ -37,11 +37,24 @@ const useStyles = makeStyles({
 export default function RatingStars(props) {
   const [value, setValue] = useState(0);
   const [hover, setHover] = useState(-1);
+  const { postRating, userRating, movieTitle } = props;
   const classes = useStyles();
 
   useEffect(() => {
-    if (value !== 0) {
-      props.postRating(value);
+    if (value === 0 && userRating) {
+      setValue(userRating.rating);
+    } else if (value !== 0 && userRating) {
+      postRating({
+        ratingID: userRating.ratingID,
+        rating: value,
+        movieTitle: movieTitle,
+      });
+    } else if (value !== 0 && !userRating) {
+      postRating({
+        ratingID: null,
+        rating: value,
+        movieTitle: movieTitle,
+      });
     }
   });
 

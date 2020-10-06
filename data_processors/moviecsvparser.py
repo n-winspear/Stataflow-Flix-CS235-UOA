@@ -4,6 +4,7 @@ from domain_models.genre import Genre
 from domain_models.director import Director
 from domain_models.actor import Actor
 from domain_models.review import Review
+from domain_models.rating import Rating
 
 
 class MovieCSVParser:
@@ -15,6 +16,7 @@ class MovieCSVParser:
         self.__dataset_of_genres = []
         self.__dataset_of_movies = []
         self.__dataset_of_reviews = []
+        self.__dataset_of_ratings = []
 
     def read_csv_file(self):
         with open(self.__file_name, mode='r', encoding='utf-8-sig') as csvfile:
@@ -33,7 +35,7 @@ class MovieCSVParser:
                     full_name=actor.strip()) for actor in (row['Actors'].split(','))]
                 release_year = int(row['Year'])
                 runtime_minutes = int(row['Runtime (Minutes)'])
-                average_rating = float(row['Rating'])
+                average_rating = row['Rating']
                 vote_count = int(row['Votes'])
                 revenue = float(row['Revenue (Millions)']
                                 ) if row['Revenue (Millions)'] != 'N/A' else 0.0
@@ -55,13 +57,6 @@ class MovieCSVParser:
                     metascore=metascore
                 )
                 self.__dataset_of_movies.append(movie)
-
-                # Creating Review
-                review = Review(
-                    movie=movie,
-                    rating=average_rating,
-                )
-                self.__dataset_of_reviews.append(review)
 
                 # Populating Genres
                 for genre in genres:
@@ -97,3 +92,7 @@ class MovieCSVParser:
     @property
     def dataset_of_actors(self):
         return self.__dataset_of_actors
+
+    @property
+    def dataset_of_ratings(self):
+        return self.__dataset_of_ratings

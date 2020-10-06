@@ -5,6 +5,7 @@ from domain_models.director import Director
 from domain_models.genre import Genre
 from domain_models.movie import Movie
 from domain_models.review import Review
+from domain_models.rating import Rating
 
 
 class MemoryRepository(AbstractRepository):
@@ -19,22 +20,17 @@ class MemoryRepository(AbstractRepository):
         self._dataset_of_directors = fp.dataset_of_directors
         self._dataset_of_genres = fp.dataset_of_genres
         self._dataset_of_reviews = fp.dataset_of_reviews
+        self._dataset_of_ratings = fp.dataset_of_ratings
 
     ###############################################
     # Actor Methods
     ###############################################
 
    # GET
-    def get_actor(self, actor: Actor):
-        if isinstance(actor, Actor):
-            matches = []
-            for stored_actor in self._dataset_of_actors:
-                if actor == stored_actor:
-                    matches.append(stored_actor.toJSON())
-            if len(matches) > 0:
-                return matches
-            else:
-                return None
+    def get_actor(self, personID: str):
+        for stored_actor in self._dataset_of_actors:
+            if stored_actor.personID == personID:
+                return stored_actor.toJSON()
 
     # INSERT
     def add_actor(self, actor: Actor):
@@ -44,37 +40,18 @@ class MemoryRepository(AbstractRepository):
         return False
 
     # UPDATE
-    def update_actor(self, actor: Actor, new_actor_details: Actor):
-        if (isinstance(actor, Actor) and isinstance(new_actor_details, Actor)):
-
-            actor_details = self.get_actor(actor)
-
-            # Full Name Check
-            if actor_details.full_name != new_actor_details.full_name:
-                actor_details.full_name = new_actor_details.full_name
-
-            # Gender Check
-            if actor_details.gender != new_actor_details.gender:
-                actor_details.gender = new_actor_details.gender
-
-            # Date Of Birth Check
-            if actor_details.date_of_birth != new_actor_details.date_of_birth:
-                actor_details.date_of_birth = new_actor_details.date_of_birth
-
-            # Movies Acted In Check
-            if actor_details.movies_acted_in != new_actor_details.movies_acted_in:
-                actor_details.movies_acted_in = new_actor_details.movies_acted_in
-
-            # IMDB Page Check
-            if actor_details.imdb_page != new_actor_details.imdb_page:
-                actor_details.imdb_page = new_actor_details.imdb_page
+    def update_actor(self, updated_actor: Actor):
+        if isinstance(updated_actor, Actor):
+            [updated_actor if actor.personID ==
+                updated_actor.personID else actor for actor in self._dataset_of_actors]
 
     # DELETE
-    def delete_actor(self, actor: Actor):
-        if isinstance(actor, Actor):
-            for stored_actor in self._dataset_of_actors:
-                if actor == stored_actor:
-                    self._dataset_of_actors.remove(stored_actor)
+    def delete_actor(self, personID: str):
+        for actor in self._dataset_of_actors:
+            if actor.personID == personID:
+                self._dataset_of_actors.remove(actor)
+                return True
+        return False
 
     # GET ALL
     def get_all_actors(self):
@@ -94,16 +71,10 @@ class MemoryRepository(AbstractRepository):
     ###############################################
 
     # GET
-    def get_director(self, director: Director):
-        if isinstance(director, Director):
-            matches = []
-            for stored_director in self._dataset_of_directors:
-                if director == stored_director:
-                    matches.append(stored_director.toJSON())
-            if len(matches) > 0:
-                return matches
-            else:
-                return None
+    def get_director(self, personID: str):
+        for stored_director in self._dataset_of_directors:
+            if stored_director.personID == personID:
+                return stored_director.toJSON()
 
     # INSERT
     def add_director(self, director: Director):
@@ -113,37 +84,18 @@ class MemoryRepository(AbstractRepository):
         return False
 
     # UPDATE
-    def update_director(self, director: Director, new_director_details: Director):
-        if (isinstance(director, Director) and isinstance(new_director_details, Director)):
-
-            director_details = self.get_director(director)
-
-            # Full Name Check
-            if director_details.full_name != new_director_details.full_name:
-                director_details.full_name = new_director_details.full_name
-
-            # Gender Check
-            if director_details.gender != new_director_details.gender:
-                director_details.gender = new_director_details.gender
-
-            # Date Of Birth Check
-            if director_details.date_of_birth != new_director_details.date_of_birth:
-                director_details.date_of_birth = new_director_details.date_of_birth
-
-            # Movies Acted In Check
-            if director_details.movies_directed != new_director_details.movies_directed:
-                director_details.movies_directed = new_director_details.movies_directed
-
-            # IMDB Page Check
-            if director_details.imdb_page != new_director_details.imdb_page:
-                director_details.imdb_page = new_director_details.imdb_page
+    def update_director(self, updated_director: Director):
+        if isinstance(updated_director, Director):
+            [updated_director if director.personID ==
+                updated_director.personID else director for director in self._dataset_of_directors]
 
     # DELETE
-    def delete_director(self, director: Director):
-        if isinstance(director, Director):
-            for stored_director in self._dataset_of_directors:
-                if director == stored_director:
-                    self._dataset_of_directors.remove(stored_director)
+    def delete_director(self, personID: str):
+        for director in self._dataset_of_directors:
+            if director.personID == personID:
+                self._dataset_of_directors.remove(director)
+                return True
+        return False
 
     # GET ALL
     def get_all_directors(self):
@@ -163,16 +115,10 @@ class MemoryRepository(AbstractRepository):
     ###############################################
 
     # GET
-    def get_genre(self, genre: Genre):
-        if isinstance(genre, Genre):
-            matches = []
-            for stored_genre in self._dataset_of_genres:
-                if genre == stored_genre:
-                    matches.append(stored_genre.toJSON())
-            if len(matches) > 0:
-                return matches
-            else:
-                return None
+    def get_genre(self, genreID: str):
+        for stored_genre in self._dataset_of_genres:
+            if stored_genre.genreID == genreID:
+                return stored_genre.toJSON()
 
     # INSERT
     def add_genre(self, genre: Genre):
@@ -182,21 +128,18 @@ class MemoryRepository(AbstractRepository):
         return False
 
     # UPDATE
-    def update_genre(self, genre: Genre, new_genre_details: Genre):
-        if (isinstance(genre, Genre) and isinstance(new_genre_details, Genre)):
-
-            genre_details = self.get_genre(genre)
-
-            # Genre Name Check
-            if genre_details.genre_name != new_genre_details.genre_name:
-                genre_details.genre_name = new_genre_details.genre_name
+    def update_genre(self, updated_genre: Genre):
+        if isinstance(updated_genre, Genre):
+            [updated_genre if genre.movieID ==
+                updated_genre.genreID else genre for genre in self._dataset_of_genres]
 
     # DELETE
-    def delete_genre(self, genre: Genre):
-        if isinstance(genre, Genre):
-            for stored_genre in self._dataset_of_genres:
-                if genre == stored_genre:
-                    self._dataset_of_genres.remove(stored_genre)
+    def delete_genre(self, genreID: str):
+        for genre in self._dataset_of_genres:
+            if genre.genreID == genreID:
+                self._dataset_of_genres.remove(genre)
+                return True
+        return False
 
     # GET ALL
     def get_all_genres(self):
@@ -216,16 +159,10 @@ class MemoryRepository(AbstractRepository):
     ###############################################
 
     # GET
-    def get_movie(self, movie: Movie):
-        if isinstance(movie, Movie):
-            matches = []
-            for stored_movie in self._dataset_of_movies:
-                if movie == stored_movie:
-                    matches.append(stored_movie.toJSON())
-            if len(matches) > 0:
-                return matches
-            else:
-                return None
+    def get_movie(self, movieID: str):
+        for stored_movie in self._dataset_of_movies:
+            if stored_movie.movieID == movieID:
+                return stored_movie.toJSON()
 
     # INSERT
     def add_movie(self, movie: Movie):
@@ -235,58 +172,18 @@ class MemoryRepository(AbstractRepository):
         return False
 
     # UPDATE
-    def update_movie(self, movie: Movie, new_movie_details: Movie):
-        if (isinstance(movie, Movie) and isinstance(new_movie_details, Movie)):
-
-            movie_details = self.get_movie(movie)
-
-            # Movie Title Check
-            if movie_details.title != new_movie_details.title:
-                movie_details.title = new_movie_details.title
-
-            # Movie Genre Check
-            if movie_details.genre != new_movie_details.genre:
-                movie_details.genre = new_movie_details.genre
-
-            # Movie Description Check
-            if movie_details.description != new_movie_details.description:
-                movie_details.description = new_movie_details.description
-
-            # Movie Directors Check
-            if movie_details.directors != new_movie_details.directors:
-                movie_details.directors = new_movie_details.directors
-
-            # Movie Actors Check
-            if movie_details.actors != new_movie_details.actors:
-                movie_details.actors = new_movie_details.actors
-
-            # Movie Runtime (Minutes) Check
-            if movie_details.runtime_minutes != new_movie_details.runtime_minutes:
-                movie_details.runtime_minutes = new_movie_details.runtime_minutes
-
-            # Movie Average Rating Check
-            if movie_details.average_rating != new_movie_details.average_rating:
-                movie_details.average_rating = new_movie_details.average_rating
-
-            # Movie Vote Count Check
-            if movie_details.vote_count != new_movie_details.vote_count:
-                movie_details.vote_count = new_movie_details.vote_count
-
-            # Movie Revenue Check
-            if movie_details.revenue != new_movie_details.revenue:
-                movie_details.revenue = new_movie_details.revenue
-
-            # Movie Metascore Check
-            if movie_details.metascore != new_movie_details.metascore:
-                movie_details.metascore = new_movie_details.metascore
+    def update_movie(self, updated_movie: Movie):
+        if isinstance(updated_movie, Movie):
+            [updated_movie if movie.movieID ==
+                updated_movie.movieID else movie for movie in self._dataset_of_movies]
 
     # DELETE
-
-    def delete_movie(self, movie: Movie):
-        if isinstance(movie, Movie):
-            for stored_movie in self._dataset_of_movies:
-                if movie == stored_movie:
-                    self._dataset_of_movies.remove(stored_movie)
+    def delete_movie(self, movieID: str):
+        for movie in self._dataset_of_movies:
+            if movie.movieID == movieID:
+                self._dataset_of_movies.remove(movie)
+                return True
+        return False
 
     # GET ALL
     def get_all_movies(self):
@@ -306,16 +203,10 @@ class MemoryRepository(AbstractRepository):
     ###############################################
 
     # GET
-    def get_review(self, review: Review):
-        if isinstance(review, Review):
-            matches = []
-            for stored_review in self._dataset_of_reviews:
-                if review == stored_review:
-                    matches.append(stored_review.toJSON())
-            if len(matches) > 0:
-                return matches
-            else:
-                return None
+    def get_review(self, reviewID: str):
+        for stored_review in self._dataset_of_reviews:
+            if stored_review.reviewID == reviewID:
+                return stored_review.toJSON()
 
     # INSERT
     def add_review(self, review: Review):
@@ -325,29 +216,18 @@ class MemoryRepository(AbstractRepository):
         return False
 
     # UPDATE
-    def update_review(self, review: Review, new_review_details: Review):
-        if (isinstance(review, Review) and isinstance(new_review_details, Review)):
-
-            review_details = self.get_review(review)
-
-            # Review Name Check
-            if review_details.movie != new_review_details.movie:
-                review_details.movie = new_review_details.movie
-
-            # Review Name Check
-            if review_details.rating != new_review_details.rating:
-                review_details.rating = new_review_details.rating
-
-            # Review Name Check
-            if review_details.review_text != new_review_details.review_text:
-                review_details.review_text = new_review_details.review_text
+    def update_review(self, updated_review: Review):
+        if isinstance(updated_review, Review):
+            [updated_review if updated_review.reviewID ==
+                review.reviewID else review for review in self._dataset_of_review]
 
     # DELETE
-    def delete_review(self, review: Review):
-        if isinstance(review, Review):
-            for stored_review in self._dataset_of_reviews:
-                if review == stored_review:
-                    self._dataset_of_reviews.remove(stored_review)
+    def delete_review(self, reviewID: str):
+        for review in self._dataset_of_reviews:
+            if review.reviewID == reviewID:
+                self._dataset_of_reviews.remove(review)
+                return True
+        return False
 
     # GET ALL
     def get_all_reviews(self):
@@ -361,6 +241,50 @@ class MemoryRepository(AbstractRepository):
         for review in reviews:
             if isinstance(review, Review) and review not in self._dataset_of_reviews:
                 self._dataset_of_reviews.append(review)
+
+    ###############################################
+    # Rating Methods
+    ###############################################
+
+    # GET
+    def get_rating(self, ratingID: str):
+        for stored_rating in self._dataset_of_ratings:
+            if stored_rating.ratingID == ratingID:
+                return stored_rating.toJSON()
+
+    # INSERT
+    def add_rating(self, rating: Rating):
+        if isinstance(rating, Rating):
+            self._dataset_of_ratings.append(rating)
+            return True
+        return False
+
+    # UPDATE
+    def update_rating(self, updated_rating: Rating):
+        if isinstance(updated_rating, Rating):
+            [updated_rating if updated_rating.ratingID ==
+                rating.ratingID else rating for rating in self._dataset_of_rating]
+
+    # DELETE
+    def delete_rating(self, ratingID: str):
+        for rating in self._dataset_of_ratings:
+            if rating.ratingID == ratingID:
+                self._dataset_of_ratings.remove(rating)
+                return True
+        return False
+
+    # GET ALL
+    def get_all_ratings(self):
+        json_ratings = []
+        for rating in self._dataset_of_ratings:
+            json_ratings.append(rating.toJSON())
+        return json_ratings
+
+    # INSERT MULTIPLE
+    def insert_multiple_ratings(self, ratings: list):
+        for rating in ratings:
+            if isinstance(rating, Rating) and rating not in self._dataset_of_ratings:
+                self._dataset_of_ratings.append(rating)
 
     ###############################################
     # User Methods

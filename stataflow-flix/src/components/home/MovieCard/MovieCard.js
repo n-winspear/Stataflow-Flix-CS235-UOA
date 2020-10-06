@@ -11,7 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import TempMovieImage from "components/home/images/TempMovieImage.jpg";
 import TextTruncate from "react-text-truncate";
 import RatingStars from "components/home/MovieCard/RatingStars";
-import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -28,36 +27,12 @@ const useStyles = makeStyles({
 
 export default function MovieCard(props) {
   const classes = useStyles();
-  const { movieData, apiURL } = props;
+  const { movieData, apiURL, viewMovie, postRating, userRating } = props;
   const [ratingState, setRatingState] = useState(false);
-
-  function changeRatingState() {
-    setRatingState(!ratingState);
-  }
-
-  async function postRating(rating) {
-    let config = {
-      method: "post",
-      url: `${apiURL}/reviews`,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      data: {
-        movie: movieData.title,
-        rating: rating,
-        reviewText: "",
-      },
-    };
-    let res = await axios(config);
-    console.log(res);
-    changeRatingState();
-  }
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={() => props.viewMovie(movieData)}>
+      <CardActionArea onClick={() => viewMovie(movieData, userRating)}>
         <CardMedia
           className={classes.media}
           title={movieData.title}
@@ -82,10 +57,18 @@ export default function MovieCard(props) {
       <CardActions>
         {ratingState ? (
           <Box className={classes.ratingBox}>
-            <RatingStars postRating={postRating} />
+            <RatingStars
+              postRating={postRating}
+              userRating={userRating}
+              movieTitle={movieTitle}
+            />
           </Box>
         ) : (
-          <Button size="small" color="primary" onClick={changeRatingState}>
+          <Button
+            size="small"
+            color="primary"
+            onClick={setRatingState(!ratingState)}
+          >
             Rate
           </Button>
         )}
