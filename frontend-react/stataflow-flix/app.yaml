@@ -1,6 +1,5 @@
 env: standard
 runtime: nodejs12
-service: stataflow-flix
 handlers:
   - url: /static
     static_dir: build/static
