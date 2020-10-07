@@ -21,9 +21,9 @@ export default function DirectorList(props) {
 
   return (
     <List className={classes.root}>
-      {directorsList.map((director, index) => {
+      {directorsList.map((director) => {
         return (
-          <ListItem key={index} style={{ paddingLeft: "2px" }}>
+          <ListItem key={director.personID} style={{ paddingLeft: "2px" }}>
             <ListItemAvatar>
               <Avatar>
                 <PersonIcon />

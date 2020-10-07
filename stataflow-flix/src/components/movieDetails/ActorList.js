@@ -21,9 +21,9 @@ export default function ActorList(props) {
 
   return (
     <List className={classes.root}>
-      {actorsList.map((actor, index) => {
+      {actorsList.map((actor) => {
         return (
-          <ListItem key={index} style={{ paddingLeft: "2px" }}>
+          <ListItem key={actor.personID} style={{ paddingLeft: "2px" }}>
             <ListItemAvatar>
               <Avatar>
                 <PersonIcon />

@@ -1,9 +1,10 @@
-from flask import make_response, jsonify, session
+from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
+from adapters.memoryrepository import MemoryRepository
 from domain_models.actor import Actor
 
 # DB Connection
-db = session['MEMORY_REPO']
+db = MemoryRepository()
 
 # Request Parser
 parser = reqparse.RequestParser()

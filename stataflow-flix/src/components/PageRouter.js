@@ -8,7 +8,7 @@ export default function PageRouter({ apiURL }) {
     <>
       <Route
         exact
-        path="/movie/:movieID"
+        path="/movies/:movieID"
         render={(props) => <MovieDetails {...props} apiURL={apiURL} />}
       />
       <Route

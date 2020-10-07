@@ -3,10 +3,10 @@ from uuid import uuid4
 
 
 class Rating:
-    def __init__(self, movie: Movie, ratingID: str = uuid4(),  rating: float = 0.0, userID: str = None):
+    def __init__(self, movie: Movie, ratingID: str = None,  rating: float = 0.0, userID: str = None):
 
         # Rating ID
-        self.__ratingID = ratingID
+        self.__ratingID = ratingID if ratingID else uuid4()
 
         # Movie
         self.__movie = movie if isinstance(movie, Movie) else None

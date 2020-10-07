@@ -3,10 +3,10 @@ from datetime import datetime
 
 
 class Person(object):
-    def __init__(self, full_name: str, personID: str = uuid4(), gender: int = 0,  date_of_birth: str = None):
+    def __init__(self, full_name: str, personID: str = None, gender: int = 0,  date_of_birth: str = None):
 
         # Unique ID
-        self._personID = personID
+        self._personID = personID if personID else uuid4()
 
         # Full Name
         self._full_name = full_name.strip() if type(full_name) == str else ""

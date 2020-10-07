@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
+import axios from "axios";
 
 const labels = {
   0.5: "Boring",
@@ -37,26 +38,62 @@ const useStyles = makeStyles({
 export default function RatingStars(props) {
   const [value, setValue] = useState(0);
   const [hover, setHover] = useState(-1);
-  const { postRating, userRating, movieTitle } = props;
+  const [rating, setRating] = useState(null);
+  const { movieTitle, apiURL, userID } = props;
   const classes = useStyles();
 
   useEffect(() => {
-    if (value === 0 && userRating) {
-      setValue(userRating.rating);
-    } else if (value !== 0 && userRating) {
-      postRating({
-        ratingID: userRating.ratingID,
-        rating: value,
-        movieTitle: movieTitle,
-      });
-    } else if (value !== 0 && !userRating) {
-      postRating({
-        ratingID: null,
-        rating: value,
-        movieTitle: movieTitle,
+    async function getRating() {
+      let config = {
+        method: "get",
+        url: `${apiURL}/ratings`,
+      };
+      let res = await axios(config);
+      let ratings = res.data.ratings;
+      await ratings.forEach((rating) => {
+        if (rating.userID === userID && rating.movieTitle === movieTitle) {
+          setRating(rating);
+        }
       });
     }
-  });
+    getRating();
+  }, [value, movieTitle, apiURL, userID]);
+
+  async function postRating(ratingValue) {
+    if (rating) {
+      let config = {
+        method: "put",
+        url: `${apiURL}/ratings/${rating.ratingID}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          userID: rating.userID,
+          movieTitle: movieTitle,
+          rating: ratingValue,
+        },
+      };
+      let res = await axios(config);
+      console.log(res);
+      setValue(ratingValue);
+    } else {
+      let config = {
+        method: "post",
+        url: `${apiURL}/ratings`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          userID: userID,
+          movieTitle: movieTitle,
+          rating: rating,
+        },
+      };
+      let res = await axios(config);
+      console.log(res);
+      setValue(ratingValue);
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -66,7 +103,7 @@ export default function RatingStars(props) {
         value={value}
         precision={0.5}
         onChange={async (event, newValue) => {
-          await setValue(newValue);
+          await postRating(newValue);
         }}
         onChangeActive={(event, newHover) => {
           setHover(newHover);

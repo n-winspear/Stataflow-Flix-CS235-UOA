@@ -3,10 +3,10 @@ from uuid import uuid4
 
 
 class Review:
-    def __init__(self, movie: Movie, reviewID: str = uuid4(), review_text: str = None, userID: str = None):
+    def __init__(self, movie: Movie, reviewID: str = None, review_text: str = None, userID: str = None):
 
         # Review ID
-        self.__reviewID = reviewID
+        self.__reviewID = reviewID if reviewID else uuid4()
 
         # User ID
         self.__userID = userID.strip() if type(userID) == str else None

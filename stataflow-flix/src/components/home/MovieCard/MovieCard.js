@@ -27,22 +27,22 @@ const useStyles = makeStyles({
 
 export default function MovieCard(props) {
   const classes = useStyles();
-  const { movieData, apiURL, viewMovie, postRating, userRating } = props;
+  const { movieData, apiURL, viewMovie, userID } = props;
   const [ratingState, setRatingState] = useState(false);
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={() => viewMovie(movieData, userRating)}>
+      <CardActionArea onClick={() => viewMovie(movieData)}>
         <CardMedia
           className={classes.media}
-          title={movieData.title}
+          title={movieData.movieTitle}
           image={TempMovieImage}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {movieData.title.length > 26
-              ? `${movieData.title.slice(0, 21)}...`
-              : movieData.title}
+            {movieData.movieTitle.length > 26
+              ? `${movieData.movieTitle.slice(0, 21)}...`
+              : movieData.movieTitle}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             <TextTruncate
@@ -58,16 +58,16 @@ export default function MovieCard(props) {
         {ratingState ? (
           <Box className={classes.ratingBox}>
             <RatingStars
-              postRating={postRating}
-              userRating={userRating}
-              movieTitle={movieTitle}
+              movieTitle={movieData.title}
+              apiURL={apiURL}
+              userID={userID}
             />
           </Box>
         ) : (
           <Button
             size="small"
             color="primary"
-            onClick={setRatingState(!ratingState)}
+            onClick={() => setRatingState(!ratingState)}
           >
             Rate
           </Button>

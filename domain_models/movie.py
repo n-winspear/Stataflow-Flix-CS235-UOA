@@ -6,10 +6,10 @@ from uuid import uuid4
 
 
 class Movie:
-    def __init__(self, title: str, movieID: str = uuid4(), release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: float = 0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
+    def __init__(self, title: str, movieID: str = None, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: float = 0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
 
         # Unique ID
-        self.__movieID = movieID
+        self.__movieID = movieID if movieID else uuid4()
 
         # Title
         self.__title = title.strip() if type(title) == str else None

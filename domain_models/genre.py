@@ -2,10 +2,10 @@ from uuid import uuid4
 
 
 class Genre:
-    def __init__(self, genre_name: str, genreID: str = uuid4()):
+    def __init__(self, genre_name: str, genreID: str = None):
 
         # Genre ID
-        self.__genreID = genreID
+        self.__genreID = genreID if genreID else uuid4()
 
         # Genre Name
         self.__genre_name = genre_name.strip() if type(genre_name) == str else None

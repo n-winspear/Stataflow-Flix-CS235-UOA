@@ -18,8 +18,8 @@ import DirectorList from "components/movieDetails/DirectorList";
 import ReviewList from "components/movieDetails/ReviewList";
 import PropTypes from "prop-types";
 import StarsIcon from "@material-ui/icons/Stars";
-import axios from "axios";
 import RatingStars from "components/home/MovieCard/RatingStars";
+import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   circularProgress: {
@@ -63,44 +63,67 @@ const useStyles = makeStyles(() => ({
 
 function MovieDetails(props) {
   const { location } = props;
-  const { apiURL, userID, movieData, userRating, postRating } = location.state;
+  const { apiURL, userID, movieData } = location.state;
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
-  const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
+  const [reviews, setReviews] = useState({
+    updated: false,
+    reviewList: [],
+  });
   const moviePoster = MovieCoverPoster;
 
   useEffect(() => {
-    setTimeout(() => {
+    async function getReviews() {
+      let config = {
+        method: "get",
+        url: `${apiURL}/reviews`,
+      };
+      let res = await axios(config);
+      let reviews = res.data.reviews;
+      let currentMovieReviews = reviews.map(
+        (review) => review.movieTitle === movieData.movieTitle
+      );
+      setReviews({
+        updated: true,
+        reviewList: currentMovieReviews,
+      });
       setLoading(false);
-    }, 500);
+    }
+    if (!reviews.updated) {
+      getReviews();
+    }
   });
 
   async function postReview() {
-    let reviewData = {
-      userID: userID,
-      movie: movieData.title,
-      rating: rating !== 0 ? rating : null,
-      reviewText: reviewText,
-    };
     let config = {
       method: "post",
       url: `${apiURL}/reviews`,
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
       },
-      data: reviewData,
+      data: {
+        userID: userID,
+        movie: movieData.title,
+        reviewText: reviewText,
+      },
     };
-    if (reviewText !== "") setReviews([...reviews, reviewData]);
-    setReviewText("");
     let res = await axios(config);
     console.log(res);
+    setReviewText("");
   }
 
-  function handleRemoveReview(reviewID) {
-    setReviews(reviews.filter((review) => review.reviewID !== reviewID));
+  async function deleteReview(reviewID) {
+    let config = {
+      method: "delete",
+      url: `${apiURL}/reviews/${reviewID}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    let res = await axios(config);
+    console.log(res);
+    setReviewText("");
   }
 
   return isLoading ? (
@@ -168,13 +191,13 @@ function MovieDetails(props) {
         </Hidden>
         <Grid item xs={12} sm={12} md={8} lg={9}>
           <Typography gutterBottom variant="h3">
-            {movieData.title}
+            {movieData.movieTitle}
           </Typography>
           <Typography gutterBottom variant="h5">
             {movieData.genres.map((genre, index) => {
               return index === movieData.genres.length - 1
-                ? genre
-                : `${genre} / `;
+                ? genre.genreName
+                : `${genre.genreName} / `;
             })}
           </Typography>
           <Box style={{ display: "flex" }}>
@@ -214,9 +237,9 @@ function MovieDetails(props) {
             Reviews
           </Typography>
           <RatingStars
-            postRating={postRating}
-            userRating={userRating}
-            movieTitle={moiveData.title}
+            movieTitle={movieData.title}
+            apiURL={apiURL}
+            userID={userID}
           />
           <Box style={{ display: "flex", marginTop: "0.5em" }}>
             <TextField
@@ -245,7 +268,7 @@ function MovieDetails(props) {
           </Box>
           <ReviewList
             reviewsList={reviews}
-            handleRemoveReview={handleRemoveReview}
+            handleRemoveReview={deleteReview}
             userID={userID}
           />
         </Grid>

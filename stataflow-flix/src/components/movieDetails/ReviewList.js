@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ReviewList(props) {
-  const { reviewsList, handleRemoveReview, userID } = props;
+  const { reviewsList, deleteReview, userID } = props;
   const classes = useStyles();
 
   return reviewsList.length > 0 ? (
@@ -49,7 +49,7 @@ export default function ReviewList(props) {
                     edge="end"
                     aria-label="delete"
                     onClick={() => {
-                      handleRemoveReview(review.reviewID);
+                      deleteReview(review.reviewID);
                     }}
                   >
                     <DeleteIcon />
