@@ -12,7 +12,7 @@ from uuid import uuid4
 
 # API URL
 API_VERSION = 1
-API_BASE_URL = f"/api/v{API_VERSION}"
+API_BASE_URL = f"/v{API_VERSION}"
 
 # Globals
 app = Flask(__name__)
@@ -22,7 +22,7 @@ api = Api(app)
 
 # CORS
 cors = CORS(app, resources={
-            r"/api/*": {"origins": "*"}})
+            r"/v1/*": {"origins": "*"}})
 
 
 # Error Handler

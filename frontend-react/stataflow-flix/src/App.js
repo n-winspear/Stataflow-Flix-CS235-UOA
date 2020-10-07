@@ -4,7 +4,7 @@ import NavBar from "components/NavBar";
 import PageRouter from "components/PageRouter";
 
 const apiVersion = 1;
-const apiURL = `http://127.0.0.1:5000/api/v${apiVersion}`;
+const apiURL = `api.stataflow.com/v${apiVersion}`;
 const userID = "1";
 
 function App() {
