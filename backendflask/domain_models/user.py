@@ -7,7 +7,7 @@ import datetime as datetime
 
 class User(Person):
 
-    def __init__(self, first_name: str = "", last_name: str = "", email_address: str = None, password: str = None, phone_number: str = None, gender: int = None, date_of_birth: str = None, watchlist: list = [], watched_movies: list = [], reviews: list = []):
+    def __init__(self, first_name: str, last_name: str, personID: str = None, email_address: str = None, password: str = None, phone_number: str = None, gender: int = None, date_of_birth: str = None, watchlist: list = [], watched_movies: list = [], reviews: list = []):
 
         # First Name
         self.__first_name = first_name.strip() if type(first_name) == str else ""
@@ -17,7 +17,7 @@ class User(Person):
 
         # Parent Class Call
         super(User, self).__init__(
-            f"{self.__first_name} {self.__last_name}", gender, date_of_birth)
+            f"{self.__first_name} {self.__last_name}", personID, gender, date_of_birth)
 
         # Email Address
         self.__email_address = email_address.strip() if self.__valid_email_address(
@@ -44,14 +44,14 @@ class User(Person):
             reviews) else self.__cleaned_reviews()
 
     def __str__(self):
-        return f"First Name: {self.__first_name}\nLast Name: {self.__last_name}"
+        return f"{self.__first_name} {self.__last_name}"
 
     def __repr__(self):
         return f"User <{self.__last_name}, {self.__first_name}>"
 
     def toJSON(self):
         json_dump = {
-            'uniqueID': f"{self._unique_ID}",
+            'personID': f"{self._personID}",
             'firstName': self.__first_name,
             'lastName': self.__last_name,
             'gender': self._gender,
@@ -66,13 +66,17 @@ class User(Person):
 
     # Properties
     @property
+    def personID(self):
+        return self._personID
+
+    @property
     def first_name(self):
         return self.__first_name
 
     @first_name.setter
     def first_name(self, first_name: str = None) -> str:
         self.__first_name = first_name.strip().lower(
-        ).capitalize() if type(first_name) == str else None
+        ).capitalize() if type(first_name) == str else ""
 
     @property
     def last_name(self):
@@ -81,30 +85,7 @@ class User(Person):
     @last_name.setter
     def last_name(self, last_name: str = None) -> str:
         self.__last_name = last_name.strip().lower(
-        ).capitalize() if type(last_name) == str else None
-
-    @property
-    def gender(self):
-        return self.__gender
-
-    @gender.setter
-    def gender(self, gender: int = None) -> int:
-        # Gender --> 1: Male, 2: Female, 3: Homosexual, 4: Bi-Sexual, 5: Other
-        self.__gender = gender if (isinstance(
-            gender, int) and gender in (1, 2, 3, 4, 5)) else 1
-
-    @property
-    def date_of_birth(self):
-        return self.__date_of_birth
-
-    @date_of_birth.setter
-    def date_of_birth(self, date_of_birth: datetime = None) -> datetime:
-        try:
-            self.__date_of_birth = datetime(date_of_birth) if self.__valid_date_of_birth(
-                datetime(date_of_birth)) else None
-        except Exception as e:
-            print(f"Date of birth error: {e}")
-            self.__date_of_birth = datetime(1970, 1, 1)
+        ).capitalize() if type(last_name) == str else ""
 
     @property
     def email_address(self):
@@ -201,6 +182,7 @@ class User(Person):
 
     # Watchlist Check
     def __valid_watchlist(self, watchlist: list) -> list:
+        from backendflask.domain_models.movie import Movie
         for movie in watchlist:
             if isinstance(movie, Movie):
                 return False
@@ -208,6 +190,7 @@ class User(Person):
 
     # Watchlist Cleaner
     def __cleaned_watchlist(self, watchlist: list) -> list:
+        from backendflask.domain_models.movie import Movie
 
         cleaned_list = []
 
@@ -219,7 +202,7 @@ class User(Person):
 
     # Watched Movies Check
     def __valid_watched_movies(self, watched_movies: list) -> list:
-        from domain_models.movie import Movie
+        from backendflask.domain_models.movie import Movie
 
         for movie in watched_movies:
             if isinstance(movie, Movie):
@@ -228,7 +211,7 @@ class User(Person):
 
     # Watched Movies Cleaner
     def __cleaned_watched_movies(self, watched_movies: list) -> list:
-        from domain_models.movie import Movie
+        from backendflask.domain_models.movie import Movie
 
         cleaned_list = []
 
@@ -240,7 +223,7 @@ class User(Person):
 
     # Reviews Check
     def __valid_reviews(self, reviews: list) -> list:
-        from domain_models.review import Review
+        from backendflask.domain_models.review import Review
 
         for review in reviews:
             if isinstance(review, Review):
@@ -249,7 +232,7 @@ class User(Person):
 
     # Reviews Cleaner
     def __cleaned_reviews(self, reviews: list) -> list:
-        from domain_models.review import Review
+        from backendflask.domain_models.review import Review
 
         cleaned_list = []
 
