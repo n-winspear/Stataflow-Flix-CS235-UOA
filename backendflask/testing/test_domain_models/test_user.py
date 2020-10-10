@@ -1,6 +1,7 @@
 from backendflask.domain_models.user import User
 from backendflask.domain_models.movie import Movie
 from backendflask.domain_models.review import Review
+from backendflask.domain_models.director import Director
 import pytest
 
 
@@ -34,7 +35,7 @@ def filled_user():
 
 def test_empty_user_initalisation(empty_user):
     assert empty_user.first_name == 'Lucifer'
-    assert empty_user.last_name == 'Morningstart'
+    assert empty_user.last_name == 'Morningstar'
     assert empty_user.personID.version == 4
     assert empty_user.email_address == None
     assert empty_user.password == None
@@ -54,7 +55,7 @@ def test_filled_user_initialisation(filled_user):
     assert filled_user.password == 'nU34N!39Yk#z$wBTDe$k'
     assert filled_user.phone_number == '+6421856498'
     assert filled_user.gender == 1
-    assert filled_user.date_of_birth == '15/07/1999'
+    assert filled_user.date_of_birth == '1999-07-15'
     assert filled_user.watchlist == [Movie('Mr Robot'), Movie('American Sniper'),
                                      Movie('Harry Potter and the Half Blood Prince')]
     assert filled_user.watched_movies == [Movie('Hot Fuzz'), Movie('Inception'), Movie(
@@ -84,7 +85,7 @@ def test_setters(empty_user):
     empty_user.last_name = 'Dunphy'
     empty_user.email_address = 'h.dunphy@modernfamily.com'
     empty_user.password = '39enSma4Xb!lPu7eKwmm'
-    empty_user.phone_number = '+6427648653'
+    empty_user.phone_number = '+6421636362'
     empty_user.gender = 2
     empty_user.date_of_birth = '16/01/1962'
     empty_user.watchlist = [Movie('Iron Man'), Movie('Mission Impossible'),
@@ -99,9 +100,9 @@ def test_setters(empty_user):
     assert empty_user.last_name == 'Dunphy'
     assert empty_user.email_address == 'h.dunphy@modernfamily.com'
     assert empty_user.password == '39enSma4Xb!lPu7eKwmm'
-    assert empty_user.phone_number == '+6427648653'
+    assert empty_user.phone_number == '+6421636362'
     assert empty_user.gender == 2
-    assert empty_user.date_of_birth == '16/01/1962'
+    assert empty_user.date_of_birth == '1962-01-16'
     assert empty_user.watchlist == [Movie('Iron Man'), Movie('Mission Impossible'),
                                     Movie('Kingsman the Secret Service')]
     assert empty_user.watched_movies == [Movie('The Hunger Games'), Movie('Grown Ups'), Movie(
@@ -109,3 +110,23 @@ def test_setters(empty_user):
     assert empty_user.reviews == [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
                                   Review(movie=Movie('Fantastic Beasts and Where to Find Them'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5',
                                          review_text='Great extension to the Harry Potter universe', userID='78c9713d-dc7e-459b-b9empty_user')]
+
+    def test_watchlist_validator(empty_user):
+        empty_user.watchlists = [Movie(
+            title='Thor Ragnarok', directors=[Director('Taika Waititi')]), Movie(title='Hot Fuzz', directors=[Director('Edgar Wright')]), 'Iron Man', 8676]
+        assert empty_user.watchlists == [Movie(
+            title='Thor Ragnarok', directors=[Director('Taika Waititi')]), Movie(title='Hot Fuzz', directors=[Director('Edgar Wright')])]
+
+    def test_watched_movies_validator(empty_user):
+        empty_user.watched_movies = [Movie(
+            title='Thor Ragnarok', directors=[Director('Taika Waititi')]), Movie(title='Hot Fuzz', directors=[Director('Edgar Wright')]), 'Iron Man', 8676]
+        assert empty_user.watched_movies == [Movie(
+            title='Thor Ragnarok', directors=[Director('Taika Waititi')]), Movie(title='Hot Fuzz', directors=[Director('Edgar Wright')])]
+
+    def test_reviews_validator(empty_user):
+        empty_user.watched_movies = [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+                                     Review(movie=Movie('Fantastic Beasts and Where to Find Them'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5',
+                                            review_text='Great extension to the Harry Potter universe', userID='78c9713d-dc7e-459b-b9empty_user'), 'This is another great review that should get added', 4464646]
+        assert empty_user.watched_movies == [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+                                             Review(movie=Movie('Fantastic Beasts and Where to Find Them'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5',
+                                                    review_text='Great extension to the Harry Potter universe', userID='78c9713d-dc7e-459b-b9empty_user')]

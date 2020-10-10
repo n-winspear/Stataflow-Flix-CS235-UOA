@@ -21,7 +21,7 @@ class User(Person):
 
         # Email Address
         self.__email_address = email_address.strip() if self.__valid_email_address(
-            email_address.strip()) else None
+            email_address) else None
 
         # Password
         self.__password = password if self.__valid_password(
@@ -33,15 +33,15 @@ class User(Person):
 
         # Watchlist
         self.__watchlist = watchlist if self.__valid_watchlist(
-            watchlist) else self.__cleaned_watchlist()
+            watchlist) else self.__cleaned_watchlist(watchlist)
 
         # Watched Movies
-        self.__watched_movies = watched_movies if self.__valid_watch_movies(
-            watched_movies) else self.__cleaned_watched_movies()
+        self.__watched_movies = watched_movies if self.__valid_watched_movies(
+            watched_movies) else self.__cleaned_watched_movies(watched_movies)
 
         # Reviews
         self.__reviews = reviews if self.__valid_reviews(
-            reviews) else self.__cleaned_reviews()
+            reviews) else self.__cleaned_reviews(reviews)
 
     def __str__(self):
         return f"{self.__first_name} {self.__last_name}"
@@ -121,7 +121,7 @@ class User(Person):
     @watchlist.setter
     def watchlist(self, watchlist: list = []) -> list:
         self.__watchlist = watchlist if self.__valid_watchlist(
-            watchlist) else self.__cleaned_watchlist()
+            watchlist) else self.__cleaned_watchlist(watchlist)
 
     @property
     def watched_movies(self):
@@ -129,8 +129,8 @@ class User(Person):
 
     @watched_movies.setter
     def watched_movies(self, watched_movies: list = []) -> list:
-        self.__watched_movies = watched_movies if self.__valid_watch_movies(
-            watched_movies) else self.__cleaned_watched_movies()
+        self.__watched_movies = watched_movies if self.__valid_watched_movies(
+            watched_movies) else self.__cleaned_watched_movies(watched_movies)
 
     @property
     def reviews(self):
@@ -139,7 +139,7 @@ class User(Person):
     @reviews.setter
     def reviews(self, reviews: list = []) -> list:
         self.__reviews = reviews if self.__valid_reviews(
-            reviews) else self.__cleaned_reviews()
+            reviews) else self.__cleaned_reviews(reviews)
 
     # Validators
     # Phone Number Check
@@ -157,7 +157,9 @@ class User(Person):
 
     # Email Address Check
     def __valid_email_address(self, email_address: str) -> str:
-        return (re.match("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$", email_address) != None)
+        if email_address:
+            return (re.match("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$", email_address) != None)
+        return False
 
     # Password Check
     def __valid_password(self, password: str) -> str:
