@@ -1,9 +1,9 @@
-from domain_models.movie import Movie
+from backendflask.domain_models.movie import Movie
 from uuid import uuid4
 
 
 class Rating:
-    def __init__(self, movie: Movie, ratingID: str = None,  rating: float = 0.0, userID: str = None):
+    def __init__(self, movie: Movie, ratingID: str = uuid4(),  rating: float = None, userID: str = uuid4()):
 
         # Rating ID
         self.__ratingID = ratingID if ratingID else uuid4()
@@ -13,10 +13,10 @@ class Rating:
 
         # Rating
         self.__rating = rating if (
-            type(rating) == float and rating in range(1, 11)) else None
+            type(rating) == float and (rating > 0 and rating <= 10)) else None
 
         # User ID
-        self.__userID = userID.strip() if type(userID) == str else None
+        self.__userID = userID if userID else uuid4()
 
     def __str__(self):
         return f"Rating: {self.__rating}"
@@ -46,26 +46,22 @@ class Rating:
         return self.__ratingID
 
     @property
+    def userID(self):
+        return self.__userID
+
+    @property
     def rating(self):
         return self.__rating
 
     @rating.setter
     def rating(self, rating: str) -> str:
-        rating if (
-            type(rating) == float and rating in range(1, 11)) else None
-
-    @property
-    def userID(self):
-        return self.__userID
-
-    @userID.setter
-    def userID(self, userID: str) -> str:
-        self.__userID = userID.strip() if type(userID) == str else None
+        self.__rating = rating if (
+            type(rating) == float and (rating > 0 and rating <= 10)) else None
 
     @property
     def movie(self):
         return self.__movie
 
     @movie.setter
-    def movie(self, movie):
-        self.self.__movie = movie if isinstance(movie, Movie) else None
+    def movie(self, movie: Movie) -> Movie:
+        self.__movie = movie if isinstance(movie, Movie) else None

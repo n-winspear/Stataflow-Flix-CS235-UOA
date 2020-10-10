@@ -1,12 +1,12 @@
-from domain_models.actor import Actor
-from domain_models.director import Director
-from domain_models.genre import Genre
+from backendflask.domain_models.actor import Actor
+from backendflask.domain_models.director import Director
+from backendflask.domain_models.genre import Genre
 from datetime import datetime
 from uuid import uuid4
 
 
 class Movie:
-    def __init__(self, title: str, movieID: str = None, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: float = 0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
+    def __init__(self, title: str, movieID: str = None, release_year: int = None, genres: list = [], description: str = None, directors: list = [], actors: list = [], runtime_minutes: int = 0, average_rating: float = 0.0, vote_count: int = 0, revenue: float = 0.0, metascore: int = 0):
 
         # Unique ID
         self.__movieID = movieID if movieID else uuid4()
@@ -19,7 +19,8 @@ class Movie:
             release_year) else None
 
         # Genre
-        self.__genres = genres if self.__valid_genres else self.__cleaned_genres
+        self.__genres = genres if self.__valid_genres(
+            genres) else self.__cleaned_genres(genres)
 
         # Description
         self.__description = description.strip() if type(description) == str else None
@@ -37,8 +38,8 @@ class Movie:
             type(runtime_minutes) == int and runtime_minutes > 0) else 0
 
         # Average Rating
-        self.__average_rating = average_rating if (
-            type(average_rating) == float and average_rating in range(1, 11)) else 0
+        self.__average_rating = average_rating if (type(average_rating) == float and (
+            average_rating > 0 and average_rating <= 10)) else 0
 
         # Vote Count
         self.__vote_count = vote_count if (
@@ -53,7 +54,7 @@ class Movie:
             type(metascore) == int and metascore in range(1, 101)) else 0
 
     def __str__(self):
-        return f"Movie Title: {self.__title}\nRelease Year: {self.__release_year}\nRuntime: {self.__runtime_minutes} mins"
+        return f"{self.__title}, {self.__release_year}"
 
     def __repr__(self):
         return f"Movie <{self.__title}, {self.__release_year}>"
@@ -109,7 +110,8 @@ class Movie:
 
     @genres.setter
     def genres(self, genres: list) -> list:
-        self.__genres = genres if self.__valid_genres else self.__cleaned_genres
+        self.__genres = genres if self.__valid_genres(
+            genres) else self.__cleaned_genres(genres)
 
     @property
     def description(self):
@@ -135,7 +137,7 @@ class Movie:
     @actors.setter
     def actors(self, actors: list) -> list:
         self.__actors = actors if self.__valid_actors(
-            actors) else self.__cleaned_actors(directors)
+            actors) else self.__cleaned_actors(actors)
 
     @property
     def runtime_minutes(self):
@@ -152,8 +154,8 @@ class Movie:
 
     @average_rating.setter
     def average_rating(self, average_rating: float) -> float:
-        self.__average_rating = average_rating if (
-            type(average_rating) == float and average_rating in range(1, 11)) else 0
+        self.__average_rating = average_rating if (type(average_rating) == float and (
+            average_rating > 0 and average_rating <= 10)) else 0
 
     @property
     def vote_count(self):
@@ -244,4 +246,6 @@ class Movie:
 
     # Release Year Check
     def __valid_release_year(self, release_year: int) -> int:
-        return release_year in range(1890, datetime.now().year)
+        if release_year:
+            return (release_year > 1890 and release_year < (datetime.now().year))
+        return False

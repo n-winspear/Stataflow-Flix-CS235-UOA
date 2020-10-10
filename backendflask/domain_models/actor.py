@@ -1,12 +1,12 @@
-from domain_models.person import Person
+from backendflask.domain_models.person import Person
 import requests
 
 
-class Director(Person):
+class Actor(Person):
     def __init__(self, full_name: str, personID: str = None, gender: int = None,  date_of_birth: str = None, imdb_page: str = None):
 
         # Parent Class Call
-        super(Director, self).__init__(
+        super(Actor, self).__init__(
             full_name, personID, gender, date_of_birth)
 
         # IMDB Page
@@ -16,7 +16,13 @@ class Director(Person):
         return f"Full Name: {self._full_name}"
 
     def __repr__(self):
-        return f"Director <{self._full_name}>"
+        return f"Actor <{self._full_name}>"
+
+    def __hash__(self):
+        return hash(self._personID)
+
+    def __eq__(self, other):
+        return self._full_name == other.full_name
 
     def toJSON(self):
         json_dump = {
@@ -25,6 +31,7 @@ class Director(Person):
             'gender': self._gender,
             'dateOfBirth': self._date_of_birth,
             'imdbPage': self.__imdb_page,
+
         }
         return json_dump
 
@@ -38,11 +45,12 @@ class Director(Person):
 
     # Validators
     # Valid URL Check
+
     def __valid_URL(self, URL: str) -> str:
-        if not URL == None:
+        if URL:
             try:
                 response = requests.get(URL)
                 return True
 
-            except requests.ConnectionError as exception:
+            except Exception as e:
                 return False

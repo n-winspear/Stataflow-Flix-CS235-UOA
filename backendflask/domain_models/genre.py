@@ -20,7 +20,7 @@ class Genre:
         return (self.__genre_name == other.genre_name)
 
     def __hash__(self):
-        return hash(f"{self.__genre_name}")
+        return hash(f"{self.__genreID}")
 
     def toJSON(self):
         json_dump = {

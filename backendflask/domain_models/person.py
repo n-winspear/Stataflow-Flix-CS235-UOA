@@ -17,22 +17,11 @@ class Person(object):
 
         # Date of Birth
         try:
-            self._date_of_birth = datetime(date_of_birth) if self.__valid_date_of_birth(
-                datetime(date_of_birth)) else None
+            self._date_of_birth = str(datetime.strptime(date_of_birth, '%d/%m/%Y').date()) if self.__valid_date_of_birth(
+                datetime.strptime(date_of_birth, '%d/%m/%Y')) else None
         except Exception as e:
+            print(e)
             self._date_of_birth = None
-
-    def __str__(self):
-        return f"Full Name: {self.full_name}"
-
-    def __repr__(self):
-        return f"Person <{self.full_name}>"
-
-    def __eq__(self, other):
-        return self._personID == other.personID
-
-    def __hash__(self):
-        return hash(self._personID)
 
     def toJSON(self):
         json_dump = {
@@ -70,14 +59,14 @@ class Person(object):
         return self._date_of_birth
 
     @date_of_birth.setter
-    def date_of_birth(self, date_of_birth: datetime = None) -> datetime:
+    def date_of_birth(self, date_of_birth: str = None) -> str:
         try:
-            self._date_of_birth = datetime(date_of_birth) if self.__valid_date_of_birth(
-                datetime(date_of_birth)) else None
+            self._date_of_birth = str(datetime.strptime(date_of_birth, '%d/%m/%Y').date()) if self.__valid_date_of_birth(
+                datetime.strptime(date_of_birth, '%d/%m/%Y')) else None
         except Exception as e:
             self._date_of_birth = None
 
     # Birthday Check
     def __valid_date_of_birth(self, date_of_birth):
-        if (date_of_birth.year > 1900 and date_of_birth < datetime.now().year):
+        if (date_of_birth.year > 1900 and date_of_birth.year < datetime.now().year):
             return True

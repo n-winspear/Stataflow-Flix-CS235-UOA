@@ -1,15 +1,15 @@
-from domain_models.movie import Movie
+from backendflask.domain_models.movie import Movie
 from uuid import uuid4
 
 
 class Review:
-    def __init__(self, movie: Movie, reviewID: str = None, review_text: str = None, userID: str = None):
+    def __init__(self, movie: Movie, reviewID: str = uuid4(), review_text: str = None, userID: str = uuid4()):
 
         # Review ID
         self.__reviewID = reviewID if reviewID else uuid4()
 
         # User ID
-        self.__userID = userID.strip() if type(userID) == str else None
+        self.__userID = userID if userID else uuid4()
 
         # Movie
         self.__movie = movie if isinstance(movie, Movie) else None
@@ -18,7 +18,7 @@ class Review:
         self.__review_text = review_text.strip() if type(review_text) == str else None
 
     def __str__(self):
-        return f"Movie: {self.__movie}\n Text: {self.__review_text}"
+        return self.__review_text
 
     def __repr__(self):
         return f"Review <{self.__movie}, {self.__review_text}>"
@@ -44,11 +44,7 @@ class Review:
 
     @property
     def userID(self):
-        return self._userID
-
-    @userID.setter
-    def userID(self, userID):
-        self._userID = userID.strip() if type(userID) == str else None
+        return self.__userID
 
     @property
     def movie(self):
@@ -56,7 +52,7 @@ class Review:
 
     @movie.setter
     def movie(self, movie):
-        self.self.__movie = movie if isinstance(movie, Movie) else None
+        self.__movie = movie if isinstance(movie, Movie) else None
 
     @property
     def review_text(self):
