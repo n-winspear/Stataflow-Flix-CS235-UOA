@@ -76,8 +76,9 @@ def test_representation_movie(filled_movie):
 
 
 def test_equality_movie(filled_movie):
-    assert filled_movie == Movie(title='The Shawshank Redemption', directors=[
-                                 Director(full_name='Frank Darabont')])
+    assert filled_movie == Movie(
+        title='The Shawshank Redemption', release_year=1994, directors=[Director(
+            full_name='Frank Darabont', personID='863ede0e-9da6-4a3c-a76b-6ff8b18858d2')])
 
 
 def test_hash_movie(filled_movie):
@@ -90,9 +91,9 @@ def test_setters(empty_movie):
     empty_movie.genres = [Genre('Adventure'), Genre('Drama'), Genre('Sci-Fi')]
     empty_movie.description = "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
     empty_movie.directors = [Director(
-        full_name='Christopher Nolan')]
-    empty_movie.actors = [Actor(full_name='Matthew McConaughey'), Actor(
-        full_name='Anne Hathaway'), Actor(full_name='Jessica Chastain')]
+        full_name='Christopher Nolan', personID='45d4c3fc-c63d-42e5-9826-1d33e9c1e88a')]
+    empty_movie.actors = [Actor(full_name='Matthew McConaughey', personID='1f1571d2-6b13-4cf1-89de-1d71bfaa378c'), Actor(
+        full_name='Anne Hathaway', personID='94e61b51-1267-4110-b4f0-66c0876ade23'), Actor(full_name='Jessica Chastain', personID='71c2c56a-99cc-496b-9515-781cc78d4c2e')]
     empty_movie.runtime_minutes = 169
     empty_movie.average_rating = 8.6
     empty_movie.vote_count = 1464716
@@ -106,9 +107,9 @@ def test_setters(empty_movie):
         Genre('Adventure'), Genre('Drama'), Genre('Sci-Fi')]
     assert empty_movie.description == "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
     assert empty_movie.directors == [Director(
-        full_name='Christopher Nolan')]
-    assert empty_movie.actors == [Actor(full_name='Matthew McConaughey'), Actor(
-        full_name='Anne Hathaway'), Actor(full_name='Jessica Chastain')]
+        full_name='Christopher Nolan', personID='45d4c3fc-c63d-42e5-9826-1d33e9c1e88a')]
+    assert empty_movie.actors == [Actor(full_name='Matthew McConaughey', personID='1f1571d2-6b13-4cf1-89de-1d71bfaa378c'), Actor(
+        full_name='Anne Hathaway', personID='94e61b51-1267-4110-b4f0-66c0876ade23'), Actor(full_name='Jessica Chastain', personID='71c2c56a-99cc-496b-9515-781cc78d4c2e')]
     assert empty_movie.runtime_minutes == 169
     assert empty_movie.average_rating == 8.6
     assert empty_movie.vote_count == 1464716
@@ -117,17 +118,17 @@ def test_setters(empty_movie):
 
 
 def test_actor_validator(empty_movie):
-    empty_movie.actors = [Actor(full_name='Matthew McConaughey'), Actor(
-        full_name='Anne Hathaway'), Actor(full_name='Jessica Chastain'), 'Tom Ellis', 'Rami Malek', 1542]
-    assert empty_movie.actors == [Actor(full_name='Matthew McConaughey'), Actor(
-        full_name='Anne Hathaway'), Actor(full_name='Jessica Chastain')]
+    empty_movie.actors = [Actor(full_name='Matthew McConaughey', personID='676df116-ac1a-466e-932c-6961b041d24f'), Actor(
+        full_name='Anne Hathaway', personID='a38f188b-6da3-46a4-8385-9a56c89c2f50'), Actor(full_name='Jessica Chastain', personID='245e5b34-179a-4d77-820d-d673af5d7f16'), 'Tom Ellis', 'Rami Malek', 1542]
+    assert empty_movie.actors == [Actor(full_name='Matthew McConaughey', personID='676df116-ac1a-466e-932c-6961b041d24f'), Actor(
+        full_name='Anne Hathaway', personID='a38f188b-6da3-46a4-8385-9a56c89c2f50'), Actor(full_name='Jessica Chastain', personID='245e5b34-179a-4d77-820d-d673af5d7f16')]
 
 
 def test_director_validator(empty_movie):
     empty_movie.directors = [Director(
-        full_name='Christopher Nolan'), 'Taika Waititi', 8676]
+        full_name='Christopher Nolan', personID='22ae00e1-38db-4679-a3d7-cef50470a14e'), 'Taika Waititi', 8676]
     assert empty_movie.directors == [Director(
-        full_name='Christopher Nolan')]
+        full_name='Christopher Nolan', personID='22ae00e1-38db-4679-a3d7-cef50470a14e')]
 
 
 def test_genre_validator(empty_movie):
