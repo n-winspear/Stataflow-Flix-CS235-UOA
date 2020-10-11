@@ -1,8 +1,8 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
-from adapters.memoryrepository import MemoryRepository
-from domain_models.review import Review
-from domain_models.movie import Movie
+from backendflask.adapters.memoryrepository import MemoryRepository
+from backendflask.domain_models.review import Review
+from backendflask.domain_models.movie import Movie
 
 # DB Connection
 db = MemoryRepository()

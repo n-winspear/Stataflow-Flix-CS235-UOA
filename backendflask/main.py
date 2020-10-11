@@ -2,12 +2,12 @@
 from flask import Flask, jsonify, make_response, request
 from flask_restful import Api
 from flask_cors import CORS
-from api.reviews import ReviewList, Review
-from api.ratings import RatingList, Rating
-from api.movies import MovieList, Movie
-from api.genres import GenreList, Genre
-from api.directors import DirectorList, Director
-from api.actors import ActorList, Actor
+from backendflask.api.reviews import ReviewList, Review
+from backendflask.api.ratings import RatingList, Rating
+from backendflask.api.movies import MovieList, Movie
+from backendflask.api.genres import GenreList, Genre
+from backendflask.api.directors import DirectorList, Director
+from backendflask.api.actors import ActorList, Actor
 from uuid import uuid4
 
 # API URL
@@ -66,4 +66,4 @@ api.add_resource(
 
 # App Runner
 if __name__ == '__main__':
-    app.run(host_ip='0.0.0.0', port=8080, debug=True)
+    app.run(debug=True)
