@@ -31,8 +31,8 @@ class Review:
 
     def toJSON(self):
         json_dump = {
-            'userID': self.__userID,
-            'reviewID': self.__reviewID,
+            'userID': str(self.__userID),
+            'reviewID': str(self.__reviewID),
             'movieTitle': self.__movie.title,
             'reviewText': self.__review_text,
         }

@@ -1,10 +1,11 @@
 import abc
-from domain_models.actor import Actor
-from domain_models.director import Director
-from domain_models.genre import Genre
-from domain_models.movie import Movie
-from domain_models.review import Review
-from domain_models.rating import Rating
+from backendflask.domain_models.actor import Actor
+from backendflask.domain_models.director import Director
+from backendflask.domain_models.genre import Genre
+from backendflask.domain_models.movie import Movie
+from backendflask.domain_models.review import Review
+from backendflask.domain_models.rating import Rating
+from backendflask.domain_models.user import User
 
 
 class AbstractRepository(abc.ABC):
@@ -38,16 +39,12 @@ class AbstractRepository(abc.ABC):
     def get_all_actors(self):
         raise NotImplementedError
 
-    # INSERT MULTIPLE
-    @abc.abstractmethod
-    def insert_multiple_actors(self, actors: list):
-        raise NotImplementedError
-
     ###############################################
     # Director Methods
     ###############################################
 
     # GET
+
     @abc.abstractmethod
     def get_director(self, personID: str):
         raise NotImplementedError
@@ -72,16 +69,12 @@ class AbstractRepository(abc.ABC):
     def get_all_directors(self):
         raise NotImplementedError
 
-    # INSERT MULTIPLE
-    @abc.abstractmethod
-    def insert_multiple_directors(self, directors: list):
-        raise NotImplementedError
-
     ###############################################
     # Genre Methods
     ###############################################
 
     # GET
+
     @abc.abstractmethod
     def get_genre(self, genreID: str):
         raise NotImplementedError
@@ -106,16 +99,12 @@ class AbstractRepository(abc.ABC):
     def get_all_genres(self):
         raise NotImplementedError
 
-    # INSERT MULTIPLE
-    @abc.abstractmethod
-    def insert_multiple_genres(self, genres: list):
-        raise NotImplementedError
-
     ###############################################
     # Movie Methods
     ###############################################
 
     # GET
+
     @abc.abstractmethod
     def get_movie(self, movieID: str):
         raise NotImplementedError
@@ -140,16 +129,12 @@ class AbstractRepository(abc.ABC):
     def get_all_movies(self):
         raise NotImplementedError
 
-    # INSERT MULTIPLE
-    @abc.abstractmethod
-    def insert_multiple_movies(self, movies: list):
-        raise NotImplementedError
-
     ###############################################
     # Review Methods
     ###############################################
 
     # GET
+
     @abc.abstractmethod
     def get_review(self, reviewID: str):
         raise NotImplementedError
@@ -174,16 +159,12 @@ class AbstractRepository(abc.ABC):
     def get_all_reviews(self):
         raise NotImplementedError
 
-    # INSERT MULTIPLE
-    @abc.abstractmethod
-    def insert_multiple_reviews(self, reviews: list):
-        raise NotImplementedError
-
     ###############################################
     # Rating Methods
     ###############################################
 
     # GET
+
     @abc.abstractmethod
     def get_rating(self, ratingID: str):
         raise NotImplementedError
@@ -208,13 +189,32 @@ class AbstractRepository(abc.ABC):
     def get_all_ratings(self):
         raise NotImplementedError
 
-    # INSERT MULTIPLE
-    @abc.abstractmethod
-    def insert_multiple_ratings(self, ratings: list):
-        raise NotImplementedError
-
     ###############################################
     # User Methods
     ###############################################
 
-    # IMPLEMENT THESE
+     # GET
+
+    @abc.abstractmethod
+    def get_user(self, userID: str):
+        raise NotImplementedError
+
+    # INSERT
+    @abc.abstractmethod
+    def add_user(self, user: User):
+        raise NotImplementedError
+
+    # UPDATE
+    @abc.abstractmethod
+    def update_user(self, user: User):
+        raise NotImplementedError
+
+    # DELETE
+    @abc.abstractmethod
+    def delete_user(self, userID: str):
+        raise NotImplementedError
+
+    # GET ALL
+    @abc.abstractmethod
+    def get_all_users(self):
+        raise NotImplementedError

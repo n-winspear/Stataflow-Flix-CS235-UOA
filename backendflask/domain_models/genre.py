@@ -24,7 +24,7 @@ class Genre:
 
     def toJSON(self):
         json_dump = {
-            'genreID': self.__genreID,
+            'genreID': str(self.__genreID),
             'genreName': self.__genre_name,
         }
         return json_dump

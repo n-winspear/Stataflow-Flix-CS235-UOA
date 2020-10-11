@@ -22,11 +22,11 @@ class Director(Person):
         return hash(self._personID)
 
     def __eq__(self, other):
-        return self._full_name == other.full_name
+        return self._personID == other.personID
 
     def toJSON(self):
         json_dump = {
-            'personID': f"{self._personID}",
+            'personID': str(self._personID),
             'fullName': self._full_name,
             'gender': self._gender,
             'dateOfBirth': self._date_of_birth,

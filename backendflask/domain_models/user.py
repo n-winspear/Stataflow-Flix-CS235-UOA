@@ -51,7 +51,7 @@ class User(Person):
 
     def toJSON(self):
         json_dump = {
-            'personID': f"{self._personID}",
+            'personID': str(self._personID),
             'firstName': self.__first_name,
             'lastName': self.__last_name,
             'gender': self._gender,

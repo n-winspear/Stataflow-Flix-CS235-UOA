@@ -20,17 +20,7 @@ class Person(object):
             self._date_of_birth = str(datetime.strptime(date_of_birth, '%d/%m/%Y').date()) if self.__valid_date_of_birth(
                 datetime.strptime(date_of_birth, '%d/%m/%Y')) else None
         except Exception as e:
-            print(e)
             self._date_of_birth = None
-
-    def toJSON(self):
-        json_dump = {
-            'personID': f"{self._personID}",
-            'fullName': self._full_name,
-            'gender': self._gender,
-            'dateOfBirth': self._date_of_birth,
-        }
-        return json_dump
 
     @property
     def personID(self):

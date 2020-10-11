@@ -67,7 +67,7 @@ class Movie:
 
     def toJSON(self):
         json_dump = {
-            "movieID": self.__movieID,
+            "movieID": str(self.__movieID),
             'movieTitle': self.__title,
             'releaseYear': self.__release_year,
             'genres': [genre.toJSON() for genre in self.__genres],

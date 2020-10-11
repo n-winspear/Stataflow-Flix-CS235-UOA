@@ -32,8 +32,8 @@ class Rating:
 
     def toJSON(self):
         json_dump = {
-            'ratingID': self.__ratingID,
-            'userID': self.__userID,
+            'ratingID': str(self.__ratingID),
+            'userID': str(self.__userID),
             'movieTitle': self.__movie.title,
             'rating': self.__rating,
         }
