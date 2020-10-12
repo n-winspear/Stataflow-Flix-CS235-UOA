@@ -8,7 +8,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import TempMovieImage from "components/home/images/TempMovieImage.jpg";
+import BlankMovieImage from "components/home/images/BlankMovieImage.png";
 import TextTruncate from "react-text-truncate";
 import RatingStars from "components/home/MovieCard/RatingStars";
 
@@ -36,7 +36,7 @@ export default function MovieCard(props) {
         <CardMedia
           className={classes.media}
           title={movieData.movieTitle}
-          image={TempMovieImage}
+          image={BlankMovieImage}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

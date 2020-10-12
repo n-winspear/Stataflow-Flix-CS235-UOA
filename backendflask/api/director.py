@@ -1,7 +1,7 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
-from backendflask.domain_models.actor import Actor
+from backendflask.domain_models.director import Director
 import json
 
 # DB Connection
@@ -22,42 +22,12 @@ parser.add_argument('imdbPage', type=str,
                     help="Persons IMDB page")
 
 
-class ActorList(Resource):
-    def get(self):
-        response = {
-            "actors": [actor.toJSON() for actor in db.get_all_actors()]
-        }
-        return make_response(jsonify(response), 200)
-
-    def post(self):
-        args = parser.parse_args()
-        response = {
-            "successful": False,
-            "fullName": args['fullName'],
-            "gender": args['gender'],
-            "dateOfBirth": args['dateOfBirth'],
-            "imdbPage": args['imdbPage'],
-        }
-        response['successful'] = True if db.add_actor(
-            Actor(
-                full_name=args['fullName'],
-                gender=args['gender'],
-                date_of_birth=args['dateOfBirth'],
-                imdb_page=args['imdbPage'],
-            )
-        ) else False
-        if response['successful']:
-            return make_response(jsonify(response), 201)
-        else:
-            return make_response(jsonify(response), 400)
-
-
-class Actor(Resource):
+class Director(Resource):
     def get(self, personID: str) -> str:
-        actor = db.get_actor(personID=personID)
+        director = db.get_director(personID=personID)
         response = {
-            "successful": True if actor else False,
-            "actor": actor.toJSON()
+            "successful": True if director else False,
+            "director": director.toJSON(),
         }
         if response['successful']:
             return make_response(jsonify(response), 200)
@@ -73,8 +43,8 @@ class Actor(Resource):
             "dateOfBirth": args['dateOfBirth'],
             "imdbPage": args['imdbPage'],
         }
-        response['successful'] = True if db.update_actor(
-            Actor(
+        response['successful'] = True if db.update_director(
+            Director(
                 personID=personID,
                 full_name=args['fullName'],
                 gender=args['gender'],

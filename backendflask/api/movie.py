@@ -39,63 +39,6 @@ parser.add_argument('metascore', type=float,
                     help="Movie metascore")
 
 
-class MovieList(Resource):
-    def get(self):
-        response = {
-            "movies":  [movie.toJSON() for movie in db.get_all_movies()]
-        }
-        return make_response(jsonify(response), 200)
-
-    def post(self):
-        args = parser.parse_args()
-        response = {
-            "successful": False,
-            "movieID": args['movieID'],
-            'movieTitle': args['movieTitle'],
-            'releaseYear': args['releaseYear'],
-            'genres': args['genres'],
-            'description': args['description'],
-            'directors': args['directors'],
-            'actors': args['actors'],
-            'runtimeMinutes': args['runtimeMinutes'],
-            'averageRating': args['averageRating'],
-            'voteCount': args['voteCount'],
-            'revenue': args['revenue'],
-            'metascore': args['metascore'],
-        }
-        response['successful'] = True if db.add_movie(
-            Movie(
-                title=args['movieTitle'],
-                release_year=args['releaseYear'],
-                genres=[Genre(
-                    genre_name=genre
-                ) for genre in args['genres']],
-                description=args['description'],
-                directors=[Director(
-                    full_name=director['fullName'],
-                    gender=director['gender'],
-                    date_of_birth=director['dateOfBirth'],
-                    imdb_page=director['imdbPage'],
-                ) for director in args['directors']],
-                actors=[Actor(
-                    full_name=actor['fullName'],
-                    gender=actor['gender'],
-                    date_of_birth=actor['dateOfBirth'],
-                    imdb_page=actor['imdbPage'],
-                ) for actor in args['actors']],
-                runtime_minutes=args['runtimeMinutes'],
-                average_rating=args['averageRating'],
-                vote_count=args['voteCount'],
-                revenue=args['revenue'],
-                metascore=args['metascore'],
-            )
-        ) else False
-        if response['successful']:
-            return make_response(jsonify(response), 201)
-        else:
-            return make_response(jsonify(response), 400)
-
-
 class Movie(Resource):
     def get(self, movieID: str) -> str:
         movie = db.get_review(movieID=movieID)

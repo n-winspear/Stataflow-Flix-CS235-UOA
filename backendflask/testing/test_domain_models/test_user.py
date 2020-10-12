@@ -28,8 +28,8 @@ def filled_user():
                    Movie('Harry Potter and the Half Blood Prince')],
         watched_movies=[Movie('Hot Fuzz'), Movie('Inception'), Movie(
             'Love Actually'), Movie('Avengers: Endgame')],
-        reviews=[Review(movie=Movie('Hot Fuzz'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is hilarious, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
-                 Review(movie=Movie('Interstellar'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5', review_text='This movie is hilarious, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282')]
+        reviews=[Review(movie=Movie('Hot Fuzz'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is hilarious, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+                 Review(movie=Movie('Interstellar'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5', review_text='This movie is hilarious, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282')]
     )
 
 
@@ -60,8 +60,8 @@ def test_filled_user_initialisation(filled_user):
                                      Movie('Harry Potter and the Half Blood Prince')]
     assert filled_user.watched_movies == [Movie('Hot Fuzz'), Movie('Inception'), Movie(
         'Love Actually'), Movie('Avengers: Endgame')]
-    assert filled_user.reviews == [Review(movie=Movie('Hot Fuzz'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is hilarious, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
-                                   Review(movie=Movie('Interstellar'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5', review_text='This movie is hilarious, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282')]
+    assert filled_user.reviews == [Review(movie=Movie('Hot Fuzz'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is hilarious, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+                                   Review(movie=Movie('Interstellar'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5', review_text='This movie is hilarious, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282')]
 
 
 def test_stringify_user(filled_user):
@@ -92,9 +92,9 @@ def test_setters(empty_user):
                             Movie('Kingsman the Secret Service')]
     empty_user.watched_movies = [Movie('The Hunger Games'), Movie('Grown Ups'), Movie(
         'The Fast and the Furious'), Movie('This is 40')]
-    empty_user.reviews = [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+    empty_user.reviews = [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282'),
                           Review(movie=Movie('Fantastic Beasts and Where to Find Them'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5',
-                                 review_text='Great extension to the Harry Potter universe', userID='78c9713d-dc7e-459b-b9empty_user')]
+                                 review_text='Great extension to the Harry Potter universe', personID='78c9713d-dc7e-459b-b9empty_user')]
 
     assert empty_user.first_name == 'Haley'
     assert empty_user.last_name == 'Dunphy'
@@ -107,9 +107,9 @@ def test_setters(empty_user):
                                     Movie('Kingsman the Secret Service')]
     assert empty_user.watched_movies == [Movie('The Hunger Games'), Movie('Grown Ups'), Movie(
         'The Fast and the Furious'), Movie('This is 40')]
-    assert empty_user.reviews == [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+    assert empty_user.reviews == [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282'),
                                   Review(movie=Movie('Fantastic Beasts and Where to Find Them'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5',
-                                         review_text='Great extension to the Harry Potter universe', userID='78c9713d-dc7e-459b-b9empty_user')]
+                                         review_text='Great extension to the Harry Potter universe', personID='78c9713d-dc7e-459b-b9empty_user')]
 
     def test_watchlist_validator(empty_user):
         empty_user.watchlists = [Movie(
@@ -124,9 +124,9 @@ def test_setters(empty_user):
             title='Thor Ragnarok', directors=[Director('Taika Waititi')]), Movie(title='Hot Fuzz', directors=[Director('Edgar Wright')])]
 
     def test_reviews_validator(empty_user):
-        empty_user.watched_movies = [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+        empty_user.watched_movies = [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282'),
                                      Review(movie=Movie('Fantastic Beasts and Where to Find Them'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5',
-                                            review_text='Great extension to the Harry Potter universe', userID='78c9713d-dc7e-459b-b9empty_user'), 'This is another great review that should get added', 4464646]
-        assert empty_user.watched_movies == [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', userID='78c9713d-dc7e-459b-b955-ef7cad454282'),
+                                            review_text='Great extension to the Harry Potter universe', personID='78c9713d-dc7e-459b-b9empty_user'), 'This is another great review that should get added', 4464646]
+        assert empty_user.watched_movies == [Review(movie=Movie('Iron Man'), reviewID='cc58b5cb-fd2c-4f42-9187-28557baf5213', review_text='This movie is a thrill ride, highly recommend watching it!', personID='78c9713d-dc7e-459b-b955-ef7cad454282'),
                                              Review(movie=Movie('Fantastic Beasts and Where to Find Them'), reviewID='a70ab3f8-9d7d-4415-aa9c-9b11acceb8e5',
-                                                    review_text='Great extension to the Harry Potter universe', userID='78c9713d-dc7e-459b-b9empty_user')]
+                                                    review_text='Great extension to the Harry Potter universe', personID='78c9713d-dc7e-459b-b9empty_user')]

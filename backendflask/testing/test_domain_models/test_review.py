@@ -16,7 +16,7 @@ def filled_review():
         movie=Movie('Inception'),
         reviewID='76f182ea-193a-45a3-8cb4-8ea9031dce1b',
         review_text='This is a super awesome review for this movie.',
-        userID='fee53459-3900-4718-be1d-4b8bc97c4be3'
+        personID='fee53459-3900-4718-be1d-4b8bc97c4be3'
     )
 
 
@@ -24,14 +24,14 @@ def test_empty_review_initalisation(empty_review):
     assert empty_review.movie == Movie('The Matrix')
     assert empty_review.reviewID.version == 4
     assert empty_review.review_text == None
-    assert empty_review.userID.version == 4
+    assert empty_review.personID.version == 4
 
 
 def test_filled_review_initialisation(filled_review):
     assert filled_review.movie == Movie('Inception')
     assert filled_review.reviewID == '76f182ea-193a-45a3-8cb4-8ea9031dce1b'
     assert filled_review.review_text == 'This is a super awesome review for this movie.'
-    assert filled_review.userID == 'fee53459-3900-4718-be1d-4b8bc97c4be3'
+    assert filled_review.personID == 'fee53459-3900-4718-be1d-4b8bc97c4be3'
 
 
 def test_stringify_review(filled_review):

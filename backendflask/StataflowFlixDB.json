@@ -97294,6 +97294,25 @@
         }
     ],
     "reviews": [],
-    "ratings": [],
+    "ratings": [
+        {
+            "ratingID": "bf01b810-3d3e-4c24-8894-25abdaf31d79",
+            "personID": "99a8ea8c-b6cf-4d24-a0fd-5f8f95b39bbc",
+            "movieTitle": null,
+            "rating": null
+        },
+        {
+            "ratingID": "1d6fb175-7fae-4c63-b731-2d67efc987cd",
+            "personID": "c8ba6889-a83f-4ee0-a34b-d0d12eef11c3",
+            "movieTitle": null,
+            "rating": null
+        },
+        {
+            "ratingID": "c8051082-7286-44a7-b2c3-20c933c8591b",
+            "personID": "d03af378-32ac-478c-a7b0-1f5fd4cd7486",
+            "movieTitle": null,
+            "rating": null
+        }
+    ],
     "users": []
 }

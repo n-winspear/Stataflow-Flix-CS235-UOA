@@ -3,13 +3,13 @@ from uuid import uuid4
 
 
 class Review:
-    def __init__(self, movie: Movie, reviewID: str = uuid4(), review_text: str = None, userID: str = uuid4()):
+    def __init__(self, movie: Movie, reviewID: str = uuid4(), review_text: str = None, personID: str = uuid4()):
 
         # Review ID
         self.__reviewID = reviewID if reviewID else uuid4()
 
         # User ID
-        self.__userID = userID if userID else uuid4()
+        self.__personID = personID if personID else uuid4()
 
         # Movie
         self.__movie = movie if isinstance(movie, Movie) else None
@@ -31,7 +31,7 @@ class Review:
 
     def toJSON(self):
         json_dump = {
-            'userID': str(self.__userID),
+            'personID': str(self.__personID),
             'reviewID': str(self.__reviewID),
             'movieTitle': self.__movie.title,
             'reviewText': self.__review_text,
@@ -43,8 +43,8 @@ class Review:
         return self.__reviewID
 
     @property
-    def userID(self):
-        return self.__userID
+    def personID(self):
+        return self.__personID
 
     @property
     def movie(self):

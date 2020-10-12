@@ -16,7 +16,7 @@ def filled_rating():
         movie=Movie('Inception'),
         ratingID='76f182ea-193a-45a3-8cb4-8ea9031dce1b',
         rating=7.2,
-        userID='fee53459-3900-4718-be1d-4b8bc97c4be3'
+        personID='fee53459-3900-4718-be1d-4b8bc97c4be3'
     )
 
 
@@ -24,14 +24,14 @@ def test_empty_rating_initalisation(empty_rating):
     assert empty_rating.movie == Movie('The Matrix')
     assert empty_rating.ratingID.version == 4
     assert empty_rating.rating == None
-    assert empty_rating.userID.version == 4
+    assert empty_rating.personID.version == 4
 
 
 def test_filled_rating_initialisation(filled_rating):
     assert filled_rating.movie == Movie('Inception')
     assert filled_rating.ratingID == '76f182ea-193a-45a3-8cb4-8ea9031dce1b'
     assert filled_rating.rating == 7.2
-    assert filled_rating.userID == 'fee53459-3900-4718-be1d-4b8bc97c4be3'
+    assert filled_rating.personID == 'fee53459-3900-4718-be1d-4b8bc97c4be3'
 
 
 def test_stringify_rating(filled_rating):
