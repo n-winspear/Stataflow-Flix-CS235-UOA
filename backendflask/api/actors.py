@@ -2,6 +2,7 @@ from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
 from backendflask.domain_models.actor import Actor
+import json
 
 # DB Connection
 db = MemoryRepository()
@@ -24,7 +25,7 @@ parser.add_argument('imdbPage', type=str,
 class ActorList(Resource):
     def get(self):
         response = {
-            "actors":  db.get_all_actors()
+            "actors": [actor.toJSON() for actor in db.get_all_actors()]
         }
         return make_response(jsonify(response), 200)
 
@@ -56,7 +57,7 @@ class Actor(Resource):
         actor = db.get_actor(personID=personID)
         response = {
             "successful": True if actor else False,
-            "actor": actor,
+            "actor": actor.toJSON()
         }
         if response['successful']:
             return make_response(jsonify(response), 200)

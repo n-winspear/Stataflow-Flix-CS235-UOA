@@ -36,6 +36,7 @@ export default function Home(props) {
           url: `${apiURL}/movies`,
         };
         let res = await axios(config);
+        console.log(res);
         let tempShortMoviesList = res.data.movies.slice(0, 50);
         //setMovies(res.data.movies);
         setMovies(tempShortMoviesList);

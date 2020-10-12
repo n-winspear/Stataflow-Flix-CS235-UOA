@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
 from backendflask.domain_models.review import Review
 from backendflask.domain_models.movie import Movie
+import json
 
 # DB Connection
 db = MemoryRepository()
@@ -21,9 +22,10 @@ parser.add_argument('reviewText', type=str,
 
 
 class ReviewList(Resource):
+
     def get(self):
         response = {
-            "reviews":  db.get_all_reviews()
+            "reviews":  [review.toJSON() for review in db.get_all_reviews()]
         }
         return make_response(jsonify(response), 200)
 
@@ -32,7 +34,7 @@ class ReviewList(Resource):
         response = {
             "successful": False,
             "userID": args['userID'],
-            "movie": args['movie'],
+            "movie": args['movieTitle'],
             "reviewText": args['reviewText']
         }
         response['successful'] = True if db.add_review(
@@ -53,7 +55,7 @@ class Review(Resource):
         review = db.get_review(reviewID=reviewID)
         response = {
             "successful": True if review else False,
-            "review": review,
+            "review": review.toJSON(),
         }
         if response['successful']:
             return make_response(jsonify(response), 200)
@@ -65,7 +67,7 @@ class Review(Resource):
         response = {
             "successful": False,
             "userID": args['userID'],
-            "movie": args['movie'],
+            "movie": args['movieTitle'],
             "reviewText": args['reviewText']
         }
         response['successful'] = True if db.update_review(

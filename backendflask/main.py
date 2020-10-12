@@ -1,7 +1,7 @@
 #!flask/bin/python
 from flask import Flask, jsonify, make_response, request
 from flask_restful import Api
-from flask_cors import CORS
+from flask_cors import CORS, logging
 from backendflask.api.reviews import ReviewList, Review
 from backendflask.api.ratings import RatingList, Rating
 from backendflask.api.movies import MovieList, Movie
@@ -16,16 +16,14 @@ API_BASE_URL = f"/v{API_VERSION}"
 
 # Globals
 app = Flask(__name__)
-app.config['SECRET_KEY'] = uuid4()
-app.config['CORS_HEADERS'] = 'Content-Type'
 api = Api(app)
+cors = CORS(app)
 
-# CORS
-cors = CORS(app, resources={
-            r"/v1/*": {"origins": "*"}})
-
+logging.getLogger('flask_cors').level = logging.DEBUG
 
 # Error Handler
+
+
 @ app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)

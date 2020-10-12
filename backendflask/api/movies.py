@@ -5,6 +5,7 @@ from backendflask.domain_models.movie import Movie
 from backendflask.domain_models.actor import Actor
 from backendflask.domain_models.director import Director
 from backendflask.domain_models.genre import Genre
+import json
 
 # DB Connection
 db = MemoryRepository()
@@ -41,7 +42,7 @@ parser.add_argument('metascore', type=float,
 class MovieList(Resource):
     def get(self):
         response = {
-            "movies":  db.get_all_movies()
+            "movies":  [movie.toJSON() for movie in db.get_all_movies()]
         }
         return make_response(jsonify(response), 200)
 
@@ -100,7 +101,7 @@ class Movie(Resource):
         movie = db.get_review(movieID=movieID)
         response = {
             "successful": True if movie else False,
-            "movie": movie,
+            "movie": movie.toJSON()
         }
         if response['successful']:
             return make_response(jsonify(response), 200)

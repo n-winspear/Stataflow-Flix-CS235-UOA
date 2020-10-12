@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
 from backendflask.domain_models.rating import Rating
 from backendflask.domain_models.movie import Movie
+import json
 
 # DB Connection
 db = MemoryRepository()
@@ -23,7 +24,7 @@ parser.add_argument('rating', type=float,
 class RatingList(Resource):
     def get(self):
         response = {
-            "ratings":  db.get_all_ratings()
+            "ratings":  [rating.toJSON() for rating in db.get_all_ratings()]
         }
         return make_response(jsonify(response), 200)
 
@@ -53,7 +54,7 @@ class Rating(Resource):
         rating = db.get_rating(ratingID=ratingID)
         response = {
             "successful": True if rating else False,
-            "rating": rating,
+            "rating": rating.toJSON(),
         }
         if response['successful']:
             return make_response(jsonify(response), 200)

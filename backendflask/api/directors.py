@@ -2,6 +2,7 @@ from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
 from backendflask.domain_models.director import Director
+import json
 
 # DB Connection
 db = MemoryRepository()
@@ -24,7 +25,7 @@ parser.add_argument('imdbPage', type=str,
 class DirectorList(Resource):
     def get(self):
         response = {
-            "directors":  db.get_all_directors()
+            "directors": [director.toJSON() for director in db.get_all_directors()]
         }
         return make_response(jsonify(response), 200)
 
@@ -56,7 +57,7 @@ class Director(Resource):
         director = db.get_director(personID=personID)
         response = {
             "successful": True if director else False,
-            "director": director,
+            "director": director.toJSON(),
         }
         if response['successful']:
             return make_response(jsonify(response), 200)

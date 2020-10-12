@@ -2,6 +2,7 @@ from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
 from backendflask.domain_models.genre import Genre
+import json
 
 # DB Connection
 db = MemoryRepository()
@@ -16,7 +17,7 @@ parser.add_argument('genreName', type=str,
 class GenreList(Resource):
     def get(self):
         response = {
-            "genres":  db.get_all_genres()
+            "genres":  [genre.toJSON() for genre in db.get_all_genres()]
         }
         return make_response(jsonify(response), 200)
 
@@ -42,7 +43,7 @@ class Genre(Resource):
         genre = db.get_genre(genreID=genreID)
         response = {
             "successful": True if genre else False,
-            "genre": genre,
+            "genre": genre.toJSON(),
         }
         if response['successful']:
             return make_response(jsonify(response), 200)

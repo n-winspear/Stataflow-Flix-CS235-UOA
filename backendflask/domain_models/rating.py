@@ -3,20 +3,17 @@ from uuid import uuid4
 
 
 class Rating:
-    def __init__(self, movie: Movie, ratingID: str = uuid4(),  rating: float = None, userID: str = uuid4()):
 
-        # Rating ID
+    def __init__(self, movie: Movie, ratingID: str = None, rating: float = None, personID: str = None):
+
         self.__ratingID = ratingID if ratingID else uuid4()
 
-        # Movie
         self.__movie = movie if isinstance(movie, Movie) else None
 
-        # Rating
-        self.__rating = rating if (
-            type(rating) == float and (rating > 0 and rating <= 10)) else None
+        self.__rating = rating if (type(rating) == float and (
+            rating > 0 and rating <= 10)) else None
 
-        # User ID
-        self.__userID = userID if userID else uuid4()
+        self.__personID = personID if personID else uuid4()
 
     def __str__(self):
         return f"Rating: {self.__rating}"
@@ -33,7 +30,7 @@ class Rating:
     def toJSON(self):
         json_dump = {
             'ratingID': str(self.__ratingID),
-            'userID': str(self.__userID),
+            'personID': str(self.__personID),
             'movieTitle': self.__movie.title,
             'rating': self.__rating,
         }
@@ -46,8 +43,8 @@ class Rating:
         return self.__ratingID
 
     @property
-    def userID(self):
-        return self.__userID
+    def personID(self):
+        return self.__personID
 
     @property
     def rating(self):
