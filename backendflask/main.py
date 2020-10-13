@@ -14,6 +14,8 @@ from backendflask.api.movie_list import MovieList
 from backendflask.api.genre_list import GenreList
 from backendflask.api.director_list import DirectorList
 from backendflask.api.actor_list import ActorList
+from backendflask.api.user_list import UserList
+from backendflask.api.user_list import UserList
 from uuid import uuid4
 
 # API URL

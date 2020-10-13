@@ -117,7 +117,6 @@ function MovieDetails(props) {
       },
     };
     await axios(config)
-    console.log(reviews)
     setReviews(reviews.filter((review) => review.reviewID !== reviewID));
     setReviewText("");
   }

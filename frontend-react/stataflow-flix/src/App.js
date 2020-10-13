@@ -1,21 +1,38 @@
-import React from "react";
+import React, {useState} from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavBar from "components/NavBar";
 import PageRouter from "components/PageRouter";
+import LoginPage from 'components/userAuth/LoginPage'
+import RegisterPage from 'components/userAuth/RegisterPage'
 
 const apiVersion = 1;
 const apiURL = `http://127.0.0.1:5000/v${apiVersion}`;
-const userID = "d4dff177-474e-4123-a3f9-8f0758114f25";
+
 
 function App() {
+  const [userAuthorised, setUserAuthorised] = useState(false)
+  const [userID, setUserID] = useState(null)
+  
   return (
     <Router>
-      <NavBar />
       <Switch>
+        <Route
+          path="/register"
+          exact
+          render={(props) => (
+            <RegisterPage {...props} apiURL={apiURL} setUserAuthorised={setUserAuthorised} setUserID={setUserID} />
+          )}
+        />
+        <Route
+          path="/login"
+          exact
+          render={(props) => (
+            <LoginPage {...props} apiURL={apiURL} setUserAuthorised={setUserAuthorised} setUserID={setUserID} />
+          )}
+        />
         <Route
           path="/"
           render={(props) => (
-            <PageRouter {...props} apiURL={apiURL} userID={userID} />
+            <PageRouter {...props} apiURL={apiURL} userID={userID} userAuthorised={userAuthorised} />
           )}
         />
       </Switch>

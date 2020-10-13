@@ -7,195 +7,102 @@ from backendflask.domain_models.movie import Movie
 from backendflask.domain_models.review import Review
 from backendflask.domain_models.rating import Rating
 from backendflask.domain_models.user import User
+from mysql.connector.constants import ClientFlag
+import mysql.connector
 import os
 import json
 
 
-class MemoryRepository(AbstractRepository):
+class GCloudRepository(AbstractRepository):
 
     def __init__(self):
 
-        # JSON DB Path
-        self.__json_db_file_path = './StataflowFlixDB.json'
+        self.__db_config = {
+            'user': 'root',
+            'password': 'F6b#CkG5pybYKBaIf1Ua',  # Move this to env when db working
+            'host': '35.197.160.250',
+            'client_flags': [ClientFlag.SSL],
+            'database': 'SFX_DB',
+            'ssl_ca': 'gcloud-config-files/server-ca.pem',
+            'ssl_cert': 'gcloud-config-files/client-cert.pem',
+            'ssl_key': 'gcloud-config-files/client-key.pem'
+        }
 
-        self._dataset_of_actors = []
-        self._dataset_of_movies = []
-        self._dataset_of_directors = []
-        self._dataset_of_genres = []
-        self._dataset_of_reviews = []
-        self._dataset_of_ratings = []
-        self._dataset_of_users = []
+        self.__cnxn = mysql.connector.connect(**self.__db_config)
+        self.__crsr = self.__cnxn.cursor()
 
-        self.__initalise_db()
+        self.__initial_db = True
 
-    # Initialising
-    def __initalise_db(self):
-        if not os.path.exists(self.__json_db_file_path):
-            CSV_FILE_PATH = 'data_processors/Data1000Movies.csv'
-            fp = MovieCSVParser(CSV_FILE_PATH)
-            fp.read_csv_file()
-            self._dataset_of_actors = fp.dataset_of_actors
-            self._dataset_of_movies = fp.dataset_of_movies
-            self._dataset_of_directors = fp.dataset_of_directors
-            self._dataset_of_genres = fp.dataset_of_genres
-            self._dataset_of_reviews = fp.dataset_of_reviews
-            self._dataset_of_ratings = fp.dataset_of_ratings
+        if self.__initial_db == True:
+            self.__fresh_db()
 
-            self.__write_json_db()
-        else:
-            self.__read_json_db()
+    def __fresh_db(self):
+        self.__crsr.execute("""CREATE_TABLE Actors (
+            personID VARCHAR(255) PRIMARY KEY,
+            fullName VARCHAR(255),
+            gender INTEGER,
+            dateOfBirth VARCHAR(255),
+            imdbPage VARCHAR(255)
+        )""")
 
-    # Writing JSON DB
-    def __write_json_db(self):
-        with open(self.__json_db_file_path, "w") as db_json:
-            db_struct = {
-                "actors": [actor.toJSON() for actor in self._dataset_of_actors],
-                "movies": [movie.toJSON() for movie in self._dataset_of_movies],
-                "directors": [director.toJSON() for director in self._dataset_of_directors],
-                "genres": [genres.toJSON() for genres in self._dataset_of_genres],
-                "reviews": [review.toJSON() for review in self._dataset_of_reviews],
-                "ratings": [rating.toJSON() for rating in self._dataset_of_ratings],
-                "users": [user.toJSON() for user in self._dataset_of_users]
-            }
-            json.dump(db_struct, db_json, indent=4)
+        self.__crsr.execute("""CREATE_TABLE Directors (
+            personID VARCHAR(255) PRIMARY KEY,
+            fullName VARCHAR(255),
+            gender INTEGER,
+            dateOfBirth VARCHAR(255),
+            imdbPage VARCHAR(255)
+        )""")
 
-    # Reading JSON DB
-    def __read_json_db(self):
-        with open(self.__json_db_file_path, "r") as db_json:
-            db = json.load(db_json)
-            self._dataset_of_actors = [Actor(personID=actor['personID'], full_name=actor['fullName'], gender=actor['gender'],
-                                             date_of_birth=actor['dateOfBirth'], imdb_page=actor['imdbPage']) for actor in db['actors']]
-            self._dataset_of_movies = [
-                Movie(
-                    movieID=movie['movieID'],
-                    title=movie['movieTitle'],
-                    release_year=movie['releaseYear'],
-                    genres=[Genre(
-                        genreID=genre['genreID'],
-                        genre_name=genre['genreName']
-                    ) for genre in movie['genres']],
-                    description=movie['description'],
-                    directors=[Director(
-                        personID=director['personID'],
-                        full_name=director['fullName'],
-                        gender=director['gender'],
-                        date_of_birth=director['dateOfBirth'],
-                        imdb_page=director['imdbPage'],
-                    ) for director in movie['directors']],
-                    actors=[Actor(
-                        personID=actor['personID'],
-                        full_name=actor['fullName'],
-                        gender=actor['gender'],
-                        date_of_birth=actor['dateOfBirth'],
-                        imdb_page=actor['imdbPage'],
-                    ) for actor in movie['actors']],
-                    runtime_minutes=movie['runtimeMinutes'],
-                    average_rating=movie['averageRating'],
-                    vote_count=movie['voteCount'],
-                    revenue=movie['revenue'],
-                    metascore=movie['metascore'],
-                ) for movie in db['movies']]
-            self._dataset_of_directors = [Director(
-                personID=director['personID'],
-                full_name=director['fullName'],
-                gender=director['gender'],
-                date_of_birth=director['dateOfBirth'],
-                imdb_page=director['imdbPage'],
-            ) for director in db['directors']]
-            self._dataset_of_genres = [Genre(
-                genreID=genre['genreID'],
-                genre_name=genre['genreName'],
-            ) for genre in db['genres']]
-            self._dataset_of_reviews = [Review(
-                reviewID=review['reviewID'],
-                personID=review['personID'],
-                movie=Movie(title=review['movieTitle']),
-                review_text=review['reviewText'],
-            ) for review in db['reviews']]
-            self._dataset_of_ratings = [Rating(
-                ratingID=rating['ratingID'],
-                personID=rating['personID'],
-                movie=Movie(title=rating['movieTitle']),
-                rating=rating['rating'],
-            ) for rating in db['ratings']]
-            self._dataset_of_users = [User(
-                first_name=user['firstName'],
-                last_name=user['lastName'],
-                personID=user['personID'],
-                email_address=user['emailAddress'],
-                password=user['password'],
-                phone_number=user['phoneNumber'],
-                gender=user['gender'],
-                date_of_birth=user['dateOfBirth'],
-                watchlist=[Movie(
-                    movieID=movie['movieID'],
-                    title=movie['movieTitle'],
-                    release_year=movie['releaseYear'],
-                    genres=[Genre(
-                        genreID=genre['genreID'],
-                        genre_name=genre['genreName']
-                    ) for genre in movie['genres']],
-                    description=movie['description'],
-                    directors=[Director(
-                        personID=director['personID'],
-                        full_name=director['fullName'],
-                        gender=director['gender'],
-                        date_of_birth=director['dateOfBirth'],
-                        imdb_page=director['imdbPage'],
-                    ) for director in movie['directors']],
-                    actors=[Actor(
-                        personID=actor['personID'],
-                        full_name=actor['fullName'],
-                        gender=actor['gender'],
-                        date_of_birth=actor['dateOfBirth'],
-                        imdb_page=actor['imdbPage'],
-                    ) for actor in movie['actors']],
-                    runtime_minutes=movie['runtimeMinutes'],
-                    average_rating=movie['averageRating'],
-                    vote_count=movie['voteCount'],
-                    revenue=movie['revenue'],
-                    metascore=movie['metascore'],
-                ) for movie in user['watchlist']],
-                watched_movies=[Movie(
-                    movieID=movie['movieID'],
-                    title=movie['movieTitle'],
-                    release_year=movie['releaseYear'],
-                    genres=[Genre(
-                        genreID=genre['genreID'],
-                        genre_name=genre['genreName']
-                    ) for genre in movie['genres']],
-                    description=movie['description'],
-                    directors=[Director(
-                        personID=director['personID'],
-                        full_name=director['fullName'],
-                        gender=director['gender'],
-                        date_of_birth=director['dateOfBirth'],
-                        imdb_page=director['imdbPage'],
-                    ) for director in movie['directors']],
-                    actors=[Actor(
-                        personID=actor['personID'],
-                        full_name=actor['fullName'],
-                        gender=actor['gender'],
-                        date_of_birth=actor['dateOfBirth'],
-                        imdb_page=actor['imdbPage'],
-                    ) for actor in movie['actors']],
-                    runtime_minutes=movie['runtimeMinutes'],
-                    average_rating=movie['averageRating'],
-                    vote_count=movie['voteCount'],
-                    revenue=movie['revenue'],
-                    metascore=movie['metascore'],
-                ) for movie in user['watchedMovies']],
-                reviews=[Review(
-                    reviewID=review['reviewID'],
-                    personID=review['personID'],
-                    movie=Movie(title=review['movieTitle']),
-                    review_text=review['reviewText'],
-                ) for review in user['reviews']]
-            ) for user in db['users']]
+        self.__crsr.execute("""CREATE_TABLE Genres (
+            genreID VARCHAR(255) PRIMARY KEY,
+            genreName VARCHAR(255),
+        )""")
 
-    ###############################################
-    # PROPERTIES
-    ###############################################
+        self.__crsr.execute("""CREATE_TABLE Movie (
+            movieID VARCHAR(255) PRIMARY KEY,
+            movieTitle VARCHAR(255),
+            releaseYear INTEGER,
+            genres VARCHAR(255),
+            description VARCHAR(510),
+            directorID VARCHAR(255),
+            actorID VARCHAR(255),
+            runtimeMinutes INTEGER,
+            averageRating FLOAT,
+            voteCount INTEGER,
+            revenue INTEGER,
+            metascore FLOAT,
+        )""")
+
+        self.__crsr.execute("""CREATE_TABLE Rating (
+            ratingID VARCHAR(255) PRIMARY KEY,
+            personID VARCHAR(255),
+            movieTitle VARCHAR(255),
+            rating FLOAT
+        )""")
+
+        self.__crsr.execute("""CREATE_TABLE Review (
+            reviewID VARCHAR(255) PRIMARY KEY,
+            personID VARCHAR(255),
+            movieTitle VARCHAR(255),
+            reviewText VARCHAR(1020)
+        )""")
+
+        self.__crsr.execute("""CREATE_TABLE User (
+            personID VARCHAR(255) PRIMARY KEY,
+            firstName VARCHAR(255),
+            lastName VARCHAR(255),
+            gender INTEGER,
+            emailAddress VARCHAR(510),
+            password VARCHAR(255),
+            phoneNumber VARCHAR(255),
+            watchlist VARCHAR(255),
+            watchedMovies VARCHAR(255),
+            reviews VARCHAR(255),
+        )""")
+
+        ###############################################
+        # PROPERTIES
+        ###############################################
 
     @ property
     def dataset_of_actors(self):
@@ -465,9 +372,9 @@ class MemoryRepository(AbstractRepository):
 
     # GET
 
-    def get_user(self, emailAddress: str):
+    def get_user(self, personID: str):
         for stored_user in self._dataset_of_users:
-            if stored_user.emailAddress == emailAddress:
+            if stored_user.personID == personID:
                 return stored_user
 
     # INSERT
