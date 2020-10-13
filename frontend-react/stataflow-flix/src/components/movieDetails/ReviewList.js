@@ -17,16 +17,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ReviewList(props) {
-  const { reviewsList, deleteReview, userID } = props;
+  const { reviewsList, handleRemoveReview, userID } = props;
   const classes = useStyles();
 
   return reviewsList.length > 0 ? (
     <div className={classes.root}>
       <List style={{ width: "90%" }}>
-        {reviewsList.map((review) => {
+        {reviewsList.map((review, index) => {
           return (
             <ListItem
-              key={review.reviewID}
+              key={index}
               style={{ alignItems: "flex-start" }}
             >
               <ListItemAvatar style={{ marginTop: "0.5em" }}>
@@ -43,13 +43,13 @@ export default function ReviewList(props) {
                   },
                 }}
               />
-              {review.userID === userID ? (
+              {review.personID === userID ? (
                 <ListItemSecondaryAction>
                   <IconButton
                     edge="end"
                     aria-label="delete"
                     onClick={() => {
-                      deleteReview(review.reviewID);
+                      handleRemoveReview(review.reviewID);
                     }}
                   >
                     <DeleteIcon />

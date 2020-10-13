@@ -3,7 +3,7 @@ from uuid import uuid4
 
 
 class Review:
-    def __init__(self, movie: Movie, reviewID: str = uuid4(), review_text: str = None, personID: str = uuid4()):
+    def __init__(self, movie: Movie, reviewID: str = None, review_text: str = None, personID: str = None):
 
         # Review ID
         self.__reviewID = reviewID if reviewID else uuid4()

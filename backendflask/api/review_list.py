@@ -11,13 +11,13 @@ db = MemoryRepository()
 # Request Parser
 parser = reqparse.RequestParser()
 
-parser.add_argument('reviewID', type=str,
+parser.add_argument('reviewID',
                     help="Review Identifier")
-parser.add_argument('personID', type=str,
+parser.add_argument('personID',
                     help="User ID of the user who posted the review")
-parser.add_argument('movieTitle', type=str,
+parser.add_argument('movieTitle',
                     help="Title of the movie being reviewed")
-parser.add_argument('reviewText', type=str,
+parser.add_argument('reviewText',
                     help="Text content of the review posted")
 
 
@@ -34,11 +34,12 @@ class ReviewList(Resource):
         response = {
             "successful": False,
             "personID": args['personID'],
-            "movie": args['movieTitle'],
+            "movieTitle": args['movieTitle'],
             "reviewText": args['reviewText']
         }
         response['successful'] = True if db.add_review(
             Review(
+                reviewID=args['reviewID'],
                 personID=args['personID'],
                 movie=Movie(title=args['movieTitle']),
                 review_text=args['reviewText'],

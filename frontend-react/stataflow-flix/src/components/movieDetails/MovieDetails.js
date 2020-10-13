@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import StarsIcon from "@material-ui/icons/Stars";
 import RatingStars from "components/home/MovieCard/RatingStars";
 import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles(() => ({
   circularProgress: {
@@ -67,10 +68,7 @@ function MovieDetails(props) {
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
   const [reviewText, setReviewText] = useState("");
-  const [reviews, setReviews] = useState({
-    updated: false,
-    reviewList: [],
-  });
+  const [reviews, setReviews] = useState([]);
   const moviePoster = MovieCoverPoster;
 
   useEffect(() => {
@@ -80,36 +78,33 @@ function MovieDetails(props) {
         url: `${apiURL}/reviews`,
       };
       let res = await axios(config);
-      let reviews = res.data.reviews;
-      let currentMovieReviews = reviews.map(
-        (review) => review.movieTitle === movieData.movieTitle
-      );
-      setReviews({
-        updated: true,
-        reviewList: currentMovieReviews,
-      });
+      let currentMovieReviews = res.data.reviews.map((review) => {
+        if (review.movieTitle === movieData.movieTitle) {
+          return review;
+        }
+        return null
+      })
+      setReviews(currentMovieReviews)
       setLoading(false);
     }
-    if (!reviews.updated) {
+    if (isLoading) {
       getReviews();
     }
   });
 
+
   async function postReview() {
+    let reviewObj = {reviewID: uuidv4(), personID: userID, movieTitle: movieData.movieTitle, reviewText: reviewText}
+    setReviews([...reviews, reviewObj]);
     let config = {
       method: "post",
       url: `${apiURL}/reviews`,
       headers: {
         "Content-Type": "application/json",
       },
-      data: {
-        userID: userID,
-        movie: movieData.title,
-        reviewText: reviewText,
-      },
+      data: reviewObj,
     };
-    let res = await axios(config);
-    console.log(res);
+    await axios(config);
     setReviewText("");
   }
 
@@ -121,8 +116,9 @@ function MovieDetails(props) {
         "Content-Type": "application/json",
       },
     };
-    let res = await axios(config);
-    console.log(res);
+    await axios(config)
+    console.log(reviews)
+    setReviews(reviews.filter((review) => review.reviewID !== reviewID));
     setReviewText("");
   }
 
@@ -167,7 +163,7 @@ function MovieDetails(props) {
               >
                 <img
                   src={moviePoster}
-                  alt={movieData.title}
+                  alt={movieData.movieTitle}
                   className={classes.moviePoster}
                 />
               </Paper>
@@ -237,7 +233,7 @@ function MovieDetails(props) {
             Reviews
           </Typography>
           <RatingStars
-            movieTitle={movieData.title}
+            movieTitle={movieData.movieTitle}
             apiURL={apiURL}
             userID={userID}
           />

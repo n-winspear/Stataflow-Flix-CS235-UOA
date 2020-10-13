@@ -51,7 +51,7 @@ export default function RatingStars(props) {
       let res = await axios(config);
       let ratings = res.data.ratings;
       await ratings.forEach((rating) => {
-        if (rating.userID === userID && rating.movieTitle === movieTitle) {
+        if (rating.personID === userID && rating.movieTitle === movieTitle) {
           setRating(rating);
         }
       });
@@ -68,7 +68,7 @@ export default function RatingStars(props) {
           "Content-Type": "application/json",
         },
         data: {
-          userID: rating.userID,
+          personID: rating.personID,
           movieTitle: movieTitle,
           rating: ratingValue,
         },
@@ -84,7 +84,7 @@ export default function RatingStars(props) {
           "Content-Type": "application/json",
         },
         data: {
-          userID: userID,
+          personID: userID,
           movieTitle: movieTitle,
           rating: rating,
         },

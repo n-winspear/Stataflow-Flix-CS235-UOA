@@ -108,13 +108,13 @@ class MemoryRepository(AbstractRepository):
             ) for genre in db['genres']]
             self._dataset_of_reviews = [Review(
                 reviewID=review['reviewID'],
-                userID=review['userID'],
+                personID=review['personID'],
                 movie=Movie(title=review['movieTitle']),
                 review_text=review['reviewText'],
             ) for review in db['reviews']]
             self._dataset_of_ratings = [Rating(
                 ratingID=rating['ratingID'],
-                userID=rating['userID'],
+                personID=rating['personID'],
                 movie=Movie(title=rating['movieTitle']),
                 rating=rating['rating'],
             ) for rating in db['ratings']]
@@ -187,7 +187,7 @@ class MemoryRepository(AbstractRepository):
                 ) for movie in user['watchedMovies']],
                 reviews=[Review(
                     reviewID=review['reviewID'],
-                    userID=review['userID'],
+                    personID=review['personID'],
                     movie=Movie(title=review['movieTitle']),
                     review_text=review['reviewText'],
                 ) for review in user['reviews']]
@@ -409,6 +409,7 @@ class MemoryRepository(AbstractRepository):
     # DELETE
     def delete_review(self, reviewID: str):
         for review in self._dataset_of_reviews:
+            print(review, review.reviewID)
             if review.reviewID == reviewID:
                 self._dataset_of_reviews.remove(review)
                 self.__write_json_db()

@@ -58,8 +58,10 @@ class Review(Resource):
         response = {
             "successful": False,
         }
+        print(reviewID, db)
         response['successful'] = True if db.delete_review(
             reviewID=reviewID) else False
+        print(response['successful'])
         if response['successful']:
             return make_response(jsonify(response), 200)
         else:
