@@ -68,7 +68,7 @@ function MovieDetails(props) {
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
   const [reviewText, setReviewText] = useState("");
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState(null);
   const moviePoster = MovieCoverPoster;
 
   useEffect(() => {
@@ -78,16 +78,11 @@ function MovieDetails(props) {
         url: `${apiURL}/reviews`,
       };
       let res = await axios(config);
-      let currentMovieReviews = res.data.reviews.map((review) => {
-        if (review.movieTitle === movieData.movieTitle) {
-          return review;
-        }
-        return null
-      })
+      let currentMovieReviews = res.data.reviews.filter(review => review.movieTitle === movieData.movieTitle)
       setReviews(currentMovieReviews)
       setLoading(false);
     }
-    if (isLoading) {
+    if (!reviews) {
       getReviews();
     }
   });
@@ -116,8 +111,8 @@ function MovieDetails(props) {
         "Content-Type": "application/json",
       },
     };
+    setReviews(reviews.filter(review => review.reviewID !== reviewID));
     await axios(config)
-    setReviews(reviews.filter((review) => review.reviewID !== reviewID));
     setReviewText("");
   }
 

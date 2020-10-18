@@ -58,6 +58,7 @@ class User(Person):
             'emailAddress': self.__email_address,
             'password': self.__password,
             'phoneNumber': self.__phone_number,
+            'dateOfBirth': self._date_of_birth,
             'watchlist': [movie.toJSON() for movie in self.__watchlist],
             'watchedMovies': [movie.toJSON() for movie in self.__watched_movies],
             'reviews': [review.toJSON() for review in self.__reviews]
@@ -152,7 +153,6 @@ class User(Person):
             else:
                 return None
         except Exception as e:
-            print(f'Phone Number Parsing Error: {e}')
             return None
 
     # Email Address Check

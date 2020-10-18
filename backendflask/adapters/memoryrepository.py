@@ -409,7 +409,7 @@ class MemoryRepository(AbstractRepository):
     # DELETE
     def delete_review(self, reviewID: str):
         for review in self._dataset_of_reviews:
-            print(review, review.reviewID)
+            print('made it here')
             if review.reviewID == reviewID:
                 self._dataset_of_reviews.remove(review)
                 self.__write_json_db()
@@ -465,9 +465,9 @@ class MemoryRepository(AbstractRepository):
 
     # GET
 
-    def get_user(self, emailAddress: str):
+    def get_user(self, email_address: str):
         for stored_user in self._dataset_of_users:
-            if stored_user.emailAddress == emailAddress:
+            if stored_user.email_address == email_address:
                 return stored_user
 
     # INSERT

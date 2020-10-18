@@ -18,76 +18,81 @@ class GCloudRepository(AbstractRepository):
     def __init__(self):
 
         self.__db_config = {
-            'user': 'root',
-            'password': 'F6b#CkG5pybYKBaIf1Ua',  # Move this to env when db working
+            'user': 'sfx',
+            # 'password': 'F6b#CkG5pybYKBaIf1Ua',  # Move this to env when db working
             'host': '35.197.160.250',
-            'client_flags': [ClientFlag.SSL],
             'database': 'SFX_DB',
-            'ssl_ca': 'gcloud-config-files/server-ca.pem',
-            'ssl_cert': 'gcloud-config-files/client-cert.pem',
-            'ssl_key': 'gcloud-config-files/client-key.pem'
         }
 
         self.__cnxn = mysql.connector.connect(**self.__db_config)
         self.__crsr = self.__cnxn.cursor()
 
-        self.__initial_db = True
+        #self.__initial_db = True
 
-        if self.__initial_db == True:
-            self.__fresh_db()
+        # if self.__initial_db == True:
+        #   self.__fresh_db()
 
     def __fresh_db(self):
-        self.__crsr.execute("""CREATE_TABLE Actors (
+
+        self.__crsr.execute("""DROP TABLE IF EXISTS Actor;""")
+        self.__crsr.execute("""DROP TABLE IF EXISTS Director;""")
+        self.__crsr.execute("""DROP TABLE IF EXISTS Genre;""")
+        self.__crsr.execute("""DROP TABLE IF EXISTS Movie;""")
+        self.__crsr.execute("""DROP TABLE IF EXISTS Rating;""")
+        self.__crsr.execute("""DROP TABLE IF EXISTS Review;""")
+        self.__crsr.execute("""DROP TABLE IF EXISTS User;""")
+
+        self.__crsr.execute("""CREATE TABLE Actor(
             personID VARCHAR(255) PRIMARY KEY,
             fullName VARCHAR(255),
             gender INTEGER,
             dateOfBirth VARCHAR(255),
             imdbPage VARCHAR(255)
-        )""")
+        );""")
 
-        self.__crsr.execute("""CREATE_TABLE Directors (
+        self.__crsr.execute("""CREATE TABLE Director(
             personID VARCHAR(255) PRIMARY KEY,
             fullName VARCHAR(255),
             gender INTEGER,
             dateOfBirth VARCHAR(255),
             imdbPage VARCHAR(255)
-        )""")
+        );""")
 
-        self.__crsr.execute("""CREATE_TABLE Genres (
+        self.__crsr.execute("""CREATE TABLE Genre(
             genreID VARCHAR(255) PRIMARY KEY,
-            genreName VARCHAR(255),
-        )""")
+            genreName VARCHAR(255)
+        );""")
 
-        self.__crsr.execute("""CREATE_TABLE Movie (
+        self.__crsr.execute("""CREATE TABLE Movie(
             movieID VARCHAR(255) PRIMARY KEY,
             movieTitle VARCHAR(255),
             releaseYear INTEGER,
             genres VARCHAR(255),
             description VARCHAR(510),
-            directorID VARCHAR(255),
-            actorID VARCHAR(255),
+            directors VARCHAR(255),
+            actors VARCHAR(255),
             runtimeMinutes INTEGER,
             averageRating FLOAT,
             voteCount INTEGER,
             revenue INTEGER,
-            metascore FLOAT,
-        )""")
+            metascore FLOAT
+        );""")
 
-        self.__crsr.execute("""CREATE_TABLE Rating (
+        self.__crsr.execute("""CREATE TABLE Rating(
             ratingID VARCHAR(255) PRIMARY KEY,
             personID VARCHAR(255),
             movieTitle VARCHAR(255),
             rating FLOAT
-        )""")
+        );""")
 
-        self.__crsr.execute("""CREATE_TABLE Review (
+        self.__crsr.execute("""CREATE TABLE Review(
             reviewID VARCHAR(255) PRIMARY KEY,
             personID VARCHAR(255),
             movieTitle VARCHAR(255),
             reviewText VARCHAR(1020)
-        )""")
+        );""")
 
-        self.__crsr.execute("""CREATE_TABLE User (
+        self.__crsr.execute("""CREATE TABLE User(
             personID VARCHAR(255) PRIMARY KEY,
             firstName VARCHAR(255),
             lastName VARCHAR(255),
@@ -97,40 +102,8 @@ class GCloudRepository(AbstractRepository):
             phoneNumber VARCHAR(255),
             watchlist VARCHAR(255),
             watchedMovies VARCHAR(255),
-            reviews VARCHAR(255),
-        )""")
-
-        ###############################################
-        # PROPERTIES
-        ###############################################
-
-    @ property
-    def dataset_of_actors(self):
-        return self._dataset_of_actors
-
-    @ property
-    def dataset_of_movies(self):
-        return self._dataset_of_movies
-
-    @ property
-    def dataset_of_directors(self):
-        return self._dataset_of_directors
-
-    @ property
-    def dataset_of_genres(self):
-        return self._dataset_of_genres
-
-    @ property
-    def dataset_of_reviews(self):
-        return self._dataset_of_reviews
-
-    @ property
-    def dataset_of_ratings(self):
-        return self._dataset_of_ratings
-
-    @ property
-    def dataset_of_users(self):
-        return self._dataset_of_users
+            reviews VARCHAR(255)
+        );""")
 
     ###############################################
     # Actor Methods
@@ -139,33 +112,44 @@ class GCloudRepository(AbstractRepository):
     # GET
 
     def get_actor(self, personID: str):
-        for stored_actor in self._dataset_of_actors:
-            if stored_actor.personID == personID:
-                return stored_actor
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Actor WHERE personID = '{personID}';""")
+        print(dbRes)
 
     # INSERT
     def add_actor(self, actor: Actor):
-        if isinstance(actor, Actor):
-            self._dataset_of_actors.append(actor)
-            self.__write_json_db()
-            return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""INSERT INTO Actor(
+                personID,
+                fullName,
+                gender,
+                dateOfBirth,
+                imdbPage
+            ) VALUES(
+                '{actor.personID}',
+                '{actor.full_name}',
+                {actor.gender},
+                '{actor.date_of_birth}',
+                '{actor.imdb_page}'
+            );""")
+        print(dbRes)
 
     # UPDATE
     def update_actor(self, updated_actor: Actor):
-        if isinstance(updated_actor, Actor):
-            [updated_actor if actor.personID ==
-                updated_actor.personID else actor for actor in self._dataset_of_actors]
-            self.__write_json_db()
+        dbRes = self.__crsr.execute(
+            f"""Update Actor SET(
+                fullName='{updated_actor.full_name}',
+                gender={updated_actor.gender},
+                dateOfBirth='{updated_actor.date_of_birth}',
+                imdbPage='{updated_actor.imdb_page}'
+            ) WHERE personID = '{updated_actor.personID}';""")
+        print(dbRes)
 
-    # DELETE
+    # DELETEs
     def delete_actor(self, personID: str):
-        for actor in self._dataset_of_actors:
-            if actor.personID == personID:
-                self._dataset_of_actors.remove(actor)
-                self.__write_json_db()
-                return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""DELETE FROM Actor WHERE personID = '{personID}';""")
+        print(dbRes)
 
     # GET ALL
     def get_all_actors(self):
@@ -178,33 +162,44 @@ class GCloudRepository(AbstractRepository):
     # GET
 
     def get_director(self, personID: str):
-        for stored_director in self._dataset_of_directors:
-            if stored_director.personID == personID:
-                return stored_director
-
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Director WHERE personID = '{personID}';""")
+        print(dbRes)
     # INSERT
+
     def add_director(self, director: Director):
-        if isinstance(director, Director):
-            self._dataset_of_directors.append(director)
-            self.__write_json_db()
-            return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""INSERT INTO Director(
+                personID,
+                fullName,
+                gender,
+                dateOfBirth,
+                imdbPage
+            ) VALUES(
+                '{director.personID}',
+                '{director.full_name}',
+                {director.gender},
+                '{director.date_of_birth}',
+                '{director.imdb_page}'
+            );""")
+        print(dbRes)
 
     # UPDATE
     def update_director(self, updated_director: Director):
-        if isinstance(updated_director, Director):
-            [updated_director if director.personID ==
-                updated_director.personID else director for director in self._dataset_of_directors]
-            self.__write_json_db()
+        dbRes = self.__crsr.execute(
+            f"""Update Director SET(
+                fullName='{updated_director.full_name}',
+                gender={updated_director.gender},
+                dateOfBirth='{updated_director.date_of_birth}',
+                imdbPage='{updated_director.imdb_page}'
+            ) WHERE personID = '{updated_director.personID}';""")
+        print(dbRes)
 
     # DELETE
     def delete_director(self, personID: str):
-        for director in self._dataset_of_directors:
-            if director.personID == personID:
-                self._dataset_of_directors.remove(director)
-                self.__write_json_db()
-                return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""DELETE FROM Director WHERE personID = '{personID}';""")
+        print(dbRes)
 
     # GET ALL
     def get_all_directors(self):
@@ -216,33 +211,36 @@ class GCloudRepository(AbstractRepository):
 
     # GET
     def get_genre(self, genreID: str):
-        for stored_genre in self._dataset_of_genres:
-            if stored_genre.genreID == genreID:
-                return stored_genre
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Genre WHERE genreID = '{genreID}';""")
+        print(dbRes)
 
     # INSERT
     def add_genre(self, genre: Genre):
-        if isinstance(genre, Genre):
-            self._dataset_of_genres.append(genre)
-            self.__write_json_db()
-            return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""INSERT INTO Genre(
+                genreID,
+                genreName
+            ) VALUES(
+                '{genre.genreID}',
+                '{genre.genre_name}'
+            );""")
+        print(dbRes)
 
     # UPDATE
     def update_genre(self, updated_genre: Genre):
-        if isinstance(updated_genre, Genre):
-            [updated_genre if genre.genreID ==
-                updated_genre.genreID else genre for genre in self._dataset_of_genres]
-            self.__write_json_db()
+        dbRes = self.__crsr.execute(
+            f"""UPDATE Genre SET (
+                genreID = '{updated_genre.genreID}',
+                genreName = '{updated_genre.genre_name}'
+            );""")
+        print(dbRes)
 
     # DELETE
     def delete_genre(self, genreID: str):
-        for genre in self._dataset_of_genres:
-            if genre.genreID == genreID:
-                self._dataset_of_genres.remove(genre)
-                self.__write_json_db()
-                return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""DELETE FROM Genre WHERE genreID = '{genreID}';""")
+        print(dbRes)
 
     # GET ALL
     def get_all_genres(self):
@@ -255,37 +253,71 @@ class GCloudRepository(AbstractRepository):
     # GET
 
     def get_movie(self, movieID: str):
-        for stored_movie in self._dataset_of_movies:
-            if stored_movie.movieID == movieID:
-                return stored_movie
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Movie WHERE movieID = '{movieID}';""")
+        print(dbRes)
 
     # INSERT
     def add_movie(self, movie: Movie):
-        if isinstance(movie, Movie):
-            self._dataset_of_movies.append(movie)
-            self.__write_json_db()
-            return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""INSERT INTO Movie(
+                movieID PRIMARY KEY,
+                movieTitle,
+                releaseYear,
+                genres,
+                description,
+                directors,
+                actors,
+                runtimeMinutes,
+                averageRating,
+                voteCount,
+                revenue,
+                metascore
+            ) VALUES(
+                '{movie.movieID}',
+                '{movie.title}',
+                {movie.release_year},
+                '{movie.genres}',
+                '{movie.description}',
+                '{movie.directors}',
+                '{movie.actors}',
+                {movie.runtime_minutes},
+                {movie.average_rating},
+                {movie.vote_count},
+                {movie.revenue},
+                {movie.meat}
+            );""")
+        print(dbRes)
 
     # UPDATE
     def update_movie(self, updated_movie: Movie):
-        if isinstance(updated_movie, Movie):
-            [updated_movie if movie.movieID ==
-                updated_movie.movieID else movie for movie in self._dataset_of_movies]
-            self.__write_json_db()
+        dbRes = self.__crsr.execute(
+            f"""UPDATE Movie SET(
+                movieTitle='{updated_movie.title}',
+                releaseYear={updated_movie.release_year},
+                genres='{updated_movie.genres}',
+                description='{updated_movie.description}',
+                directors='{updated_movie.directors}',
+                actors='{updated_movie.actors}',
+                runtimeMinutes={updated_movie.runtime_minutes},
+                averageRating={updated_movie.average_rating},
+                voteCount={updated_movie.vote_count},
+                revenue={updated_movie.revenue},
+                metascore={updated_movie.meat}
+            );""")
+        print(dbRes)
 
     # DELETE
     def delete_movie(self, movieID: str):
-        for movie in self._dataset_of_movies:
-            if movie.movieID == movieID:
-                self._dataset_of_movies.remove(movie)
-                self.__write_json_db()
-                return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""DELETE FROM Movie WHERE movieID = '{movieID}';""")
+        print(dbRes)
 
     # GET ALL
     def get_all_movies(self):
-        return self._dataset_of_movies
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Movie;""")
+        print(dbRes)
 
     ###############################################
     # Review Methods
@@ -294,39 +326,47 @@ class GCloudRepository(AbstractRepository):
     # GET
 
     def get_review(self, reviewID: str):
-        for stored_review in self._dataset_of_reviews:
-            if stored_review.reviewID == reviewID:
-                return stored_review
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM review WHERE reviewID = '{reviewID}';""")
+        print(dbRes)
 
     # INSERT
     def add_review(self, review: Review):
-        if isinstance(review, Review):
-            self._dataset_of_reviews.append(review)
-            self.__write_json_db()
-            return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""INSERT INTO Review (
+                reviewID,
+                personID,
+                movieTitle,
+                reviewText
+            ) VALUES (
+                '{review.reviewID}',
+                '{review.personID}',
+                '{review.movie.title}',
+                '{review.review_text}'
+            );""")
+        print(dbRes)
 
     # UPDATE
     def update_review(self, updated_review: Review):
-        if isinstance(updated_review, Review):
-            [updated_review if updated_review.reviewID ==
-                review.reviewID else review for review in self._dataset_of_reviews]
-            self.__write_json_db()
+        dbRes = self.__crsr.execute(
+            f"""UPDATE Review SET(
+                personID='{updated_review.personID}',
+                movieTitle='{updated_review.movie.title}',
+                reviewText='{updated_review.review_text}',
+            );""")
+        print(dbRes)
 
     # DELETE
     def delete_review(self, reviewID: str):
-        for review in self._dataset_of_reviews:
-            print(review, review.reviewID)
-            if review.reviewID == reviewID:
-                self._dataset_of_reviews.remove(review)
-                self.__write_json_db()
-                return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""DELETE FROM Review WHERE reviewID = '{reviewID}';""")
+        print(dbRes)
 
     # GET ALL
     def get_all_reviews(self):
-        return self._dataset_of_reviews
-
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Movie;""")
+        print(dbRes)
     ###############################################
     # Rating Methods
     ###############################################
@@ -334,37 +374,47 @@ class GCloudRepository(AbstractRepository):
     # GET
 
     def get_rating(self, ratingID: str):
-        for stored_rating in self._dataset_of_ratings:
-            if stored_rating.ratingID == ratingID:
-                return stored_rating
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Rating WHERE ratingID = '{ratingID}';""")
+        print(dbRes)
 
     # INSERT
     def add_rating(self, rating: Rating):
-        if isinstance(rating, Rating):
-            self._dataset_of_ratings.append(rating)
-            self.__write_json_db()
-            return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""INSERT INTO Rating(
+                ratingID,
+                personID,
+                movieTitle,
+                rating
+            ) VALUES(
+                '{rating.ratingID}',
+                '{rating.personID}',
+                '{rating.movie.title}',
+                {rating.rating}
+            );""")
+        print(dbRes)
 
     # UPDATE
     def update_rating(self, updated_rating: Rating):
-        if isinstance(updated_rating, Rating):
-            [updated_rating if updated_rating.ratingID ==
-                rating.ratingID else rating for rating in self._dataset_of_ratings]
-            self.__write_json_db()
+        dbRes = self.__crsr.execute(
+            f"""UPDATE Rating SET(
+                personID='{updated_rating.personID}',
+                movieTitle='{updated_rating.movie.title}',
+                rating={updated_rating.review_text}
+            );""")
+        print(dbRes)
 
     # DELETE
     def delete_rating(self, ratingID: str):
-        for rating in self._dataset_of_ratings:
-            if rating.ratingID == ratingID:
-                self._dataset_of_ratings.remove(rating)
-                self.__write_json_db()
-                return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""DELETE FROM Rating WHERE ratingID = '{ratingID}';""")
+        print(dbRes)
 
     # GET ALL
     def get_all_ratings(self):
-        return self._dataset_of_ratings
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM Movie;""")
+        print(dbRes)
 
     ###############################################
     # User Methods
@@ -373,34 +423,61 @@ class GCloudRepository(AbstractRepository):
     # GET
 
     def get_user(self, personID: str):
-        for stored_user in self._dataset_of_users:
-            if stored_user.personID == personID:
-                return stored_user
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM User WHERE personID = '{personID}';""")
+        print(dbRes)
 
     # INSERT
     def add_user(self, user: User):
-        if isinstance(user, User):
-            self._dataset_of_users.append(user)
-            self.__write_json_db()
-            return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""INSERT INTO User(
+                personID,
+                firstName,
+                lastName,
+                gender,
+                emailAddress,
+                password,
+                phoneNumber,
+                watchlist,
+                watchedMovies,
+                reviews
+            ) VALUES(
+                '{user.personID}',
+                '{user.first_name}',
+                '{user.last_name}',
+                {user.gender},
+                '{user.email_address}',
+                '{user.password}',
+                '{user.phone_number}',
+                '{user.watchlist}',
+                '{user.watched_movies}',
+                '{user.reviews}'
+            );""")
+        print(dbRes)
 
     # UPDATE
     def update_user(self, updated_user: User):
-        if isinstance(updated_user, User):
-            [updated_user if updated_user.personID ==
-                user.personID else user for user in self._dataset_of_users]
-            self.__write_json_db()
+        dbRes = self.__crsr.execute(
+            f"""UPDATE User SET(
+                firstName='{updated_user.first_name}',
+                lastName='{updated_user.last_name}',
+                gender={updated_user.gender},
+                emailAddress='{updated_user.email_address}',
+                password='{updated_user.password}',
+                phoneNumber='{updated_user.phone_number}',
+                watchlist='{updated_user.watchlist}',
+                watchedMovies='{updated_user.watched_movies}',
+                reviews='{updated_user.reviews}'
+            ) WHERE personID = '{updated_user.personID}';""")
 
     # DELETE
     def delete_user(self, personID: str):
-        for user in self._dataset_of_users:
-            if user.personID == personID:
-                self._dataset_of_users.remove(user)
-                self.__write_json_db()
-                return True
-        return False
+        dbRes = self.__crsr.execute(
+            f"""DELETE FROM User WHERE personID = '{personID}';""")
+        print(dbRes)
 
     # GET ALL
     def get_all_users(self):
-        return self._dataset_of_users
+        dbRes = self.__crsr.execute(
+            f"""SELECT * FROM User;""")
+        print(dbRes)

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {v4 as uuidv4} from 'uuid'
 import axios from 'axios'
+import Cookies from 'universal-cookie'
 
 function Copyright() {
   return (
@@ -51,12 +52,19 @@ const useStyles = makeStyles((theme) => ({
 export default function RegisterPage(props) {
     const classes = useStyles();
     const { setUserAuthorised, setUserID, apiURL } = props;
-    const [firstName, setFirstName] = useState()
-    const [lastName, setLastName] = useState()
-    const [emailAddress, setEmailAddress] = useState()
-    const [password, setPassword] = useState()
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [emailAddress, setEmailAddress] = useState("")
+    const [password, setPassword] = useState("")
     const [isLoading, setLoading] = useState(false);
+    const cookies = new Cookies()
     
+    useEffect(() => {
+      if (cookies.get('userID')) {
+        props.history.push('/')
+      }
+    })
+
     async function registerUser() {
         let userObj = {
             personID: uuidv4(),
@@ -67,7 +75,7 @@ export default function RegisterPage(props) {
         }
         let config = {
             method: "post",
-            url: `${apiURL}/reviews`,
+            url: `${apiURL}/users`,
             headers: {
                 "Content-Type": "application/json",
             },
@@ -78,7 +86,7 @@ export default function RegisterPage(props) {
         if (res.data.successful) {
             setUserAuthorised(true);
             setUserID(userObj.personID)
-            this.props.hitory.push('/')
+            props.history.push('/')
         }
     }
 
@@ -115,6 +123,7 @@ export default function RegisterPage(props) {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                value={firstName}
                 autoFocus
                 onChange={(e) => setFirstName(e.target.value)}
               />
@@ -128,6 +137,7 @@ export default function RegisterPage(props) {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
             </Grid>
@@ -140,6 +150,7 @@ export default function RegisterPage(props) {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={emailAddress}
                 onChange={(e) => setEmailAddress(e.target.value)}
               />
             </Grid>
@@ -152,6 +163,7 @@ export default function RegisterPage(props) {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -165,6 +177,12 @@ export default function RegisterPage(props) {
             color="primary"
             className={classes.submit}
             onClick={() => registerUser()}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                registerUser();
+              }
+            }}
           >
             Sign Up
           </Button>

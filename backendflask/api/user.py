@@ -1,6 +1,7 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
+from backendflask.adapters.gcloudrepository import GCloudRepository
 from backendflask.domain_models.user import User
 from backendflask.domain_models.movie import Movie
 from backendflask.domain_models.user import User
@@ -8,6 +9,7 @@ import json
 
 # DB Connection
 db = MemoryRepository()
+#db = GCloudRepository()
 
 # Request Parser
 parser = reqparse.RequestParser()
@@ -25,8 +27,8 @@ parser.add_argument('users')
 
 
 class User(Resource):
-    def get(self, personID: str) -> str:
-        user = db.get_user(personID=personID)
+    def get(self, emailAddress: str) -> str:
+        user = db.get_user(email_address=emailAddress)
         response = {
             "successful": True if user else False,
             "user": user.toJSON(),

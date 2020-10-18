@@ -97295,24 +97295,45 @@
     ],
     "reviews": [
         {
-            "personID": "660efc0c-9221-4187-9d37-145b2392ff2e",
-            "reviewID": "316a12c1-b4d5-4461-b776-6f0196940dc7",
-            "movieTitle": null,
-            "reviewText": null
+            "personID": "b63499d7-2199-4f65-afee-2a8ed854c966",
+            "reviewID": "4cc612d9-eeaa-435a-92cc-81e37c8b69cb",
+            "movieTitle": "Split",
+            "reviewText": "This is a test"
         },
         {
-            "personID": "d8675a48-45d4-47c6-9167-ffa70bd5e2c2",
-            "reviewID": "8d95663a-b495-483a-8dba-8406eed1f718",
-            "movieTitle": null,
-            "reviewText": null
-        },
-        {
-            "personID": "f654832f-e33a-4776-bb1b-1cb1389a45cc",
-            "reviewID": "42b5b9f2-52ee-4b86-b527-92d0e182a052",
-            "movieTitle": null,
-            "reviewText": null
+            "personID": "b63499d7-2199-4f65-afee-2a8ed854c966",
+            "reviewID": "5106bd11-f1ef-4360-99a6-82c2bf7a2418",
+            "movieTitle": "Split",
+            "reviewText": "Test"
         }
     ],
-    "ratings": [],
-    "users": []
+    "ratings": [
+        {
+            "ratingID": "af46d2df-498f-42c1-834c-d4754d19b528",
+            "personID": "b63499d7-2199-4f65-afee-2a8ed854c966",
+            "movieTitle": null,
+            "rating": null
+        },
+        {
+            "ratingID": "a0660a13-8c84-485a-87d0-2b9bb37ab0ef",
+            "personID": "b63499d7-2199-4f65-afee-2a8ed854c966",
+            "movieTitle": null,
+            "rating": null
+        }
+    ],
+    "users": [
+        {
+            "personID": "b63499d7-2199-4f65-afee-2a8ed854c966",
+            "firstName": "Nathan",
+            "lastName": "Winspear",
+            "gender": 1,
+            "emailAddress": "n.winspear1@gmail.com",
+            "password": "4qXyr#2zHd21@MW^zO6o",
+            "phoneNumber": null,
+            "dateOfBirth": null,
+            "watchlist": [],
+            "watchedMovies": [],
+            "reviews": []
+        }
+    ]
 }

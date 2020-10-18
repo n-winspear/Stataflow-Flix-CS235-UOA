@@ -1,12 +1,14 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
+from backendflask.adapters.gcloudrepository import GCloudRepository
 from backendflask.domain_models.rating import Rating
 from backendflask.domain_models.movie import Movie
 import json
 
 # DB Connection
 db = MemoryRepository()
+#db = GCloudRepository()
 
 # Request Parser
 parser = reqparse.RequestParser()

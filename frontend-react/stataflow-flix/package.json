@@ -15,6 +15,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-text-truncate": "^0.16.0",
+    "universal-cookie": "^4.0.4",
     "uuid": "^8.3.1"
   },
   "scripts": {

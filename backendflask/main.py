@@ -8,13 +8,13 @@ from backendflask.api.movie import Movie
 from backendflask.api.genre import Genre
 from backendflask.api.director import Director
 from backendflask.api.actor import Actor
+from backendflask.api.user import User
 from backendflask.api.review_list import ReviewList
 from backendflask.api.rating_list import RatingList
 from backendflask.api.movie_list import MovieList
 from backendflask.api.genre_list import GenreList
 from backendflask.api.director_list import DirectorList
 from backendflask.api.actor_list import ActorList
-from backendflask.api.user_list import UserList
 from backendflask.api.user_list import UserList
 from uuid import uuid4
 
@@ -42,12 +42,12 @@ def not_found(error):
 # Actors
 api.add_resource(ActorList, f"{API_BASE_URL}/actors")
 api.add_resource(
-    Actor, f"{API_BASE_URL}/actors/<string:actorID>")
+    Actor, f"{API_BASE_URL}/actors/<string:personID>")
 
 # Directors
 api.add_resource(DirectorList, f"{API_BASE_URL}/directors")
 api.add_resource(
-    Director, f"{API_BASE_URL}/directors/<string:directorID>")
+    Director, f"{API_BASE_URL}/directors/<string:personID>")
 
 # Genres
 api.add_resource(GenreList, f"{API_BASE_URL}/genres")
@@ -68,6 +68,11 @@ api.add_resource(
 api.add_resource(ReviewList, f"{API_BASE_URL}/reviews")
 api.add_resource(
     Review, f"{API_BASE_URL}/reviews/<string:reviewID>")
+
+# Users
+api.add_resource(UserList, f"{API_BASE_URL}/users")
+api.add_resource(
+    User, f"{API_BASE_URL}/user/<string:emailAddress>")
 
 
 # App Runner

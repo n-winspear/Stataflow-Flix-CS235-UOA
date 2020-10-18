@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -12,6 +10,10 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { CircularProgress } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import axios from 'axios'
+import Cookies from 'universal-cookie'
 
 function Copyright() {
   return (
@@ -46,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: '#FDA74A',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -57,10 +59,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginPage() {
+export default function LoginPage(props) {
   const classes = useStyles();
+  const { setUserAuthorised, setUserID, apiURL } = props;
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const cookies = new Cookies()
 
-  return (
+  useEffect(() => {
+    if (cookies.get('userID')) {
+      props.history.push('/')
+    }
+  })
+
+  async function loginUser() {
+    let config = {
+        method: "get",
+        url: `${apiURL}/user/${emailAddress}`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+    setLoading(true);
+    let res = await axios(config)
+    if (res.data.successful) {
+      let authCheck = res.data.user.password === password;
+      setUserAuthorised(authCheck);
+      setUserID(res.data.user.personID)
+      props.history.push('/')
+    }
+}
+
+  return isLoading ? (
+  <Container
+    fixed
+    maxWidth={"lg"}
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "calc(100vh - 64px)",
+    }}
+  >
+    <CircularProgress className={classes.circularProgress} />
+  </Container>) : (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -83,6 +126,8 @@ export default function LoginPage() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={emailAddress}
+              onChange={(e) => setEmailAddress(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -93,18 +138,22 @@ export default function LoginPage() {
               label="Password"
               type="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={() => loginUser()}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  loginUser();
+                }
+              }}
             >
               Sign In
             </Button>

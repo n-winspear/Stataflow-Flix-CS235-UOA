@@ -1,15 +1,13 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import { useHistory } from "react-router-dom";
+import Cookies from 'universal-cookie'
+import { Button } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   head: {
@@ -77,19 +75,13 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchAppBar(props) {
   const classes = useStyles();
   const history = useHistory();
+  const cookies = new Cookies()
+  const { setUserAuthorised, setUserID } = props;
 
   return (
     <div className={classes.head}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             className={classes.title}
             variant="h5"
@@ -111,22 +103,19 @@ export default function SearchAppBar(props) {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-          <IconButton
+          <Button
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={() => {
+              cookies.remove('userID')
+              setUserID('')
+              setUserAuthorised(false)
+            }}
           >
-            <FormatListBulletedIcon className={classes.iconStyle} />
-          </IconButton>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <AccountCircleIcon className={classes.iconStyle} />
-          </IconButton>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

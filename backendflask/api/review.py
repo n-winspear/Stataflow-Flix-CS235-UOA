@@ -1,12 +1,15 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from backendflask.adapters.memoryrepository import MemoryRepository
+from backendflask.adapters.gcloudrepository import GCloudRepository
 from backendflask.domain_models.review import Review
 from backendflask.domain_models.movie import Movie
 import json
+import time
 
 # DB Connection
 db = MemoryRepository()
+#db = GCloudRepository()
 
 # Request Parser
 parser = reqparse.RequestParser()
@@ -58,10 +61,8 @@ class Review(Resource):
         response = {
             "successful": False,
         }
-        print(reviewID, db)
         response['successful'] = True if db.delete_review(
             reviewID=reviewID) else False
-        print(response['successful'])
         if response['successful']:
             return make_response(jsonify(response), 200)
         else:
