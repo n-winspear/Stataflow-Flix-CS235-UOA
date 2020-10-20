@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, Button } from "@material-ui/core";
+import { Grid, Box, Button, Container } from "@material-ui/core";
 import MovieCard from "components/home/MovieCard/MovieCard";
-import { makeStyles } from "@material-ui/core/styles";
+import InputBase from "@material-ui/core/InputBase";
+import { fade, makeStyles } from "@material-ui/core/styles";
+import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Fuse from 'fuse.js'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
     display: "flex",
     justifyContent: "center",
@@ -26,16 +29,55 @@ const useStyles = makeStyles(() => ({
   circularProgress: {
     color: "#FDA74A",
   },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade('#707070', 0.25),
+    "&:hover": {
+      backgroundColor: fade('#707070', 0.35),
+    },
+    margin: "2em auto",
+    width: "30%",
+    [theme.breakpoints.up("sm")]: {
+      width: "30%",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "30ch",
+      "&:focus": {
+        width: "60ch",
+      },
+    },
+  },
 }));
 
 export default function Home(props) {
   const classes = useStyles();
-  const { apiURL, userID } = props;
+  const { apiURL, userID,  } = props;
   const [isLoading, setLoading] = useState(true);
   const [movies, setMovies] = useState([]);
-  const [remainingMovies, setRemainingMovies] = useState([])
+  const [allMovies, setAllMovies] = useState([])
   const [slice, setSlice] = useState(0)
-  const [loadingMovies, setLoadingMovies] = useState(false)
+  const [canLoadMovies, setCanLoadMovies] = useState(false)
+  let typingTimer;
 
   useEffect(() => {
     if (movies.length === 0) {
@@ -62,15 +104,32 @@ export default function Home(props) {
             setSlice(54)
             break;
         }
+        setAllMovies(res.data.movies);
         setMovies(res.data.movies.slice(0, slice));
-        setRemainingMovies(res.data.movies.slice(50))
         setLoading(false);
       }
       getMovies();
     }
   }, [movies, movies.length, apiURL, userID, isLoading, slice]);
 
-  function viewMovie(movieData) {
+  function searchMovie(text) {
+
+    const options = {
+      includeScore: true,
+      shouldSort: true,
+      findAllMatches: true,
+      threshold: 0.4,
+      minMatchCharLength: 3,
+      keys: ['movieTitle']      
+    }
+
+    const fuse = new Fuse(allMovies, options)
+
+    const result = fuse.search(text)
+    setMovies(result.map(movie => movie.item))
+  }
+
+  function viewMovie(movieData, movieImagesApi) {
     const URL = movieData.movieTitle.toLowerCase().replace(/\s/g, "-");
     props.history.push({
       pathname: `/movies/${URL}`,
@@ -78,19 +137,21 @@ export default function Home(props) {
         apiURL: apiURL,
         userID: userID,
         movieData: movieData,
+        movieImagesApi: movieImagesApi
       },
     });
   }
 
   function loadMoreMovies() {
-    setMovies([...movies, ...remainingMovies.slice(0, slice)])
-    setRemainingMovies(remainingMovies.slice(slice))
-    if (slice * 2 > 1000) {
-      setSlice(1001)
+    let newSlice = slice;
+    if (newSlice * 2 > 1000) {
+      newSlice = 1001
+      setCanLoadMovies(false)
     } else {
-      setSlice(slice * 2)
+      newSlice = newSlice * 2
     }
-    setLoadingMovies(false)
+    setMovies(allMovies.slice(0, newSlice))
+    setSlice(newSlice)
   }
 
   return isLoading ? (
@@ -99,6 +160,30 @@ export default function Home(props) {
     </Box>
   ) : (
     <>
+      <Container >
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ "aria-label": "search" }}
+            onKeyUp={(e)=> {
+              clearTimeout(typingTimer)
+              if (e.target.value) {
+                e.persist()
+                typingTimer = setTimeout(() => {
+                  searchMovie(e.target.value)
+                }, 1000)
+              }
+            }}
+          />
+        </div>
+      </Container>
       <Grid className={classes.grid} container spacing={3}>
         {movies.map((movieData, index) => {
           return (
@@ -124,9 +209,8 @@ export default function Home(props) {
         })}
       </Grid>
       <Box className={classes.showMore} >
-        {loadingMovies ? (<CircularProgress className={classes.circularProgress} />) : (
+        {canLoadMovies ? (<></>) : (
           <Button variant="contained" style={{backgroundColor: '#FDA74A', color: '#F8F8F8'}} onClick={() => {
-            setLoadingMovies(true);
             loadMoreMovies();
           }}>Load More</Button>
         )}

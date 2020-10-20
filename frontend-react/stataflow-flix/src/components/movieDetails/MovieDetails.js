@@ -12,7 +12,6 @@ import {
   Paper,
   Button,
 } from "@material-ui/core";
-import MovieCoverPoster from "components/movieDetails/images/MovieCoverPoster.jpg";
 import ActorList from "components/movieDetails/ActorList";
 import DirectorList from "components/movieDetails/DirectorList";
 import ReviewList from "components/movieDetails/ReviewList";
@@ -64,12 +63,11 @@ const useStyles = makeStyles(() => ({
 
 function MovieDetails(props) {
   const { location } = props;
-  const { apiURL, userID, movieData } = location.state;
+  const { apiURL, userID, movieData, movieImagesApi } = location.state;
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReviews] = useState(null);
-  const moviePoster = MovieCoverPoster;
 
   useEffect(() => {
     async function getReviews() {
@@ -145,7 +143,7 @@ function MovieDetails(props) {
               alignItems: "center",
             }}
           >
-            {moviePoster ? (
+            {movieData.posterPath ? (
               <Paper
                 elevation={2}
                 style={{
@@ -156,7 +154,7 @@ function MovieDetails(props) {
                 }}
               >
                 <img
-                  src={moviePoster}
+                  src={`${movieImagesApi}${movieData.posterPath}`}
                   alt={movieData.movieTitle}
                   className={classes.moviePoster}
                 />
