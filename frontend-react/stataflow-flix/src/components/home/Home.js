@@ -129,7 +129,7 @@ export default function Home(props) {
     setMovies(result.map(movie => movie.item))
   }
 
-  function viewMovie(movieData, movieImagesApi) {
+  function viewMovie(movieData, movieImagesApi, movieBaseApi, apiKey) {
     const URL = movieData.movieTitle.toLowerCase().replace(/\s/g, "-");
     props.history.push({
       pathname: `/movies/${URL}`,
@@ -137,7 +137,9 @@ export default function Home(props) {
         apiURL: apiURL,
         userID: userID,
         movieData: movieData,
-        movieImagesApi: movieImagesApi
+        movieImagesApi: movieImagesApi,
+        movieBaseApi: movieBaseApi,
+        apiKey: apiKey
       },
     });
   }

@@ -30,9 +30,9 @@ export default function MovieCard(props) {
   const classes = useStyles();
   const { movieData, apiURL, viewMovie, userID } = props;
   const [ratingState, setRatingState] = useState(false);
-  const [backdropImage, setBackdropImage] = useState(BlankMovieImage)
+  const [backdropImage, setBackdropImage] = useState(null)
   const apiKey = '1ddda2ec681efc83addd9da48de5a365'
-  const movieDetailsApi = 'https://api.themoviedb.org/3'
+  const movieBaseApi = 'https://api.themoviedb.org/3'
   const movieImagesApi = 'https://image.tmdb.org/t/p/w185'
 
   useEffect(() => {
@@ -40,13 +40,15 @@ export default function MovieCard(props) {
       async function getMovieImages() {
         let detailsConfig = {
           method: "get",
-          url: `${movieDetailsApi}/search/movie?api_key=${apiKey}&query=${movieData.movieTitle}&page=1`,
+          url: `${movieBaseApi}/search/movie?api_key=${apiKey}&query=${movieData.movieTitle}&page=1`,
         };
         let detailsRes = await axios(detailsConfig);
-        if (detailsRes) {
+        if (detailsRes.data.results.length > 0) {
           movieData.posterPath = detailsRes.data.results[0].poster_path
-          movieData.backdropPath = detailsRes.data.results[0].backdrop_path
-          setBackdropImage(movieData.backdropPath)
+          movieData.backdropPath = `${movieImagesApi}${detailsRes.data.results[0].backdrop_path}`
+          if (movieData.backdropPath) {
+            setBackdropImage(movieData.backdropPath)
+          } 
         }
       }
       getMovieImages()
@@ -55,12 +57,12 @@ export default function MovieCard(props) {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={() => viewMovie(movieData, movieImagesApi)}>
+      <CardActionArea onClick={() => viewMovie(movieData, movieImagesApi, movieBaseApi, apiKey)}>
         <CardMedia
           className={classes.media}
           alt={movieData.movieTitle}
           title={movieData.movieTitle}
-          image={backdropImage}           
+          image={backdropImage ? backdropImage : BlankMovieImage}           
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

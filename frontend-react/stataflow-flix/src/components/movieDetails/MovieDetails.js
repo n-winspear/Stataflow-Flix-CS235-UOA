@@ -18,12 +18,17 @@ import ReviewList from "components/movieDetails/ReviewList";
 import PropTypes from "prop-types";
 import StarsIcon from "@material-ui/icons/Stars";
 import RatingStars from "components/home/MovieCard/RatingStars";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles(() => ({
   circularProgress: {
     color: "#FDA74A",
+  },
+  button: {
+    marginTop: '2em',
+    marginLeft: '2.5em'
   },
   moviePoster: {
     height: "345px",
@@ -63,7 +68,7 @@ const useStyles = makeStyles(() => ({
 
 function MovieDetails(props) {
   const { location } = props;
-  const { apiURL, userID, movieData, movieImagesApi } = location.state;
+  const { apiURL, userID, movieData, movieImagesApi, movieBaseApi, apiKey } = location.state;
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
   const [reviewText, setReviewText] = useState("");
@@ -129,7 +134,15 @@ function MovieDetails(props) {
     </Container>
   ) : (
     <Container fixed maxWidth={"lg"}>
-      <Grid container style={{ marginTop: "5em" }}>
+      <Button 
+        color="default"
+        className={classes.button}
+        startIcon={<ArrowBackIosIcon height="15px"/>}
+        onClick={() => props.history.goBack()}
+      >
+        Back
+      </Button>
+      <Grid container style={{ marginTop: "2em" }}>
         <Hidden smDown>
           <Grid
             item
@@ -262,11 +275,11 @@ function MovieDetails(props) {
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={3}>
           <Typography variant="h4">Directors</Typography>
-          <DirectorList directorsList={movieData.directors} />
+          <DirectorList directorsList={movieData.directors} movieBaseApi={movieBaseApi} movieImagesApi={movieImagesApi} apiKey={apiKey} />
           <Typography variant="h4" style={{ marginTop: "1em" }}>
             Actors
           </Typography>
-          <ActorList actorsList={movieData.actors} />
+          <ActorList actorsList={movieData.actors} movieBaseApi={movieBaseApi} movieImagesApi={movieImagesApi} apiKey={apiKey} />
         </Grid>
       </Grid>
     </Container>
