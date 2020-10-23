@@ -23,8 +23,10 @@ function App() {
     } else if (userID) {
       cookies.set('userID', userID, {path: '/'})
     }
-  }, [cookies, userID])
+  }, [cookies, userID, userAuthorised])
 
+  console.log(apiURL)
+  
   return (
     <Router>
       <Switch>

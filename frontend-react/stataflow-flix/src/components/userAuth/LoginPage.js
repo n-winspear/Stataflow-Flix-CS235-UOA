@@ -73,6 +73,8 @@ export default function LoginPage(props) {
     }
   })
 
+  console.log(apiURL)
+
   async function loginUser() {
     let config = {
         method: "get",
