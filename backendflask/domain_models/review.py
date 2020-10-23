@@ -1,4 +1,4 @@
-from domain_models.movie import Movie
+from backendflask.domain_models.movie import Movie
 from uuid import uuid4
 
 

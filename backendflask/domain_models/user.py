@@ -1,4 +1,4 @@
-from domain_models.person import Person
+from backendflask.domain_models.person import Person
 import re
 import phonenumbers
 from password_validator import PasswordValidator
@@ -184,7 +184,7 @@ class User(Person):
 
     # Watchlist Check
     def __valid_watchlist(self, watchlist: list) -> list:
-        from domain_models.movie import Movie
+        from backendflask.domain_models.movie import Movie
         for movie in watchlist:
             if isinstance(movie, Movie):
                 return False
@@ -192,7 +192,7 @@ class User(Person):
 
     # Watchlist Cleaner
     def __cleaned_watchlist(self, watchlist: list) -> list:
-        from domain_models.movie import Movie
+        from backendflask.domain_models.movie import Movie
 
         cleaned_list = []
 
@@ -204,7 +204,7 @@ class User(Person):
 
     # Watched Movies Check
     def __valid_watched_movies(self, watched_movies: list) -> list:
-        from domain_models.movie import Movie
+        from backendflask.domain_models.movie import Movie
 
         for movie in watched_movies:
             if isinstance(movie, Movie):
@@ -213,7 +213,7 @@ class User(Person):
 
     # Watched Movies Cleaner
     def __cleaned_watched_movies(self, watched_movies: list) -> list:
-        from domain_models.movie import Movie
+        from backendflask.domain_models.movie import Movie
 
         cleaned_list = []
 
@@ -225,7 +225,7 @@ class User(Person):
 
     # Reviews Check
     def __valid_reviews(self, reviews: list) -> list:
-        from domain_models.review import Review
+        from backendflask.domain_models.review import Review
 
         for review in reviews:
             if isinstance(review, Review):
@@ -234,7 +234,7 @@ class User(Person):
 
     # Reviews Cleaner
     def __cleaned_reviews(self, reviews: list) -> list:
-        from domain_models.review import Review
+        from backendflask.domain_models.review import Review
 
         cleaned_list = []
 

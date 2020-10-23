@@ -6,8 +6,8 @@ import RegisterPage from 'components/userAuth/RegisterPage'
 import Cookies from 'universal-cookie';
 
 const apiVersion = 1;
-//const apiURL = `http://127.0.0.1:5000/v${apiVersion}`;
-const apiURL = `http://ifce.stataflow.com/v${apiVersion}`;
+const apiURL = `http://127.0.0.1:5000/v${apiVersion}`;
+//const apiURL = `http://ifce.stataflow.com/v${apiVersion}`;
 
 
 function App() {

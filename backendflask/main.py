@@ -2,20 +2,20 @@
 from flask import Flask, jsonify, make_response, request
 from flask_restful import Api
 from flask_cors import CORS, logging
-from api.review import Review
-from api.rating import Rating
-from api.movie import Movie
-from api.genre import Genre
-from api.director import Director
-from api.actor import Actor
-from api.user import User
-from api.review_list import ReviewList
-from api.rating_list import RatingList
-from api.movie_list import MovieList
-from api.genre_list import GenreList
-from api.director_list import DirectorList
-from api.actor_list import ActorList
-from api.user_list import UserList
+from backendflask.api.review import Review
+from backendflask.api.rating import Rating
+from backendflask.api.movie import Movie
+from backendflask.api.genre import Genre
+from backendflask.api.director import Director
+from backendflask.api.actor import Actor
+from backendflask.api.user import User
+from backendflask.api.review_list import ReviewList
+from backendflask.api.rating_list import RatingList
+from backendflask.api.movie_list import MovieList
+from backendflask.api.genre_list import GenreList
+from backendflask.api.director_list import DirectorList
+from backendflask.api.actor_list import ActorList
+from backendflask.api.user_list import UserList
 from uuid import uuid4
 
 # API URL

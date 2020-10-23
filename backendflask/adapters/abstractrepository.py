@@ -1,11 +1,11 @@
 import abc
-from domain_models.actor import Actor
-from domain_models.director import Director
-from domain_models.genre import Genre
-from domain_models.movie import Movie
-from domain_models.review import Review
-from domain_models.rating import Rating
-from domain_models.user import User
+from backendflask.domain_models.actor import Actor
+from backendflask.domain_models.director import Director
+from backendflask.domain_models.genre import Genre
+from backendflask.domain_models.movie import Movie
+from backendflask.domain_models.review import Review
+from backendflask.domain_models.rating import Rating
+from backendflask.domain_models.user import User
 
 
 class AbstractRepository(abc.ABC):

@@ -1,6 +1,6 @@
-from domain_models.actor import Actor
-from domain_models.director import Director
-from domain_models.genre import Genre
+from backendflask.domain_models.actor import Actor
+from backendflask.domain_models.director import Director
+from backendflask.domain_models.genre import Genre
 from datetime import datetime
 from uuid import uuid4
 

@@ -150,7 +150,7 @@ def test_rating_dataset(memory_repository):
 def test_user_dataset(memory_repository):
     length = len(memory_repository.get_all_users())
     user = User(
-        first_name='Nathan', last_name='Winspear', personID='3cf38e43-f86b-4950-a5cb-588ac964671f')
+        first_name='Elliot', last_name='Alderson', personID='3cf38e43-f86b-4950-a5cb-588ac964671f', email_address='n.winspear@leadership.ac.nz')
 
     # Add User
     memory_repository.add_user(user)
@@ -158,10 +158,10 @@ def test_user_dataset(memory_repository):
     length += 1
 
     # Update User
-    user.user = 'Sarah Hyland'
+    user.full_name = 'Sarah Hyland'
     memory_repository.update_user(user)
-    user = memory_repository.get_user(user.personID)
-    assert user.user == 'Sarah Hyland'
+    user = memory_repository.get_user(user.email_address)
+    assert user.full_name == 'Sarah Hyland'
 
     # Delete User
     memory_repository.delete_user(user.personID)

@@ -1,4 +1,4 @@
-from domain_models.person import Person
+from backendflask.domain_models.person import Person
 import requests
 
 
