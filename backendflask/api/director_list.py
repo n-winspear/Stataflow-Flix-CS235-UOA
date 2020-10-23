@@ -1,8 +1,8 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
-from backendflask.adapters.memoryrepository import MemoryRepository
-from backendflask.adapters.gcloudrepository import GCloudRepository
-from backendflask.domain_models.director import Director
+from adapters.memoryrepository import MemoryRepository
+from adapters.gcloudrepository import GCloudRepository
+from domain_models.director import Director
 import json
 
 # DB Connection

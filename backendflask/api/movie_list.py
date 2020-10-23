@@ -1,11 +1,11 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
-from backendflask.adapters.memoryrepository import MemoryRepository
-from backendflask.adapters.gcloudrepository import GCloudRepository
-from backendflask.domain_models.movie import Movie
-from backendflask.domain_models.actor import Actor
-from backendflask.domain_models.director import Director
-from backendflask.domain_models.genre import Genre
+from adapters.memoryrepository import MemoryRepository
+from adapters.gcloudrepository import GCloudRepository
+from domain_models.movie import Movie
+from domain_models.actor import Actor
+from domain_models.director import Director
+from domain_models.genre import Genre
 import json
 
 # DB Connection
