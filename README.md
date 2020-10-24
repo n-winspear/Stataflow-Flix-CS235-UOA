@@ -12,6 +12,8 @@ You can view it here: http://www.stataflow.com
 
 **NOTE** You will require 2 terminal windows to run this application locally due to the frontend running in React JS and the backend running in Flask
 
+**NOTE** To ensure that the script that starts the virtuan env works, you will need to open the terminals in administrator mode.
+
 ### Windows Process
 
 #### Terminal 1 (backend)
@@ -21,6 +23,8 @@ Navigate to 'Statflow-CS235-Flix' -> `cd ~/Stataflow-CS235-Flix`
 Move into 'backendflask' -> `cd /backendflask`
 
 Activate venv -> `.\venv\Scripts\activate`
+
+**NOTE** If you get an error telling you scripts cannot be loaded, you can enter `Set-ExecutionPolicy RemoteSigned` to allow the script to run, and then `Set-ExecutionPolicy Restricted` when you are done.
 
 Install requirements -> `pip3 install -r requirements.txt`
 
