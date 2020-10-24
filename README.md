@@ -49,3 +49,33 @@ Installing dependencies -> `npm i`
 Start the front end -> `npm start`
 
 ## Unix Install Process (for local use)
+
+#### Terminal 1 (backend)
+
+Navigate to 'Statflow-CS235-Flix' -> `cd ~/Stataflow-CS235-Flix`
+
+Move into 'backendflask' -> `cd /backendflask`
+
+Activate venv -> `source venv/Scripts/activate`
+
+Install requirements -> `pip3 install -r requirements.txt`
+
+Run tests -> `pytest` or `pytest .\testing`
+
+Setting environment variable -> `export FLASK_APP=main`
+
+Starting the backend -> `flask run`
+
+#### Terminal 2 (frontend)
+
+**NOTE** If you run `npm -v` and do not get a result, you will need to install Node or just view it from the cloud deployment
+
+Node download here: https://nodejs.org/en/download/
+
+Navigate to 'Statflow-CS235-Flix' -> `cd ~/Stataflow-CS235-Flix`
+
+Move into 'frontend-react' -> `cd /frontend-react`
+
+Installing dependencies -> `npm i`
+
+Start the front end -> `npm start`
