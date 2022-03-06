@@ -1,6 +1,10 @@
 # Stataflow-CS235-Flix
 
-COMPSCI235 Movie 'Flix' Application
+### Description
+
+This project was built as a part of my COMPSCI235 course at the University of Auckland. The project breif was to build a backend and frontend application that displays the movie data for a dataset provided. I took this a step further and connected it to the MovieDB database to pull images for the movie covers.
+
+This was a great project for learning about backend and frontend connections as well as learning about the Python Flask framework.
 
 ## Cloud Deployment
 
