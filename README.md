@@ -10,7 +10,7 @@ This was a great project for learning about backend and frontend connections as 
 
 As well as being able to run a local version of my code with a memory database, I have deployed a version of my code to a cloud instance in Google Cloud Platform that uses google cloud sql as the database
 
-You can view it here: http://www.stataflow.com
+You can view it here: http://www.stataflow.com (deprecated)
 
 ## Running a local version
 
