@@ -12,6 +12,8 @@ As well as being able to run a local version of my code with a memory database, 
 
 You can view it here: http://www.stataflow.com (deprecated)
 
+A demo video can be found here: https://youtu.be/CQ0VP4m0SEU
+
 ## Running a local version
 
 **NOTE** You will require 2 terminal windows to run this application locally due to the frontend running in React JS and the backend running in Flask
